@@ -827,7 +827,6 @@
                 padding: 10px;
             }
         }
-
     </style>
 
     <!-- Icons Material -->
@@ -835,6 +834,14 @@
     <link rel="manifest" href="manifest.json" />
     <meta name="theme-color" content="#9e2142" />
     <link rel="apple-touch-icon" href="icon-192.png" />
+
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.emailjs.com/sdk/3.2/email.min.js"></script>
+    <script>
+      (function(){
+        emailjs.init('ajeggNLZZg0_ryM6y');
+      })();
+    </script>
 </head>
 <body>
     <header>
@@ -2267,7 +2274,8 @@ Ofertas relacionadas:
 
       renderOffers(offers);
 
-      // Contact form submission handling
+      // Contact form submission handling with EmailJS integration
+
       const contactForm = document.getElementById('contact-form');
       const contactConfirmation = document.getElementById('contact-confirmation');
 
@@ -2298,25 +2306,34 @@ Ofertas relacionadas:
           return;
         }
 
-        // Compose the email body
-        const body = encodeURIComponent(
-          `Nombre: ${name}\nCorreo: ${email}\nTeléfono: ${phone || 'N/A'}\n\nMensaje:\n${message}`
-        );
-        const subject = encodeURIComponent('Contacto desde Money Minder');
+        // Prepare EmailJS params to match your template variables
+        const templateParams = {
+          user_name: name,
+          user_email: email,
+          user_phone: phone || "N/A",
+          message: message
+        };
 
-        // Use mailto link to open default mail client
-        const mailtoLink = `mailto:tu-email@dominio.com?subject=${subject}&body=${body}`;
+        // Disable submit button while sending
+        const submitButton = contactForm.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.textContent = 'Enviando...';
 
-        // Try to open mail client
-        window.location.href = mailtoLink;
-
-        // Show confirmation message after a short delay
-        setTimeout(() => {
-          contactConfirmation.textContent = 'Gracias por contactarme. Revisaré tu mensaje pronto.';
-          contactConfirmation.style.display = 'block';
-          contactForm.reset();
-          contactForm['name'].focus();
-        }, 1000);
+        // Send email via EmailJS
+        emailjs.send('service_9s631mi', 'template_b5rg48c', templateParams)
+          .then(function(response) {
+            contactConfirmation.textContent = 'Gracias por contactarme. Revisaré tu mensaje pronto.';
+            contactConfirmation.style.display = 'block';
+            contactForm.reset();
+            contactForm['name'].focus();
+          }, function(error) {
+            alert('Hubo un error al enviar el mensaje. Por favor, intenta de nuevo más tarde.');
+            console.error('EmailJS error:', error);
+          })
+          .finally(() => {
+            submitButton.disabled = false;
+            submitButton.textContent = 'Enviar Mensaje';
+          });
       });
     </script>
 </body>
