@@ -566,6 +566,44 @@
             from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* Recommendations block style */
+        .recommendations {
+            margin-top: 15px;
+            background: #e9f7ef;
+            border-left: 6px solid var(--color-accent);
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #205522;
+            white-space: pre-line;
+        }
+
+        .recommendations strong {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .recommendations ul {
+            margin-top: 6px;
+            padding-left: 20px;
+        }
+
+        .recommendations ul li {
+            margin-bottom: 6px;
+        }
+
+        .recommendations a {
+            color: var(--color-primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .recommendations a:hover {
+            text-decoration: underline;
+        }
+
     </style>
 
     <!-- Icons Material -->
@@ -1321,6 +1359,22 @@
         localStorage.setItem('savingsGoals', JSON.stringify(savingsGoals));
       }
 
+      // Obtener recomendaciones básicas según la meta
+      function getRecommendations(goalName, amount) {
+        const lowerName = goalName.toLowerCase();
+        if (lowerName.includes('moto') || lowerName.includes('motocicleta')) {
+          // Esto es un ejemplo, enlaces reales serían mejores
+          return `
+🚀 Ofertas relacionadas:
+- Motocicleta Italika 150Z – Q${amount.toFixed(2)} en <a href="https://www.elektra.com.gt/search/?query=motocicleta" target="_blank" rel="noopener noreferrer">Elektra</a> [Ver oferta]
+- Motos usadas desde Q${(amount * 0.75).toFixed(2)} en <a href="https://www.olx.com.gt/motocicletas" target="_blank" rel="noopener noreferrer">OLX Guatemala</a> [Ver oferta]
+- Accesorios para motocicletas en <a href="https://www.amazon.com.mx/s?k=accesorios+motocicleta" target="_blank" rel="noopener noreferrer">Amazon</a> [Ver oferta]
+          `;
+        }
+        // Más recomendaciones genéricas pueden añadirse aquí
+        return '';
+      }
+
       // Actualizar lista de metas
       function updateSavingsList() {
         if (savingsGoals.length === 0) {
@@ -1341,15 +1395,18 @@
           const dateParts = goal.date.split('-');
           const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
 
+          const recommendations = getRecommendations(goal.name, goal.amount);
+
           goalEl.innerHTML = `
-                <div><strong>${goal.name}</strong></div>
-                <div>Meta: ${formatCurrency(goal.amount)} - Fecha: ${formattedDate}</div>
+                <div><strong>Meta:</strong> ${goal.name}</div>
+                <div><strong>Objetivo:</strong> ${formatCurrency(goal.amount)}</div>
+                <div><strong>Progreso:</strong> ${formatCurrency(goal.saved)} (${progressFormatted}%)</div>
                 <div class="progress-bar">
                     <div class="progress" style="width: ${progressFormatted}%">
                         <span class="progress-text">${progressFormatted}%</span>
                     </div>
                 </div>
-                <div>Ahorrado: ${formatCurrency(goal.saved)} de ${formatCurrency(goal.amount)}</div>
+                ${recommendations ? `<div class="recommendations">${recommendations}</div>` : ''}
                 <div class="goal-actions">
                     <button class="add-savings btn-small" data-id="${goal.id}">Añadir Ahorro</button>
                     <button class="delete-goal btn-small btn-danger" data-id="${goal.id}">Eliminar</button>
@@ -1923,5 +1980,4 @@
     </script>
 </body>
 </html>
-
 
