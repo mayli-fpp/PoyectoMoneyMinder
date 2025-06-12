@@ -2276,65 +2276,36 @@ Ofertas relacionadas:
 
       // Contact form submission handling with EmailJS integration
 
-      const contactForm = document.getElementById('contact-form');
-      const contactConfirmation = document.getElementById('contact-confirmation');
-      const submitButton = document.getElementById('contact-submit');
-
-      contactForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        contactConfirmation.style.display = 'none';
-        contactConfirmation.textContent = '';
-
-        const name = contactForm['name'].value.trim();
-        const email = contactForm['email'].value.trim();
-        const phone = contactForm['phone'].value.trim();
-        const message = contactForm['message'].value.trim();
-
-        // Basic validation
-        if (!name) {
-          alert('Por favor, ingresa tu nombre completo.');
-          contactForm['name'].focus();
-          return;
-        }
-        if (!email) {
-          alert('Por favor, ingresa un correo electrónico válido.');
-          contactForm['email'].focus();
-          return;
-        }
-        if (!message) {
-          alert('Por favor, escribe un mensaje.');
-          contactForm['message'].focus();
-          return;
-        }
-
-        // Prepare EmailJS params to match your template variables
-        const templateParams = {
-          user_name: name,
-          user_email: email,
-          user_phone: phone || "N/A",
-          message: message
-        };
-
-        // Disable submit button while sending
-        submitButton.disabled = true;
-        submitButton.textContent = 'Enviando...';
-
-        // Send email via EmailJS
-        emailjs.send('service_9s631mi', 'template_b5rg48c', templateParams)
-          .then(function(response) {
-            contactConfirmation.textContent = 'Gracias por contactarme. Revisaré tu mensaje pronto.';
-            contactConfirmation.style.display = 'block';
-            contactForm.reset();
-            contactForm['name'].focus();
-          }, function(error) {
-            alert('Hubo un error al enviar el mensaje. Por favor, intenta de nuevo más tarde.');
-            console.error('EmailJS error:', error);
-          })
-          .finally(() => {
-            submitButton.disabled = false;
-            submitButton.textContent = 'Enviar Mensaje';
-          });
-      });
+       if (!message) {
+    alert('Por favor, escribe un mensaje.');
+    contactForm['message'].focus();
+    return;
+  }
+  const templateParams = {
+    user_name: name,
+    user_email: email,
+    user_phone: phone || "N/A",
+    message: message
+  };
+  submitButton.disabled = true;
+  submitButton.textContent = 'Enviando...';
+  emailjs.send('service_9s631mi', 'template_b5rg48c', templateParams)
+    .then(function(response) {
+      console.log('EmailJS success:', response.status, response.text);
+      contactConfirmation.textContent = 'Gracias por contactarme. Revisaré tu mensaje pronto.';
+      contactConfirmation.style.display = 'block';
+      contactForm.reset();
+      contactForm['name'].focus();
+    })
+    .catch(function(error) {
+      console.error('EmailJS failed:', error);
+      alert('Hubo un error al enviar el mensaje. Por favor, intenta de nuevo más tarde.');
+    })
+    .finally(function() {
+      submitButton.disabled = false;
+      submitButton.textContent = 'Enviar Mensaje';
+    });
+});
     </script>
 </body>
 </html>
