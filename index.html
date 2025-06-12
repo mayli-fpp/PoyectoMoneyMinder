@@ -2314,8 +2314,10 @@ Ofertas relacionadas:
           message: message
         };
 
-          submitButton.disabled = true;
-  submitButton.textContent = 'Enviando...';
+         // Disable submit button while sending
+        const submitButton = contactForm.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.textContent = 'Enviando...';
 
         // Send email via EmailJS
         emailjs.send('service_9s631mi', 'template_b5rg48c', templateParams)
