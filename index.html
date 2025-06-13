@@ -114,14 +114,12 @@
         }
 
         input,
-        select,
-        textarea {
+        select {
             width: 100%;
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 16px;
-            resize: vertical;
         }
 
         button {
@@ -379,8 +377,7 @@
 
             input,
             select,
-            button,
-            textarea {
+            button {
                 font-size: 18px;
             }
 
@@ -741,92 +738,7 @@
             }
         }
 
-        /* Contact Section Styles */
-        #contact-section {
-            display: none;
-            padding: 20px 0;
-        }
-        #contact-section.active {
-            display: block;
-        }
 
-        #contact-section .contact-card {
-            max-width: 600px;
-            margin: 0 auto;
-            background: white;
-            padding: 20px 30px;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-        }
-
-        #contact-section h2 {
-            text-align: center;
-            margin-bottom: 25px;
-            color: var(--color-primary);
-        }
-
-        #contact-section form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        #contact-section label {
-            font-weight: 600;
-            color: var(--color-dark);
-        }
-
-        #contact-section input,
-        #contact-section textarea {
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            padding: 10px;
-            font-size: 16px;
-            font-family: inherit;
-            resize: vertical;
-        }
-
-        #contact-section input:focus,
-        #contact-section textarea:focus {
-            outline: 2px solid var(--color-secondary);
-            border-color: var(--color-secondary);
-        }
-
-        #contact-section button {
-            background-color: var(--color-primary);
-            color: white;
-            border: none;
-            padding: 12px;
-            font-size: 18px;
-            font-weight: 700;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin-top: 10px;
-            min-height: 48px;
-        }
-        #contact-section button:hover {
-            background-color: #7a1730;
-        }
-
-        #contact-section .confirmation {
-            margin-top: 15px;
-            font-weight: 600;
-            color: var(--color-accent);
-            text-align: center;
-        }
-
-        @media (max-width: 480px) {
-            #contact-section .contact-card {
-                padding: 15px 20px;
-                margin: 0 10px;
-            }
-
-            #contact-section button {
-                font-size: 16px;
-                padding: 10px;
-            }
-        }
     </style>
 
     <!-- Icons Material -->
@@ -834,14 +746,6 @@
     <link rel="manifest" href="manifest.json" />
     <meta name="theme-color" content="#9e2142" />
     <link rel="apple-touch-icon" href="icon-192.png" />
-
-    <!-- EmailJS SDK -->
-    <script src="https://cdn.emailjs.com/sdk/3.2/email.min.js"></script>
-    <script>
-      (function(){
-        emailjs.init('ajeggNLZZg0_ryM6y');
-      })();
-    </script>
 </head>
 <body>
     <header>
@@ -863,7 +767,6 @@
                         <a href="#" id="menu-budgets" role="menuitem" tabindex="0">Presupuestos</a>
                         <a href="#" id="menu-offers" role="menuitem" tabindex="0">Ofertas</a>
                         <a href="#" id="chatbot" role="menuitem" tabindex="0">Chatbot</a>
-                        <a href="#" id="menu-contact" role="menuitem" tabindex="0">Contacto</a>
                     </div>
                 </div>
             </div>
@@ -1195,33 +1098,6 @@
       </div>
     </div>
 
-    <!-- Contact Section -->
-    <div id="contact-section" class="section" aria-label="Sección de Contacto">
-      <div class="contact-card">
-        <h2>Contacto</h2>
-        <form id="contact-form" novalidate>
-          <div class="form-group">
-            <label for="contact-name">Nombre Completo</label>
-            <input type="text" id="contact-name" name="name" placeholder="Tu nombre completo" required aria-required="true" />
-          </div>
-          <div class="form-group">
-            <label for="contact-email">Correo Electrónico</label>
-            <input type="email" id="contact-email" name="email" placeholder="tuemail@ejemplo.com" required aria-required="true" />
-          </div>
-          <div class="form-group">
-            <label for="contact-phone">Teléfono</label>
-            <input type="tel" id="contact-phone" name="phone" placeholder="+502 1234 5678" pattern="^\+?\d{7,15}$" aria-required="false" />
-          </div>
-          <div class="form-group">
-            <label for="contact-message">Mensaje</label>
-            <textarea id="contact-message" name="message" rows="5" placeholder="Escribe tu mensaje aquí..." required aria-required="true"></textarea>
-          </div>
-          <button type="submit">Enviar Mensaje</button>
-          <div class="confirmation" id="contact-confirmation" role="alert" aria-live="polite" style="display:none;"></div>
-        </form>
-      </div>
-    </div>
-
     <footer>
       <div class="container">
         <p>Mayli &copy; 2025 - Finanzas personales</p>
@@ -1244,11 +1120,14 @@
         ],
       };
 
+      // Elemento select de categorías
       const categorySelect = document.getElementById('category');
       const typeSelect = document.getElementById('type');
 
+      // Cargar categorías según el tipo de transacción
       typeSelect.addEventListener('change', updateCategories);
 
+      // Función para actualizar las categorías disponibles
       function updateCategories() {
         const type = typeSelect.value;
         categorySelect.innerHTML = '<option value="">Selecciona una categoría</option>';
@@ -1261,10 +1140,13 @@
         });
       }
 
+      // Inicializar las categorías
       updateCategories();
 
+      // Establecer la fecha de hoy como valor predeterminado
       document.getElementById('date').valueAsDate = new Date();
 
+      // Elementos del DOM
       const transactionForm = document.getElementById('transaction-form');
       const transactionList = document.getElementById('transaction-list');
       const totalBalanceEl = document.getElementById('total-balance');
@@ -1272,12 +1154,15 @@
       const totalExpensesEl = document.getElementById('total-expenses');
       const clearButton = document.getElementById('clear-transactions');
 
+      // Cargar transacciones guardadas
       let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 
+      // Función para guardar transacciones en localStorage
       function saveTransactions() {
         localStorage.setItem('transactions', JSON.stringify(transactions));
       }
 
+      // Función para calcular y actualizar el balance
       function updateBalance() {
         const income = transactions
           .filter((transaction) => transaction.type === 'income')
@@ -1293,6 +1178,7 @@
         totalIncomeEl.textContent = formatCurrency(income);
         totalExpensesEl.textContent = formatCurrency(expenses);
 
+        // Cambiar color del balance según sea positivo o negativo
         totalBalanceEl.className = 'balance';
         if (balance > 0) {
           totalBalanceEl.classList.add('positive');
@@ -1301,10 +1187,12 @@
         }
       }
 
+      //tipo de monedass
       function formatCurrency(amount) {
         return 'Q' + amount.toFixed(2);
       }
 
+      // Manejar envío del formulario
       transactionForm.addEventListener('submit', function (e) {
         e.preventDefault();
 
@@ -1319,6 +1207,7 @@
           return;
         }
 
+        // Crear objeto de transacción
         const transaction = {
           id: Date.now(),
           description,
@@ -1328,19 +1217,24 @@
           date,
         };
 
+        // Añadir a la lista de transacciones
         transactions.push(transaction);
 
+        // Guardar y actualizar UI
         saveTransactions();
         updateTransactionList();
         updateBalance();
         updateChart();
 
+        // Reiniciar formulario
         transactionForm.reset();
         document.getElementById('date').valueAsDate = new Date();
         updateCategories();
       });
 
+      // Función para actualizar la lista de transacciones
       function updateTransactionList() {
+        // Ordenar transacciones por fecha, más reciente primero
         const sortedTransactions = [...transactions].sort(
           (a, b) => new Date(b.date) - new Date(a.date)
         );
@@ -1375,9 +1269,11 @@
         });
       }
 
+      // Función para actualizar el gráfico de distribución de gastos
       function updateChart() {
         const expenseChart = document.getElementById('expense-chart');
 
+        // Filtrar solo los gastos
         const expenses = transactions.filter((t) => t.type === 'expense');
 
         if (expenses.length === 0) {
@@ -1386,6 +1282,7 @@
           return;
         }
 
+        // Agrupar gastos por categoría
         const expensesByCategory = {};
         let totalExpenses = 0;
 
@@ -1397,6 +1294,7 @@
           totalExpenses += expense.amount;
         });
 
+        // Crear el gráfico simple de barras
         expenseChart.innerHTML = '';
 
         const colors = [
@@ -1434,6 +1332,7 @@
         expenseChart.innerHTML = html;
       }
 
+      // Borrar todas las transacciones
       clearButton.addEventListener('click', function () {
         if (confirm('¿Estás seguro de que deseas borrar todas las transacciones?')) {
           transactions = [];
@@ -1444,13 +1343,16 @@
         }
       });
 
+      // Inicializar la aplicación
       updateTransactionList();
       updateBalance();
       updateChart();
 
+      // Variables para las nuevas funcionalidades
       let savingsGoals = JSON.parse(localStorage.getItem('savingsGoals')) || [];
       let debts = JSON.parse(localStorage.getItem('debts')) || [];
 
+      // Elementos del menú
       const menuButton = document.getElementById('menu-button');
       const menuDropdown = document.getElementById('menu-dropdown');
       const menuDashboard = document.getElementById('menu-dashboard');
@@ -1464,18 +1366,21 @@
       const budgetsSection = document.getElementById('budgets-section');
       const offersSection = document.getElementById('offers-section');
 
+      // Secciones
       const dashboardSection = document.getElementById('dashboard-section');
       const savingsSection = document.getElementById('savings-section');
       const debtsSection = document.getElementById('debts-section');
       const chatbotSection = document.getElementById('chatbot-section');
-      const contactSection = document.getElementById('contact-section');
 
+      // Formularios
       const savingsForm = document.getElementById('savings-form');
       const debtForm = document.getElementById('debt-form');
 
+      // Listas
       const savingsList = document.getElementById('savings-list');
       const debtsList = document.getElementById('debts-list');
 
+      // Mejor compatibilidad táctil
       ['click', 'touchstart'].forEach((evt) => {
         menuButton.addEventListener(evt, function (e) {
           e.stopPropagation();
@@ -1483,6 +1388,7 @@
         });
       });
 
+      // Cierre de menú más robusto
       ['click', 'touchstart'].forEach((evt) => {
         window.addEventListener(evt, function (event) {
           if (!menuDropdown.contains(event.target) && !menuButton.contains(event.target)) {
@@ -1491,10 +1397,12 @@
         });
       });
 
+      // Mostrar/ocultar menú desplegable
       menuButton.addEventListener('click', function () {
         menuDropdown.classList.toggle('show');
       });
 
+      // Cerrar el menú al hacer clic fuera de él
       window.addEventListener('click', function (event) {
         if (
           !event.target.matches('.menu-button') &&
@@ -1506,6 +1414,7 @@
         }
       });
 
+      // Cambiar entre secciones
       menuDashboard.addEventListener('click', function (e) {
         e.preventDefault();
         showSection(dashboardSection);
@@ -1539,24 +1448,20 @@
         offersSection.querySelector('#offers-list').focus();
       });
 
+      // Chatbot menu link
       const menuChatbot = document.getElementById('chatbot');
       menuChatbot.addEventListener('click', function (e) {
         e.preventDefault();
         showSection(chatbotSection);
+        // Focus the chatbot input on showing chatbot
         setTimeout(() => {
           document.getElementById('chatbot-input').focus();
         }, 300);
       });
 
-      // New Contact menu item event
-      const menuContact = document.getElementById('menu-contact');
-      menuContact.addEventListener('click', function(e) {
-        e.preventDefault();
-        showSection(contactSection);
-        document.getElementById('contact-name').focus();
-      });
-
+      // Show only the selected section and hide others
       function showSection(section) {
+        // Ocultar todas las secciones
         dashboardSection.classList.remove('active');
         savingsSection.classList.remove('active');
         debtsSection.classList.remove('active');
@@ -1564,16 +1469,20 @@
         budgetsSection.classList.remove('active');
         chatbotSection.classList.remove('active');
         offersSection.classList.remove('active');
-        contactSection.classList.remove('active');
 
+        // Mostrar la sección seleccionada
         section.classList.add('active');
+
+        // Cerrar el menú
         menuDropdown.classList.remove('show');
       }
 
+      // Inicializar con la sección del dashboard activa
       showSection(dashboardSection);
 
-      // Savings functions...
+      //FUNCIONES PARA METAS DE AHORRO
 
+      // Crear una nueva meta de ahorro
       savingsForm.addEventListener('submit', function (e) {
         e.preventDefault();
 
@@ -1582,6 +1491,7 @@
         const date = document.getElementById('goal-date').value;
         const saved = parseFloat(document.getElementById('current-saved').value) || 0;
 
+        // Crear objeto de meta
         const goal = {
           id: Date.now(),
           name,
@@ -1590,22 +1500,28 @@
           saved,
         };
 
+        // Añadir a la lista de metas
         savingsGoals.push(goal);
 
+        // Guardar y actualizar UI
         saveSavingsGoals();
         updateSavingsList();
 
+        // Reiniciar formulario
         savingsForm.reset();
-        document.getElementById('goal-date').valueAsDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+        document.getElementById('goal-date').valueAsDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // +30 días por defecto
       });
 
+      // Guardar metas en localStorage
       function saveSavingsGoals() {
         localStorage.setItem('savingsGoals', JSON.stringify(savingsGoals));
       }
 
+      // Obtener recomendaciones básicas según la meta
       function getRecommendations(goalName, amount) {
         const lowerName = goalName.toLowerCase();
         if (lowerName.includes('moto') || lowerName.includes('motocicleta')) {
+          // Esto es un ejemplo, enlaces reales serían mejores
           return `
 Ofertas relacionadas:
 - Motocicleta Italika 150Z – Q${amount.toFixed(2)} en <a href="https://www.elektra.com.gt/search/?query=motocicleta" target="_blank" rel="noopener noreferrer">Elektra</a> [Ver oferta]
@@ -1613,9 +1529,11 @@ Ofertas relacionadas:
 - Accesorios para motocicletas en <a href="https://www.amazon.com.mx/s?k=accesorios+motocicleta" target="_blank" rel="noopener noreferrer">Amazon</a> [Ver oferta]
           `;
         }
+        // Más recomendaciones genéricas pueden añadirse aquí
         return '';
       }
 
+      // Actualizar lista de metas
       function updateSavingsList() {
         if (savingsGoals.length === 0) {
           savingsList.innerHTML =
@@ -1656,6 +1574,7 @@ Ofertas relacionadas:
           savingsList.appendChild(goalEl);
         });
 
+        // Añadir evento a los botones de añadir ahorro
         document.querySelectorAll('.add-savings').forEach((button) => {
           button.addEventListener('click', function () {
             const id = parseInt(this.getAttribute('data-id'));
@@ -1668,6 +1587,7 @@ Ofertas relacionadas:
             if (!isNaN(amount) && amount > 0) {
               goal.saved += amount;
 
+              // Crear transacción de ahorro
               const transaction = {
                 id: Date.now(),
                 description: `Ahorro para: ${goal.name}`,
@@ -1677,18 +1597,21 @@ Ofertas relacionadas:
                 date: new Date().toISOString().split('T')[0],
               };
 
+              // Añadir a la lista de transacciones
               transactions.push(transaction);
               saveTransactions();
               updateTransactionList();
               updateBalance();
               updateChart();
 
+              // Actualizar metas
               saveSavingsGoals();
               updateSavingsList();
             }
           });
         });
 
+        // Añadir evento a los botones de eliminar meta
         document.querySelectorAll('.delete-goal').forEach((button) => {
           button.addEventListener('click', function () {
             const id = parseInt(this.getAttribute('data-id'));
@@ -1703,8 +1626,9 @@ Ofertas relacionadas:
         });
       }
 
-      // Debt functions...
+      //FUNCIONES PARA CONTROL DE DEUDAS
 
+      // Crear una nueva deuda
       debtForm.addEventListener('submit', function (e) {
         e.preventDefault();
 
@@ -1714,6 +1638,7 @@ Ofertas relacionadas:
         const interest = parseFloat(document.getElementById('debt-interest').value) || 0;
         const date = document.getElementById('debt-date').value || null;
 
+        // Crear objeto de deuda
         const debt = {
           id: Date.now(),
           name,
@@ -1724,22 +1649,28 @@ Ofertas relacionadas:
           isPaid: false,
         };
 
+        // Comprobar si ya está pagada
         if (paid >= amount) {
           debt.isPaid = true;
         }
 
+        // Añadir a la lista de deudas
         debts.push(debt);
 
+        // Guardar y actualizar UI
         saveDebts();
         updateDebtsList();
 
+        // Reiniciar formulario
         debtForm.reset();
       });
 
+      // Guardar deudas en localStorage
       function saveDebts() {
         localStorage.setItem('debts', JSON.stringify(debts));
       }
 
+      // Actualizar lista de deudas
       function updateDebtsList() {
         if (debts.length === 0) {
           debtsList.innerHTML =
@@ -1796,6 +1727,7 @@ Ofertas relacionadas:
           debtsList.appendChild(debtEl);
         });
 
+        // Añadir evento a los botones de añadir pago
         document.querySelectorAll('.add-payment').forEach((button) => {
           button.addEventListener('click', function () {
             const id = parseInt(this.getAttribute('data-id'));
@@ -1808,10 +1740,12 @@ Ofertas relacionadas:
             if (!isNaN(amount) && amount > 0) {
               debt.paid += amount;
 
+              // Comprobar si ya está pagada
               if (debt.paid >= debt.amount) {
                 debt.isPaid = true;
               }
 
+              // Crear transacción de pago de deuda
               const transaction = {
                 id: Date.now(),
                 description: `Pago de deuda: ${debt.name}`,
@@ -1821,18 +1755,21 @@ Ofertas relacionadas:
                 date: new Date().toISOString().split('T')[0],
               };
 
+              // Añadir a la lista de transacciones
               transactions.push(transaction);
               saveTransactions();
               updateTransactionList();
               updateBalance();
               updateChart();
 
+              // Actualizar deudas
               saveDebts();
               updateDebtsList();
             }
           });
         });
 
+        // Añadir evento a los botones de eliminar deuda
         document.querySelectorAll('.delete-debt').forEach((button) => {
           button.addEventListener('click', function () {
             const id = parseInt(this.getAttribute('data-id'));
@@ -1847,20 +1784,21 @@ Ofertas relacionadas:
         });
       }
 
-      // Report functions...
-
+      // Variables Reportes
       const reportTotalIncome = document.getElementById('report-total-income');
       const reportTotalExpense = document.getElementById('report-total-expense');
       const reportBalance = document.getElementById('report-balance');
       const reportList = document.getElementById('report-list');
       const reportFilter = document.getElementById('report-filter');
 
+      // Variables Presupuestos
       let budgets = JSON.parse(localStorage.getItem('budgets')) || [];
       const budgetForm = document.getElementById('budget-form');
       const budgetCategorySelect = document.getElementById('budget-category');
       const budgetAmountInput = document.getElementById('budget-amount');
       const budgetList = document.getElementById('budget-list');
 
+      // Rellenar categorías en Presupuestos (solo gastos)
       function populateBudgetCategories() {
         budgetCategorySelect.innerHTML = '<option value="">Selecciona una categoría</option>';
         categories.expense.forEach((cat) => {
@@ -1871,6 +1809,7 @@ Ofertas relacionadas:
         });
       }
 
+      // FUNCIONES REPORTES
       function updateReport() {
         const filter = reportFilter.value;
         let filteredTx = [...transactions];
@@ -1902,6 +1841,7 @@ Ofertas relacionadas:
           });
         }
 
+        // Calcular resumen
         const income = transactions
           .filter((t) => t.type === 'income')
           .reduce((sum, t) => sum + t.amount, 0);
@@ -1914,6 +1854,8 @@ Ofertas relacionadas:
         reportTotalExpense.textContent = 'Q' + expense.toFixed(2);
         reportBalance.textContent = 'Q' + balance.toFixed(2);
       }
+
+      // FUNCIONES PRESUPUESTOS
 
       budgetForm.addEventListener('submit', function (e) {
         e.preventDefault();
@@ -1988,13 +1930,16 @@ Ofertas relacionadas:
 
       reportFilter.addEventListener('change', updateReport);
 
+      // Actualizar las categorías añadiendo las nuevas
       categories.expense.push('ahorro', 'deudas');
 
+      // Recargar presupuestos guardados por si acaso
       budgets = JSON.parse(localStorage.getItem('budgets')) || [];
       populateBudgetCategories();
       updateReport();
       updateBudgetList();
 
+      // Inicializar la aplicación con las nuevas funcionalidades
       updateSavingsList();
       updateDebtsList();
 
@@ -2002,7 +1947,7 @@ Ofertas relacionadas:
         updateCategories();
       }
 
-      // Chatbot
+      // Chatbot functionality
       (() => {
         const chatbotMessages = document.getElementById('chatbot-messages');
         const chatbotInput = document.getElementById('chatbot-input');
@@ -2010,6 +1955,7 @@ Ofertas relacionadas:
         const chatbotSendBtn = document.getElementById('chatbot-send');
         const chatbotCloseBtn = document.getElementById('chatbot-close');
 
+        // Demo canned answers for chatbot (key phrases mapped to answers)
         const faq = [
           {
             questions: ['saldo', 'balance', 'balance actual', 'total'],
@@ -2088,16 +2034,20 @@ Ofertas relacionadas:
           },
         ];
 
+        // Helper to add a message (text, sender: 'user' or 'bot')
         function addMessage(text, sender) {
           const msgEl = document.createElement('div');
           msgEl.classList.add('chat-message', sender);
+          // Escape HTML
           msgEl.textContent = text;
           chatbotMessages.appendChild(msgEl);
           chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
           chatbotMessages.focus();
         }
 
+        // Bot typing simulation
         function botReply(text) {
+          // Simulate typing indicator
           const typingIndicator = document.createElement('div');
           typingIndicator.classList.add('chat-message', 'bot');
           typingIndicator.textContent = 'Escribiendo...';
@@ -2110,6 +2060,7 @@ Ofertas relacionadas:
           }, 1000);
         }
 
+        // Simple query matcher with keyword lookup
         function getBotResponse(userText) {
           const text = userText.toLowerCase();
           for (let i = 0; i < faq.length; i++) {
@@ -2123,10 +2074,12 @@ Ofertas relacionadas:
           return 'Lo siento, no entiendo tu pregunta. Por favor, prueba con otra consulta sobre tus finanzas.';
         }
 
+        // Enable send button only if there's input
         chatbotInput.addEventListener('input', function () {
           chatbotSendBtn.disabled = this.value.trim() === '';
         });
 
+        // Handle form submission properly
         chatbotForm.addEventListener('submit', function (e) {
           e.preventDefault();
 
@@ -2141,9 +2094,10 @@ Ofertas relacionadas:
           botReply(reply);
         });
 
+        // Close chatbot button hides chatbot section and shows dashboard
         chatbotCloseBtn.addEventListener('click', () => {
           showSection(dashboardSection);
-          chatbotMessages.innerHTML = '';
+          chatbotMessages.innerHTML = ''; // Clear chat on close
           initChat();
         });
 
@@ -2151,11 +2105,12 @@ Ofertas relacionadas:
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
             showSection(dashboardSection);
-            chatbotMessages.innerHTML = '';
+            chatbotMessages.innerHTML = ''; // Clear chat on close
             initChat();
           }
         });
 
+        // Initial welcome message
         function initChat() {
           addMessage(
             'Hola! Soy tu asistente financiero. Puedes preguntarme sobre tu saldo, gastos, ingresos, ahorros, deudas y presupuestos.',
@@ -2178,6 +2133,8 @@ Ofertas relacionadas:
             });
         });
       }
+
+      // Offers section - Facebook Marketplace style
 
       let offers = [
         {
@@ -2272,69 +2229,8 @@ Ofertas relacionadas:
         filterAndRenderOffers(e.target.value);
       });
 
+      // Render all offers initially at load
       renderOffers(offers);
-
-      // Contact form submission handling with EmailJS integration
-
-      const contactForm = document.getElementById('contact-form');
-      const contactConfirmation = document.getElementById('contact-confirmation');
-
-      contactForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        contactConfirmation.style.display = 'none';
-        contactConfirmation.textContent = '';
-
-        const name = contactForm['name'].value.trim();
-        const email = contactForm['email'].value.trim();
-        const phone = contactForm['phone'].value.trim();
-        const message = contactForm['message'].value.trim();
-
-        // Basic validation
-        if (!name) {
-          alert('Por favor, ingresa tu nombre completo.');
-          contactForm['name'].focus();
-          return;
-        }
-        if (!email) {
-          alert('Por favor, ingresa un correo electrónico válido.');
-          contactForm['email'].focus();
-          return;
-        }
-        if (!message) {
-          alert('Por favor, escribe un mensaje.');
-          contactForm['message'].focus();
-          return;
-        }
-
-        // Prepare EmailJS params to match your template variables
-        const templateParams = {
-          user_name: name,
-          user_email: email,
-          user_phone: phone || "N/A",
-          message: message
-        };
-
-         // Disable submit button while sending
-        const submitButton = contactForm.querySelector('button[type="submit"]');
-        submitButton.disabled = true;
-        submitButton.textContent = 'Enviando...';
-
-        // Send email via EmailJS
-        emailjs.send('service_9s631mi', 'template_b5rg48c', templateParams)
-          .then(function(response) {
-            contactConfirmation.textContent = 'Gracias por contactarme. Revisaré tu mensaje pronto.';
-            contactConfirmation.style.display = 'block';
-            contactForm.reset();
-            contactForm['name'].focus();
-          }, function(error) {
-            alert('Hubo un error al enviar el mensaje. Por favor, intenta de nuevo más tarde.');
-            console.error('EmailJS error:', error);
-          })
-          .finally(() => {
-            submitButton.disabled = false;
-            submitButton.textContent = 'Enviar Mensaje';
-          });
-      });
     </script>
 </body>
 </html>
