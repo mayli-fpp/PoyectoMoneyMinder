@@ -738,7 +738,51 @@
             }
         }
 
-
+        /* Contact Section Styling */
+        #contact-section {
+            display: none;
+            padding: 30px 20px;
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            color: var(--color-dark);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        #contact-section.active {
+            display: block;
+        }
+        #contact-section h2 {
+            margin-bottom: 20px;
+            color: var(--color-primary);
+        }
+        #contact-section p {
+            margin-bottom: 12px;
+        }
+        #contact-section a {
+            color: var(--color-secondary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        #contact-section a:hover,
+        #contact-section a:focus {
+            text-decoration: underline;
+        }
+        #contact-section .contact-info {
+            margin-bottom: 20px;
+        }
+        #contact-section .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        #contact-section .material-icons {
+            font-size: 24px;
+            color: var(--color-primary);
+        }
     </style>
 
     <!-- Icons Material -->
@@ -766,6 +810,7 @@
                         <a href="#" id="menu-reports" role="menuitem" tabindex="0">Reportes / Historial</a>
                         <a href="#" id="menu-budgets" role="menuitem" tabindex="0">Presupuestos</a>
                         <a href="#" id="menu-offers" role="menuitem" tabindex="0">Ofertas</a>
+                        <a href="#" id="menu-contact" role="menuitem" tabindex="0">Contacto / Soporte</a>
                         <a href="#" id="chatbot" role="menuitem" tabindex="0">Chatbot</a>
                     </div>
                 </div>
@@ -1098,6 +1143,30 @@
       </div>
     </div>
 
+    <!-- New Contact Section -->
+    <div id="contact-section" class="section" aria-label="Información de Contacto y Soporte">
+      <h2>Contacto y Soporte</h2>
+      <div class="contact-info">
+        <div class="contact-item">
+          <span class="material-icons" aria-hidden="true">email</span>
+          <a href="mailto:maylipirir2005@gmail.com">maylipirir2005@gmail.com</a>
+        </div>
+        <div class="contact-item">
+          <span class="material-icons" aria-hidden="true">phone</span>
+          <a href="tel:+50212345678">+502 1234 5678</a>
+        </div>
+        <div class="contact-item">
+          <span class="material-icons" aria-hidden="true">location_on</span>
+          <address>Ciudad de Guatemala, Guatemala</address>
+        </div>
+        <div class="contact-item">
+          <span class="material-icons" aria-hidden="true">access_time</span>
+          <p>Horario de atención: Lunes a Viernes, 9:00 AM - 6:00 PM</p>
+        </div>
+      </div>
+      <p>Estamos aquí para ayudarte con cualquier consulta o problema que tengas. No dudes en contactarnos.</p>
+    </div>
+
     <footer>
       <div class="container">
         <p>Mayli &copy; 2025 - Finanzas personales</p>
@@ -1362,9 +1431,11 @@
       const menuReports = document.getElementById('menu-reports');
       const menuBudgets = document.getElementById('menu-budgets');
       const menuOffers = document.getElementById('menu-offers');
+      const menuContact = document.getElementById('menu-contact');
       const reportsSection = document.getElementById('reports-section');
       const budgetsSection = document.getElementById('budgets-section');
       const offersSection = document.getElementById('offers-section');
+      const contactSection = document.getElementById('contact-section');
 
       // Secciones
       const dashboardSection = document.getElementById('dashboard-section');
@@ -1448,6 +1519,11 @@
         offersSection.querySelector('#offers-list').focus();
       });
 
+      menuContact.addEventListener('click', function (e) {
+        e.preventDefault();
+        showSection(contactSection);
+      });
+
       // Chatbot menu link
       const menuChatbot = document.getElementById('chatbot');
       menuChatbot.addEventListener('click', function (e) {
@@ -1469,6 +1545,7 @@
         budgetsSection.classList.remove('active');
         chatbotSection.classList.remove('active');
         offersSection.classList.remove('active');
+        contactSection.classList.remove('active');
 
         // Mostrar la sección seleccionada
         section.classList.add('active');
