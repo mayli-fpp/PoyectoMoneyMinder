@@ -685,12 +685,12 @@
             display: flex;
             flex-direction: column;
             transition: box-shadow 0.3s ease;
+            outline: none;
         }
 
         .offer-card:hover,
         .offer-card:focus {
             box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-            outline: none;
         }
 
         .offer-image-container {
@@ -717,7 +717,10 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-start;
+            gap: 10px;
+            font-size: 14px;
+            color: var(--color-dark);
         }
 
         .offer-title {
@@ -730,25 +733,41 @@
         .offer-price {
             font-weight: 700;
             font-size: 16px;
-            margin-bottom: 8px;
             color: var(--color-accent);
         }
 
         .offer-category {
             font-size: 14px;
             color: var(--color-secondary);
-            margin-bottom: 8px;
             text-transform: capitalize;
+            margin-bottom: 6px;
         }
 
         .offer-description {
             font-size: 14px;
-            color: var(--color-dark);
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
+        }
+
+        .seller-info {
+            margin-top: 8px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+            font-size: 13px;
+            color: var(--color-dark);
+        }
+
+        .seller-info div {
+            margin-bottom: 4px;
+        }
+
+        .seller-info span.label {
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-right: 6px;
         }
 
         /* Responsive adjustments for offers */
@@ -760,52 +779,6 @@
                 max-width: 100%;
                 margin-bottom: 20px;
             }
-        }
-
-        /* Contact Section Styling */
-        #contact-section {
-            display: none;
-            padding: 30px 20px;
-            max-width: 700px;
-            margin: 0 auto 40px auto;
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            color: var(--color-dark);
-            font-size: 16px;
-            line-height: 1.6;
-        }
-        #contact-section.active {
-            display: block;
-        }
-        #contact-section h2 {
-            margin-bottom: 20px;
-            color: var(--color-primary);
-        }
-        #contact-section p {
-            margin-bottom: 12px;
-        }
-        #contact-section a {
-            color: var(--color-secondary);
-            text-decoration: none;
-            font-weight: 600;
-        }
-        #contact-section a:hover,
-        #contact-section a:focus {
-            text-decoration: underline;
-        }
-        #contact-section .contact-info {
-            margin-bottom: 20px;
-        }
-        #contact-section .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-        #contact-section .material-icons {
-            font-size: 24px;
-            color: var(--color-primary);
         }
     </style>
 
@@ -2269,6 +2242,11 @@ Ofertas relacionadas:
           price: 13500,
           category: "motos",
           image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/3e33dd73-5f6c-4298-9792-ff272e96e689.png",
+          seller: {
+            name: "Juan Pérez",
+            phone: "+502 5555 1234",
+            email: "juanperez@example.com"
+          }
         },
         {
           id: 2,
@@ -2277,6 +2255,11 @@ Ofertas relacionadas:
           price: 8500,
           category: "teléfonos",
           image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/762df5f4-1d99-4f2b-a076-e9e2a016144b.png",
+          seller: {
+            name: "María Gómez",
+            phone: "+502 5555 5678",
+            email: "mariagomez@example.com"
+          }
         },
         {
           id: 3,
@@ -2285,6 +2268,11 @@ Ofertas relacionadas:
           price: 1200,
           category: "ropa",
           image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/aeda3788-cef1-4bd8-b643-d207f902e850.png",
+          seller: {
+            name: "Carlos López",
+            phone: "+502 5555 7890",
+            email: "carloslopez@example.com"
+          }
         },
         {
           id: 4,
@@ -2293,6 +2281,11 @@ Ofertas relacionadas:
           price: 67500,
           category: "carros",
           image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b62efc61-fc61-49c8-975c-1c200823fdfe.png",
+          seller: {
+            name: "Ana Martínez",
+            phone: "+502 5555 2345",
+            email: "anamartinez@example.com"
+          }
         },
         {
           id: 5,
@@ -2301,6 +2294,11 @@ Ofertas relacionadas:
           price: 7500,
           category: "teléfonos",
           image: "https://placehold.co/400x300?text=Samsung+Galaxy+S21",
+          seller: {
+            name: "Luis Fernández",
+            phone: "+502 5555 3456",
+            email: "luisfernandez@example.com"
+          }
         },
       ];
 
@@ -2320,6 +2318,11 @@ Ofertas relacionadas:
             <div class="offer-price">Q${offer.price.toLocaleString('es-GT')}</div>
             <div class="offer-category">${offer.category}</div>
             <div class="offer-description">${offer.description}</div>
+            <div class="seller-info" aria-label="Información del vendedor">
+              <div><span class="label">Vendedor:</span>${offer.seller.name}</div>
+              <div><span class="label">Teléfono:</span><a href="tel:${offer.seller.phone.replace(/[^0-9+]/g, '')}">${offer.seller.phone}</a></div>
+              <div><span class="label">Correo:</span><a href="mailto:${offer.seller.email}">${offer.seller.email}</a></div>
+            </div>
           </div>
         `;
         return div;
