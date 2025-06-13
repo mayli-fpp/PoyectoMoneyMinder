@@ -13,6 +13,7 @@
             --color-secondary: #3498db;
             --color-accent: #27ae60;
             --color-danger: #e74c3c;
+            --color-warning: #f39c12;
             --color-light: #f5f5f5;
             --color-dark: #333;
             --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -255,6 +256,7 @@
             background-color: #e0e0e0;
             border-radius: 4px;
             margin: 10px 0;
+            position: relative;
         }
 
         .progress {
@@ -270,10 +272,19 @@
             right: 10px;
             color: #fff;
             font-weight: bold;
+            top: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .progress.warning {
+            background-color: var(--color-warning);
         }
 
         .goal-item,
-        .debt-item {
+        .debt-item,
+        .budget-item {
             background-color: #f9f9f9;
             border-radius: 4px;
             padding: 15px;
@@ -282,7 +293,8 @@
         }
 
         .goal-actions,
-        .debt-actions {
+        .debt-actions,
+        .budget-actions {
             display: flex;
             gap: 10px;
             margin-top: 10px;
@@ -295,6 +307,13 @@
         .btn-small {
             padding: 5px 10px;
             font-size: 14px;
+        }
+
+        /* Budget alert style */
+        .budget-alert {
+            color: var(--color-danger);
+            font-weight: 700;
+            margin-top: 8px;
         }
 
         /* Aumentar tamaño de botones para accesibilidad */
@@ -335,6 +354,11 @@
             }
             .menu-content a:hover {
                 background-color: #444;
+            }
+            .goal-item, .debt-item, .budget-item {
+                background-color: #292929;
+                color: #f1f1f1;
+                border-left-color: var(--color-secondary);
             }
         }
 
@@ -1185,6 +1209,7 @@
           'Salud',
           'Educación',
           'Deudas',
+          'Ahorro',
           'Otros',
         ],
       };
@@ -1420,6 +1445,7 @@
       // Variables para las nuevas funcionalidades
       let savingsGoals = JSON.parse(localStorage.getItem('savingsGoals')) || [];
       let debts = JSON.parse(localStorage.getItem('debts')) || [];
+      let budgets = JSON.parse(localStorage.getItem('budgets')) || [];
 
       // Elementos del menú
       const menuButton = document.getElementById('menu-button');
@@ -1446,10 +1472,12 @@
       // Formularios
       const savingsForm = document.getElementById('savings-form');
       const debtForm = document.getElementById('debt-form');
+      const budgetForm = document.getElementById('budget-form');
 
       // Listas
       const savingsList = document.getElementById('savings-list');
       const debtsList = document.getElementById('debts-list');
+      const budgetList = document.getElementById('budget-list');
 
       // Mejor compatibilidad táctil
       ['click', 'touchstart'].forEach((evt) => {
@@ -1509,6 +1537,9 @@
       menuBudgets.addEventListener('click', function (e) {
         e.preventDefault();
         showSection(budgetsSection);
+        budgetSearchInput.value = '';
+        filterAndRenderBudgets('');
+        budgetList.focus();
       });
 
       menuOffers.addEventListener('click', function (e) {
@@ -1529,7 +1560,6 @@
       menuChatbot.addEventListener('click', function (e) {
         e.preventDefault();
         showSection(chatbotSection);
-        // Focus the chatbot input on showing chatbot
         setTimeout(() => {
           document.getElementById('chatbot-input').focus();
         }, 300);
@@ -1559,7 +1589,6 @@
 
       //FUNCIONES PARA METAS DE AHORRO
 
-      // Crear una nueva meta de ahorro
       savingsForm.addEventListener('submit', function (e) {
         e.preventDefault();
 
@@ -1586,19 +1615,16 @@
 
         // Reiniciar formulario
         savingsForm.reset();
-        document.getElementById('goal-date').valueAsDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // +30 días por defecto
+        document.getElementById('goal-date').valueAsDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
       });
 
-      // Guardar metas en localStorage
       function saveSavingsGoals() {
         localStorage.setItem('savingsGoals', JSON.stringify(savingsGoals));
       }
 
-      // Obtener recomendaciones básicas según la meta
       function getRecommendations(goalName, amount) {
         const lowerName = goalName.toLowerCase();
         if (lowerName.includes('moto') || lowerName.includes('motocicleta')) {
-          // Esto es un ejemplo, enlaces reales serían mejores
           return `
 Ofertas relacionadas:
 - Motocicleta Italika 150Z – Q${amount.toFixed(2)} en <a href="https://www.elektra.com.gt/search/?query=motocicleta" target="_blank" rel="noopener noreferrer">Elektra</a> [Ver oferta]
@@ -1606,11 +1632,9 @@ Ofertas relacionadas:
 - Accesorios para motocicletas en <a href="https://www.amazon.com.mx/s?k=accesorios+motocicleta" target="_blank" rel="noopener noreferrer">Amazon</a> [Ver oferta]
           `;
         }
-        // Más recomendaciones genéricas pueden añadirse aquí
         return '';
       }
 
-      // Actualizar lista de metas
       function updateSavingsList() {
         if (savingsGoals.length === 0) {
           savingsList.innerHTML =
@@ -1664,7 +1688,6 @@ Ofertas relacionadas:
             if (!isNaN(amount) && amount > 0) {
               goal.saved += amount;
 
-              // Crear transacción de ahorro
               const transaction = {
                 id: Date.now(),
                 description: `Ahorro para: ${goal.name}`,
@@ -1674,14 +1697,12 @@ Ofertas relacionadas:
                 date: new Date().toISOString().split('T')[0],
               };
 
-              // Añadir a la lista de transacciones
               transactions.push(transaction);
               saveTransactions();
               updateTransactionList();
               updateBalance();
               updateChart();
 
-              // Actualizar metas
               saveSavingsGoals();
               updateSavingsList();
             }
@@ -1705,7 +1726,6 @@ Ofertas relacionadas:
 
       //FUNCIONES PARA CONTROL DE DEUDAS
 
-      // Crear una nueva deuda
       debtForm.addEventListener('submit', function (e) {
         e.preventDefault();
 
@@ -1715,7 +1735,6 @@ Ofertas relacionadas:
         const interest = parseFloat(document.getElementById('debt-interest').value) || 0;
         const date = document.getElementById('debt-date').value || null;
 
-        // Crear objeto de deuda
         const debt = {
           id: Date.now(),
           name,
@@ -1726,28 +1745,22 @@ Ofertas relacionadas:
           isPaid: false,
         };
 
-        // Comprobar si ya está pagada
         if (paid >= amount) {
           debt.isPaid = true;
         }
 
-        // Añadir a la lista de deudas
         debts.push(debt);
 
-        // Guardar y actualizar UI
         saveDebts();
         updateDebtsList();
 
-        // Reiniciar formulario
         debtForm.reset();
       });
 
-      // Guardar deudas en localStorage
       function saveDebts() {
         localStorage.setItem('debts', JSON.stringify(debts));
       }
 
-      // Actualizar lista de deudas
       function updateDebtsList() {
         if (debts.length === 0) {
           debtsList.innerHTML =
@@ -1804,7 +1817,6 @@ Ofertas relacionadas:
           debtsList.appendChild(debtEl);
         });
 
-        // Añadir evento a los botones de añadir pago
         document.querySelectorAll('.add-payment').forEach((button) => {
           button.addEventListener('click', function () {
             const id = parseInt(this.getAttribute('data-id'));
@@ -1817,12 +1829,10 @@ Ofertas relacionadas:
             if (!isNaN(amount) && amount > 0) {
               debt.paid += amount;
 
-              // Comprobar si ya está pagada
               if (debt.paid >= debt.amount) {
                 debt.isPaid = true;
               }
 
-              // Crear transacción de pago de deuda
               const transaction = {
                 id: Date.now(),
                 description: `Pago de deuda: ${debt.name}`,
@@ -1832,21 +1842,18 @@ Ofertas relacionadas:
                 date: new Date().toISOString().split('T')[0],
               };
 
-              // Añadir a la lista de transacciones
               transactions.push(transaction);
               saveTransactions();
               updateTransactionList();
               updateBalance();
               updateChart();
 
-              // Actualizar deudas
               saveDebts();
               updateDebtsList();
             }
           });
         });
 
-        // Añadir evento a los botones de eliminar deuda
         document.querySelectorAll('.delete-debt').forEach((button) => {
           button.addEventListener('click', function () {
             const id = parseInt(this.getAttribute('data-id'));
@@ -1869,20 +1876,148 @@ Ofertas relacionadas:
       const reportFilter = document.getElementById('report-filter');
 
       // Variables Presupuestos
-      let budgets = JSON.parse(localStorage.getItem('budgets')) || [];
-      const budgetForm = document.getElementById('budget-form');
       const budgetCategorySelect = document.getElementById('budget-category');
       const budgetAmountInput = document.getElementById('budget-amount');
-      const budgetList = document.getElementById('budget-list');
 
       // Rellenar categorías en Presupuestos (solo gastos)
       function populateBudgetCategories() {
         budgetCategorySelect.innerHTML = '<option value="">Selecciona una categoría</option>';
         categories.expense.forEach((cat) => {
           const opt = document.createElement('option');
-          opt.value = cat;
+          opt.value = cat.toLowerCase();
           opt.textContent = cat;
           budgetCategorySelect.appendChild(opt);
+        });
+      }
+
+      // Guardar presupuestos en localStorage
+      function saveBudgets() {
+        localStorage.setItem('budgets', JSON.stringify(budgets));
+      }
+
+      // Añadir campo 'spent' en presupuestos si no existe
+      budgets.forEach(b => {
+        if (typeof b.spent !== 'number') {
+          b.spent = 0;
+        }
+      });
+
+      // Manejar creación de presupuestos
+      budgetForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const category = budgetCategorySelect.value;
+        const amount = parseFloat(budgetAmountInput.value);
+
+        if (!category || isNaN(amount) || amount <= 0) {
+          alert('Por favor, selecciona una categoría y un monto válido.');
+          return;
+        }
+
+        const budget = { id: Date.now(), category, amount, spent: 0 };
+        budgets.push(budget);
+        saveBudgets();
+        updateBudgetList();
+        budgetForm.reset();
+        populateBudgetCategories();
+
+        alert('Presupuesto creado y guardado con éxito.');
+      });
+
+      // Actualizar lista de presupuestos con botones para abonar y alertas
+      function updateBudgetList() {
+        if (budgets.length === 0) {
+          budgetList.innerHTML =
+            '<p style="text-align: center; padding: 20px;">No hay presupuestos</p>';
+          return;
+        }
+
+        budgetList.innerHTML = '';
+        budgets.forEach((b) => {
+          const percent = Math.min((b.spent / b.amount) * 100, 100).toFixed(1);
+          const overBudget = b.spent > b.amount;
+          const warningThreshold = 80; // percent to trigger alert
+
+          const budgetEl = document.createElement('div');
+          budgetEl.classList.add('budget-item');
+
+          const categoryName = categories.expense.find((c) => c.toLowerCase() === b.category) || b.category;
+
+          let progressBarClass = 'progress';
+          if (percent >= warningThreshold && percent < 100) {
+            progressBarClass += ' warning';
+          } else if (percent >= 100) {
+            progressBarClass = 'progress negative';
+          }
+
+          budgetEl.innerHTML = `
+            <div><strong>${categoryName}</strong></div>
+            <div>Presupuesto: Q${b.amount.toFixed(2)}</div>
+            <div class="progress-bar" aria-label="Porcentaje gastado en presupuesto">
+                <div class="${progressBarClass}" style="width: ${percent}%">
+                    <span class="progress-text">${percent}%</span>
+                </div>
+            </div>
+            <div>Gastado: Q${b.spent.toFixed(2)} de Q${b.amount.toFixed(2)}</div>
+            ${
+              percent >= warningThreshold && percent < 100
+                ? `<div class="budget-alert">¡Alerta! Estás utilizando más del 80% de tu presupuesto.</div>`
+                : ''
+            }
+            ${
+              percent >= 100
+                ? `<div class="budget-alert">¡Aviso! Has superado tu presupuesto.</div>`
+                : ''
+            }
+            <div class="budget-actions">
+                <button class="add-budget-payment btn-small" data-id="${b.id}">Añadir Abono</button>
+                <button class="delete-budget btn-small btn-danger" data-id="${b.id}">Eliminar</button>
+            </div>
+          `;
+
+          budgetList.appendChild(budgetEl);
+        });
+
+        // Añadir evento a los botones de añadir abono
+        document.querySelectorAll('.add-budget-payment').forEach((button) => {
+          button.addEventListener('click', function () {
+            const id = parseInt(this.getAttribute('data-id'));
+            const budget = budgets.find((b) => b.id === id);
+
+            const amount = parseFloat(prompt(`¿Cuánto quieres abonar al presupuesto "${budget.category}"?`, '0'));
+
+            if (!isNaN(amount) && amount > 0) {
+              budget.spent += amount;
+
+              // Registrar transacción tipo gasto para presupuestos (category matches)
+              const transaction = {
+                id: Date.now(),
+                description: `Abono a presupuesto: ${budget.category}`,
+                amount: amount,
+                type: 'expense',
+                category: budget.category,
+                date: new Date().toISOString().split('T')[0],
+              };
+
+              transactions.push(transaction);
+              saveTransactions();
+              updateTransactionList();
+              updateBalance();
+              updateChart();
+
+              saveBudgets();
+              updateBudgetList();
+            }
+          });
+        });
+
+        // Añadir evento a los botones eliminar presupuesto
+        document.querySelectorAll('.delete-budget').forEach((btn) => {
+          btn.addEventListener('click', function () {
+            const id = parseInt(this.dataset.id);
+            budgets = budgets.filter((b) => b.id !== id);
+            saveBudgets();
+            updateBudgetList();
+          });
         });
       }
 
@@ -1932,91 +2067,14 @@ Ofertas relacionadas:
         reportBalance.textContent = 'Q' + balance.toFixed(2);
       }
 
-      // FUNCIONES PRESUPUESTOS
-
-      budgetForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-        const category = budgetCategorySelect.value;
-        const amount = parseFloat(budgetAmountInput.value);
-
-        if (!category || isNaN(amount) || amount <= 0) {
-          alert('Por favor, selecciona una categoría y un monto válido.');
-          return;
-        }
-
-        const budget = { id: Date.now(), category, amount };
-        budgets.push(budget);
-        saveBudgets();
-        updateBudgetList();
-        budgetForm.reset();
-        populateBudgetCategories();
-
-        alert('Presupuesto creado y guardado con éxito.');
-      });
-
-      function saveBudgets() {
-        localStorage.setItem('budgets', JSON.stringify(budgets));
-      }
-
-      function updateBudgetList() {
-        if (budgets.length === 0) {
-          budgetList.innerHTML =
-            '<p style="text-align: center; padding: 20px;">No hay presupuestos</p>';
-          return;
-        }
-
-        budgetList.innerHTML = '';
-        budgets.forEach((b) => {
-          const spent = transactions
-            .filter((t) => t.type === 'expense' && t.category === b.category)
-            .reduce((sum, t) => sum + t.amount, 0);
-          const percent = Math.min((spent / b.amount) * 100, 100).toFixed(1);
-
-          const budgetEl = document.createElement('div');
-          budgetEl.classList.add('goal-item');
-          const categoryName = categories.expense.find((c) => c === b.category) || b.category;
-
-          budgetEl.innerHTML = `
-            <div><strong>${categoryName}</strong></div>
-            <div>Presupuesto: Q${b.amount.toFixed(2)}</div>
-            <div class="progress-bar">
-                <div class="progress" style="width: ${percent}%; background-color: ${
-            spent > b.amount ? '#e74c3c' : ''
-          }">
-                    <span class="progress-text">${percent}%</span>
-                </div>
-            </div>
-            <div>Gastado: Q${spent.toFixed(2)} de Q${b.amount.toFixed(2)}</div>
-            <div class="goal-actions">
-                <button class="delete-budget btn-small btn-danger" data-id="${b.id}">Eliminar</button>
-            </div>
-        `;
-
-          budgetList.appendChild(budgetEl);
-        });
-
-        document.querySelectorAll('.delete-budget').forEach((btn) => {
-          btn.addEventListener('click', function () {
-            const id = parseInt(this.dataset.id);
-            budgets = budgets.filter((b) => b.id !== id);
-            saveBudgets();
-            updateBudgetList();
-          });
-        });
-      }
-
       reportFilter.addEventListener('change', updateReport);
 
-      // Actualizar las categorías añadiendo las nuevas
+      // Actualizar categorías en presupuestos y listas iniciales
       categories.expense.push('ahorro', 'deudas');
 
-      // Recargar presupuestos guardados por si acaso
-      budgets = JSON.parse(localStorage.getItem('budgets')) || [];
       populateBudgetCategories();
       updateReport();
       updateBudgetList();
-
-      // Inicializar la aplicación con las nuevas funcionalidades
       updateSavingsList();
       updateDebtsList();
 
@@ -2032,7 +2090,6 @@ Ofertas relacionadas:
         const chatbotSendBtn = document.getElementById('chatbot-send');
         const chatbotCloseBtn = document.getElementById('chatbot-close');
 
-        // Demo canned answers for chatbot (key phrases mapped to answers)
         const faq = [
           {
             questions: ['saldo', 'balance', 'balance actual', 'total'],
@@ -2104,27 +2161,23 @@ Ofertas relacionadas:
               }
               let response = 'Tus presupuestos son:\n';
               budgets.forEach((b, i) => {
-                response += `${i + 1}. ${b.category} - Monto: ${formatCurrency(b.amount)}\n`;
+                response += `${i + 1}. ${b.category} - Monto: ${formatCurrency(b.amount)}, Gastado: ${formatCurrency(b.spent)}\n`;
               });
               return response;
             },
           },
         ];
 
-        // Helper to add a message (text, sender: 'user' or 'bot')
         function addMessage(text, sender) {
           const msgEl = document.createElement('div');
           msgEl.classList.add('chat-message', sender);
-          // Escape HTML
           msgEl.textContent = text;
           chatbotMessages.appendChild(msgEl);
           chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
           chatbotMessages.focus();
         }
 
-        // Bot typing simulation
         function botReply(text) {
-          // Simulate typing indicator
           const typingIndicator = document.createElement('div');
           typingIndicator.classList.add('chat-message', 'bot');
           typingIndicator.textContent = 'Escribiendo...';
@@ -2137,7 +2190,6 @@ Ofertas relacionadas:
           }, 1000);
         }
 
-        // Simple query matcher with keyword lookup
         function getBotResponse(userText) {
           const text = userText.toLowerCase();
           for (let i = 0; i < faq.length; i++) {
@@ -2151,12 +2203,10 @@ Ofertas relacionadas:
           return 'Lo siento, no entiendo tu pregunta. Por favor, prueba con otra consulta sobre tus finanzas.';
         }
 
-        // Enable send button only if there's input
         chatbotInput.addEventListener('input', function () {
           chatbotSendBtn.disabled = this.value.trim() === '';
         });
 
-        // Handle form submission properly
         chatbotForm.addEventListener('submit', function (e) {
           e.preventDefault();
 
@@ -2171,10 +2221,9 @@ Ofertas relacionadas:
           botReply(reply);
         });
 
-        // Close chatbot button hides chatbot section and shows dashboard
         chatbotCloseBtn.addEventListener('click', () => {
           showSection(dashboardSection);
-          chatbotMessages.innerHTML = ''; // Clear chat on close
+          chatbotMessages.innerHTML = '';
           initChat();
         });
 
@@ -2182,12 +2231,11 @@ Ofertas relacionadas:
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
             showSection(dashboardSection);
-            chatbotMessages.innerHTML = ''; // Clear chat on close
+            chatbotMessages.innerHTML = '';
             initChat();
           }
         });
 
-        // Initial welcome message
         function initChat() {
           addMessage(
             'Hola! Soy tu asistente financiero. Puedes preguntarme sobre tu saldo, gastos, ingresos, ahorros, deudas y presupuestos.',
