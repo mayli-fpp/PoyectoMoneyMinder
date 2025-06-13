@@ -5,14 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="finanzas" />
     <meta name="Autor" content="Mayli" />
-    <title>Money Minder</title>
-
-    <!-- Google Fonts: Inter for modern typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-
-    <!-- Material Icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-
+    <link rel="stylesheet" href="style.css" />
+    <title>Money minder</title>
     <style>
         :root {
             --color-primary: #9e2142;
@@ -21,575 +15,444 @@
             --color-danger: #e74c3c;
             --color-warning: #f39c12;
             --color-light: #f5f5f5;
-            --color-dark: #333333;
-            --color-dark-alt: #2c2c2c;
-            --shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-            --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.06);
-            --border-radius: 12px;
-            --transition: 0.3s ease;
+            --color-dark: #333;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             --chatbot-bg: #ffffff;
-            --chatbot-bubble-bg-user: var(--color-secondary);
+            --chatbot-bubble-bg-user: #3498db;
             --chatbot-bubble-bg-bot: #f0f0f0;
             --chatbot-text-user: #fff;
-            --chatbot-text-bot: var(--color-dark);
+            --chatbot-text-bot: #333;
         }
 
-        /* Reset and base */
-        *, *::before, *::after {
+        /* Global resets and fonts */
+        * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            font-size: 16px;
-            background: linear-gradient(135deg, #fff5f7 0%, #f5f5f5 100%);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-                Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            color: var(--color-dark);
-            line-height: 1.6;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            background: linear-gradient(135deg, #ffe6eb, #e8f1fc);
+            background-color: #f9f9f9;
+            color: var(--color-dark);
         }
 
-        /* Container */
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 1.25rem 1rem;
-            width: 100%;
+            padding: 20px;
         }
 
-        /* Header */
         header {
-            background: var(--color-primary);
+            background-color: var(--color-primary);
             color: white;
-            padding: 1.5rem 1rem;
-            box-shadow: var(--shadow-soft);
-            position: sticky;
-            top: 0;
-            z-index: 20;
-            backdrop-filter: saturate(180%) blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom-left-radius: var(--border-radius);
-            border-bottom-right-radius: var(--border-radius);
-            user-select: none;
-        }
-
-        .header-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            gap: 1rem;
-        }
-
-        h1 {
-            font-weight: 700;
-            font-size: 1.8rem;
-            letter-spacing: 1px;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.2);
-        }
-
-        p {
-            font-weight: 400;
-            opacity: 0.9;
-            font-size: 1rem;
-            margin-top: 0.15rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-        }
-
-        /* Menu Button */
-        .main-menu {
-            position: relative;
-        }
-
-        .menu-button {
-            background: var(--color-secondary);
-            border: none;
-            color: white;
-            padding: 0.625rem 1rem;
-            font-size: 1rem;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            transition: background-color var(--transition);
-            min-height: 44px;
-            box-shadow: 0 4px 10px rgb(52 152 219 / 0.5);
-        }
-
-        .menu-button:hover,
-        .menu-button:focus {
-            background-color: #2980b9;
-            outline: none;
-            box-shadow: 0 6px 20px rgb(41 128 185 / 0.8);
-        }
-
-        .menu-button span {
-            font-size: 0.85rem;
-            line-height: 1;
-        }
-
-        /* Dropdown Menu */
-        .menu-content {
-            position: absolute;
-            top: calc(100% + 8px);
-            right: 0;
-            background: white;
+            padding: 20px 0;
+            margin-bottom: 30px;
             box-shadow: var(--shadow);
-            border-radius: var(--border-radius);
-            min-width: 220px;
-            overflow: hidden;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.25s ease, visibility 0.25s ease;
-            z-index: 30;
-            font-size: 0.95rem;
         }
 
-        .menu-content.show {
-            opacity: 1;
-            visibility: visible;
+        h1,
+        h2,
+        h3 {
+            margin-bottom: 15px;
         }
 
-        .menu-content a {
-            display: block;
-            padding: 0.75rem 1rem;
-            color: var(--color-dark);
-            text-decoration: none;
-            font-weight: 500;
-            border-bottom: 1px solid #eee;
-            min-height: 44px;
-            line-height: 1.3;
-            transition: background-color var(--transition);
-        }
-
-        .menu-content a:last-child {
-            border-bottom: none;
-        }
-
-        .menu-content a:hover,
-        .menu-content a:focus {
-            background-color: var(--color-secondary);
-            color: white;
-            outline: none;
-        }
-
-        /* Sections */
-        .section {
-            display: none;
-            padding: 1.5rem 1rem 3rem;
-            animation: fadeInSection 0.4s ease forwards;
-            flex-grow: 1;
-        }
-
-        .section.active {
-            display: block;
-        }
-
-        @keyframes fadeInSection {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Dashboard layout */
         .dashboard {
             display: grid;
-            gap: 1.5rem;
             grid-template-columns: 1fr;
+            gap: 20px;
         }
 
         @media (min-width: 768px) {
             .dashboard {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: 1fr 1fr;
             }
         }
 
         @media (min-width: 992px) {
             .dashboard {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: 1fr 1fr 1fr;
             }
         }
 
-        /* Cards - glass morphism style */
         .card {
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: saturate(180%) blur(12px);
-            border-radius: var(--border-radius);
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
             box-shadow: var(--shadow);
-            padding: 1.5rem 1.3rem;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .card:hover,
-        .card:focus-within {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
         }
 
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 0.5rem;
-            margin-bottom: 1rem;
-            font-weight: 600;
-            font-size: 1.15rem;
-            color: var(--color-primary);
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
         }
 
-        /* Balance style */
         .balance {
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-bottom: 0.7rem;
-            color: var(--color-dark-alt);
+            font-size: 24px;
+            font-weight: bold;
         }
 
         .positive {
             color: var(--color-accent);
-            font-weight: 600;
         }
 
         .negative {
             color: var(--color-danger);
-            font-weight: 600;
         }
 
-        /* Summary text */
-        .summary {
-            display: flex;
-            gap: 2rem;
-            font-size: 1rem;
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
             font-weight: 500;
         }
 
-        /* Forms styling */
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 0.4rem;
-            color: var(--color-dark-alt);
-        }
-
         input,
-        select,
-        textarea {
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            border: 1.5px solid #ddd;
-            font-size: 1rem;
-            font-weight: 400;
-            transition: border-color var(--transition);
+        select {
             width: 100%;
-            background-color: #fff;
-            color: var(--color-dark-alt);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
         }
 
-        input:focus,
-        select:focus,
-        textarea:focus {
-            outline: none;
-            border-color: var(--color-secondary);
-            box-shadow: 0 0 8px var(--color-secondary);
-            background-color: #fafcff;
-        }
-
-        /* Buttons */
         button {
-            cursor: pointer;
             background-color: var(--color-secondary);
-            border: none;
             color: white;
-            border-radius: 10px;
-            padding: 0.75rem 1.5rem;
-            font-size: 1.1rem;
-            font-weight: 700;
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.5);
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
             min-height: 44px;
-            align-self: flex-start;
-            user-select: none;
         }
 
-        button:hover,
-        button:focus {
+        button:hover {
             background-color: #2980b9;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(41, 128, 185, 0.6);
-            outline: none;
         }
 
         .btn-danger {
             background-color: var(--color-danger);
-            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.5);
         }
 
-        .btn-danger:hover,
-        .btn-danger:focus {
+        .btn-danger:hover {
             background-color: #c0392b;
-            box-shadow: 0 10px 25px rgba(192, 57, 43, 0.7);
         }
 
-        .btn-small {
-            font-size: 0.85rem;
-            padding: 0.35rem 0.9rem;
-            min-height: 32px;
-            box-shadow: none;
-        }
-
-        /* Transactions list */
         .transactions {
-            max-height: 360px;
+            max-height: 300px;
             overflow-y: auto;
-            border-radius: 10px;
-            border: 1.2px solid #ddd;
-            background: white;
         }
 
         .transaction-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
             display: flex;
             justify-content: space-between;
-            padding: 0.9rem 1rem;
-            border-bottom: 1px solid #eee;
-            align-items: center;
-            gap: 0.75rem;
-            transition: background-color 0.2s;
-            cursor: default;
         }
 
         .transaction-item:last-child {
             border-bottom: none;
         }
 
-        .transaction-item:hover,
-        .transaction-item:focus-within {
-            background-color: #f7faff;
-        }
-
-        .transaction-item strong {
-            font-weight: 600;
-            color: var(--color-dark-alt);
-        }
-
         .transaction-item .category {
             background-color: #eee;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--color-secondary);
-            text-transform: capitalize;
-            user-select: none;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 14px;
         }
 
-        /* Chart container */
         .chart-container {
+            height: 300px;
             position: relative;
-            height: 260px;
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-soft);
-            padding: 1rem;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            user-select: none;
-            font-weight: 600;
-            color: var(--color-dark-alt);
         }
 
-        /* Progress bars for savings, debts, budgets */
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            padding: 20px;
+            background-color: var(--color-primary);
+            color: white;
+        }
+
+        /* Estilos para el menú */
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .main-menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        .menu-button {
+            background-color: var(--color-secondary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            min-height: 44px;
+        }
+
+        .menu-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 220px;
+            box-shadow: var(--shadow);
+            z-index: 10;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .menu-content a {
+            color: var(--color-dark);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            border-bottom: 1px solid #eee;
+            min-height: 44px;
+            line-height: 20px;
+        }
+
+        .menu-content a:hover,
+        .menu-content a:focus {
+            background-color: #f1f1f1;
+            outline: none;
+        }
+
+        .show {
+            display: block;
+        }
+
+        /* Estilos para secciones */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Estilos para metas de ahorro */
         .progress-bar {
             width: 100%;
             background-color: #e0e0e0;
-            border-radius: var(--border-radius);
-            margin: 12px 0;
+            border-radius: 4px;
+            margin: 10px 0;
             position: relative;
-            height: 22px;
-            box-shadow: inset 0 2px 6px rgb(0 0 0 / 0.05);
         }
 
         .progress {
-            height: 100%;
-            border-radius: var(--border-radius);
-            transition: width 0.5s ease;
+            height: 20px;
+            background-color: var(--color-accent);
+            border-radius: 4px;
+            transition: width 0.3s ease;
             position: relative;
-            box-shadow: 0 0 8px rgb(0 0 0 / 0.08);
         }
 
         .progress-text {
             position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: white;
-            font-weight: 700;
-            font-size: 0.9rem;
-            user-select: none;
-            text-shadow: 0 0 3px rgba(0,0,0,0.4);
+            right: 10px;
+            color: #fff;
+            font-weight: bold;
+            top: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
         }
 
         .progress.warning {
             background-color: var(--color-warning);
         }
 
-        .progress.negative {
-            background-color: var(--color-danger);
-        }
-
-        /* Goal, Debt, Budget Items */
         .goal-item,
         .debt-item,
         .budget-item {
-            background-color: white;
-            border-radius: 12px;
-            padding: 1rem 1.25rem;
-            margin-bottom: 1rem;
-            border-left: 6px solid var(--color-secondary);
-            box-shadow: var(--shadow-soft);
-            transition: box-shadow 0.3s ease;
-        }
-
-        .goal-item:hover,
-        .debt-item:hover,
-        .budget-item:hover {
-            box-shadow: var(--shadow);
-        }
-
-        .debt-item.paid {
-            border-left-color: var(--color-accent);
-            opacity: 0.85;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--color-secondary);
         }
 
         .goal-actions,
         .debt-actions,
         .budget-actions {
-            margin-top: 1rem;
             display: flex;
-            gap: 1rem;
-        }
-
-        .budget-alert {
+            gap: 10px;
             margin-top: 10px;
-            font-weight: 700;
+        }
+
+        .debt-item.paid {
+            border-left: 4px solid var(--color-accent);
+        }
+
+        .btn-small {
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
+        /* Budget alert style */
+        .budget-alert {
             color: var(--color-danger);
-            user-select: none;
+            font-weight: 700;
+            margin-top: 8px;
         }
 
-        /* Footer */
-        footer {
-            background-color: var(--color-primary);
-            color: white;
-            text-align: center;
-            padding: 1.5rem 1rem;
-            font-size: 1rem;
-            flex-shrink: 0;
-            user-select: none;
-            font-weight: 600;
-            letter-spacing: 0.04em;
+        /* Aumentar tamaño de botones para accesibilidad */
+        button,
+        .menu-content a {
+            min-height: 44px;
         }
 
-        /* Responsive improvements for small screens */
-        @media (max-width: 480px) {
-            header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.6rem;
-                padding: 1rem 1rem 1.25rem;
-                border-radius: 0 0 var(--border-radius) var(--border-radius);
+        /* Prevenir zoom al enfocar inputs en iOS */
+        input,
+        select,
+        textarea {
+            font-size: 16px;
+        }
+
+        /* Modo oscuro automático */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #121212;
+                color: #f1f1f1;
             }
+            header,
+            footer {
+                background-color: #6a1231;
+                color: #fff;
+            }
+            .card {
+                background-color: #1e1e1e;
+                color: #f1f1f1;
+            }
+            .menu-content {
+                background-color: #333;
+                color: #fff;
+            }
+            .menu-content a {
+                color: #fff;
+                border-bottom: 1px solid #555;
+            }
+            .menu-content a:hover {
+                background-color: #444;
+            }
+            .goal-item, .debt-item, .budget-item {
+                background-color: #292929;
+                color: #f1f1f1;
+                border-left-color: var(--color-secondary);
+            }
+        }
 
+        /* Mejor compatibilidad en pantallas grandes */
+        @media (min-width: 992px) {
+            #budgets-section .card {
+                max-width: 600px;
+                margin: 0 auto 20px auto;
+            }
+        }
+
+        /* Mejoras menú móviles */
+        @media (max-width: 480px) {
             .header-content {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 0.25rem;
-            }
-
-            h1 {
-                font-size: 1.5rem;
-            }
-
-            p {
-                font-size: 0.85rem;
-                opacity: 0.85;
-                letter-spacing: 1.2px;
             }
 
             .menu-button {
                 width: 100%;
                 justify-content: center;
-                font-size: 1.05rem;
-                min-height: 50px;
-                box-shadow: none;
-                border-radius: 10px;
-                padding: 12px 0;
+            }
+
+            .menu-content {
+                width: 100%;
+                right: auto;
+                left: 0;
+            }
+        }
+
+        /* Mejoras tamaños y espaciados en pantallas pequeñas */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 24px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            input,
+            select,
+            button {
+                font-size: 18px;
+            }
+
+            .card {
+                padding: 15px;
             }
 
             .dashboard {
-                grid-template-columns: 1fr !important;
-                gap: 1rem !important;
+                gap: 15px;
             }
+        }
 
-            form input,
-            form select,
-            form button {
-                font-size: 1.1rem;
+        /* Ajustar columnas a 2 en pantallas medianas */
+        @media (min-width: 600px) and (max-width: 991px) {
+            .dashboard {
+                grid-template-columns: repeat(2, 1fr);
             }
+        }
 
-            .transactions {
-                max-height: 280px;
-            }
-
+        /* Mejorar visualización de transacciones y gráficos en móvil */
+        @media (max-width: 480px) {
             .transaction-item {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 0.3rem;
+                gap: 5px;
             }
 
             .chart-container {
-                height: 200px;
-                padding: 0.5rem 0.8rem;
+                height: auto;
+                min-height: 200px;
             }
+        }
 
-            footer {
-                font-size: 0.9rem;
-                padding: 1rem 0.8rem;
+        /* Footer compacto para móvil */
+        @media (max-width: 480px) {
+            footer p {
+                font-size: 14px;
             }
         }
 
         /* Chatbot styles */
         #chatbot-section {
-            display: none;
+            display: none; /* Hide initially */
             justify-content: center;
             align-items: center;
-            padding: 1rem 1rem 2rem;
+            padding: 0 15px 30px;
             height: auto;
-            max-width: 100%;
         }
 
         #chatbot-section.active {
-            display: flex;
+            display: flex; /* Show as flex when active */
         }
 
         .chatbot-container {
@@ -598,7 +461,7 @@
             height: 600px;
             background: var(--chatbot-bg);
             box-shadow: var(--shadow);
-            border-radius: var(--border-radius);
+            border-radius: 12px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -620,14 +483,6 @@
         .chatbot-header .material-icons {
             cursor: pointer;
             user-select: none;
-            font-size: 24px;
-            transition: color 0.3s ease;
-        }
-
-        .chatbot-header .material-icons:hover,
-        .chatbot-header .material-icons:focus {
-            color: #c0392b;
-            outline: none;
         }
 
         .chatbot-messages {
@@ -637,9 +492,6 @@
             background: #fafafa;
             display: flex;
             flex-direction: column;
-            user-select: text;
-            scrollbar-width: thin;
-            scrollbar-color: var(--color-secondary) #f1f1f1;
         }
 
         .chat-message {
@@ -652,22 +504,20 @@
             user-select: text;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             animation: fadeIn 0.3s ease forwards;
-            font-size: 0.92rem;
-            font-weight: 500;
         }
 
         .chat-message.bot {
             background-color: var(--chatbot-bubble-bg-bot);
             color: var(--chatbot-text-bot);
             align-self: flex-start;
-            border-bottom-left-radius: 4px;
+            border-bottom-left-radius: 2px;
         }
 
         .chat-message.user {
             background-color: var(--chatbot-bubble-bg-user);
             color: var(--chatbot-text-user);
             align-self: flex-end;
-            border-bottom-right-radius: 4px;
+            border-bottom-right-radius: 2px;
         }
 
         .chatbot-input {
@@ -679,26 +529,23 @@
 
         .chatbot-input input[type="text"] {
             flex: 1;
-            padding: 12px 18px;
+            padding: 10px 14px;
             font-size: 14px;
-            border: 1.5px solid #ddd;
+            border: 1px solid #ddd;
             border-radius: 24px;
             outline: none;
             transition: border-color 0.3s;
-            font-weight: 500;
         }
 
         .chatbot-input input[type="text"]:focus {
             border-color: var(--color-secondary);
-            box-shadow: 0 0 8px var(--color-secondary);
-            background-color: #fbfcff;
         }
 
         .chatbot-input button {
             background-color: transparent;
             border: none;
             cursor: pointer;
-            margin-left: 12px;
+            margin-left: 10px;
             color: var(--color-secondary);
             font-size: 28px;
             display: flex;
@@ -706,8 +553,6 @@
             justify-content: center;
             user-select: none;
             transition: color 0.3s;
-            padding: 0;
-            min-width: 36px;
         }
 
         .chatbot-input button:disabled {
@@ -715,16 +560,13 @@
             cursor: not-allowed;
         }
 
-        .chatbot-input button:hover:not(:disabled),
-        .chatbot-input button:focus:not(:disabled) {
+        .chatbot-input button:hover:not(:disabled) {
             color: var(--color-primary);
-            outline: none;
         }
 
         /* Scrollbar style for messages */
         .chatbot-messages::-webkit-scrollbar {
             width: 8px;
-            border-radius: 4px;
         }
 
         .chatbot-messages::-webkit-scrollbar-track {
@@ -737,7 +579,15 @@
             border: 2px solid #f1f1f1;
         }
 
-        /* Animations */
+        /* Responsive tweaks */
+        @media (max-width: 480px) {
+            .chatbot-container {
+                height: 400px;
+                max-width: 100%;
+            }
+        }
+
+        /* Animation for chat messages */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
@@ -749,8 +599,8 @@
             background: #e9f7ef;
             border-left: 6px solid var(--color-accent);
             padding: 10px 15px;
-            border-radius: 8px;
-            font-size: 0.9rem;
+            border-radius: 6px;
+            font-size: 14px;
             color: #205522;
             white-space: pre-line;
         }
@@ -768,7 +618,6 @@
 
         .recommendations ul li {
             margin-bottom: 6px;
-            list-style-type: disc;
         }
 
         .recommendations a {
@@ -782,11 +631,10 @@
             text-decoration: underline;
         }
 
-        /* Offers Section */
+        /* New Offers Section Styles - Inspired by Facebook Marketplace */
         #offers-section {
             display: none;
-            padding: 2rem 1rem;
-            animation: fadeInSection 0.35s ease forwards;
+            padding: 20px 0;
         }
         #offers-section.active {
             display: block;
@@ -794,19 +642,19 @@
 
         #offers-search-container {
             max-width: 600px;
-            margin: 0 auto 2rem;
+            margin: 0 auto 30px;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            border: 1.5px solid #ddd;
+            gap: 10px;
+            border: 1px solid #ddd;
             border-radius: 24px;
-            padding: 0.5rem 1rem;
+            padding: 8px 16px;
             background-color: white;
-            box-shadow: var(--shadow-soft);
+            box-shadow: var(--shadow);
         }
 
         #offers-search-container .material-icons {
-            font-size: 28px;
+            font-size: 24px;
             color: var(--color-secondary);
             user-select: none;
         }
@@ -815,12 +663,9 @@
             flex: 1;
             border: none;
             outline: none;
-            font-size: 1rem;
+            font-size: 16px;
             border-radius: 24px;
-            padding: 0.6rem 0.9rem;
-            font-weight: 500;
-            background-color: transparent;
-            color: var(--color-dark-alt);
+            padding: 8px 12px;
         }
 
         #offers-list {
@@ -828,26 +673,23 @@
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
-            gap: 1.2rem;
+            gap: 20px;
         }
 
         .offer-card {
             background: white;
-            border-radius: 16px;
+            border-radius: 12px;
             box-shadow: var(--shadow);
             overflow: hidden;
             cursor: pointer;
             display: flex;
             flex-direction: column;
-            transition: box-shadow 0.3s ease, transform 0.3s ease;
-            outline-offset: 3px;
-            user-select: none;
+            transition: box-shadow 0.3s ease;
         }
 
-        .offer-card:focus,
-        .offer-card:hover {
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
-            transform: translateY(-6px);
+        .offer-card:hover,
+        .offer-card:focus {
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
             outline: none;
         }
 
@@ -856,9 +698,6 @@
             height: 180px;
             overflow: hidden;
             flex-shrink: 0;
-            border-top-left-radius: 16px;
-            border-top-right-radius: 16px;
-            background: #fafafa;
         }
 
         .offer-image-container img {
@@ -867,8 +706,6 @@
             object-fit: cover;
             display: block;
             transition: transform 0.3s ease;
-            border-top-left-radius: 16px;
-            border-top-right-radius: 16px;
         }
 
         .offer-card:hover .offer-image-container img {
@@ -876,154 +713,107 @@
         }
 
         .offer-details {
-            padding: 1rem 1.25rem 1.4rem;
+            padding: 15px 20px;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            font-weight: 600;
-            color: var(--color-dark-alt);
         }
 
         .offer-title {
-            font-size: 1.2rem;
             font-weight: 700;
-            margin-bottom: 0.3rem;
+            font-size: 18px;
+            margin-bottom: 6px;
             color: var(--color-primary);
-            line-height: 1.2;
-            user-select: text;
         }
 
         .offer-price {
             font-weight: 700;
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
+            font-size: 16px;
+            margin-bottom: 8px;
             color: var(--color-accent);
-            user-select: text;
         }
 
         .offer-category {
-            font-size: 0.85rem;
+            font-size: 14px;
             color: var(--color-secondary);
-            margin-bottom: 0.5rem;
+            margin-bottom: 8px;
             text-transform: capitalize;
-            user-select: none;
         }
 
         .offer-description {
-            font-size: 0.9rem;
-            color: var(--color-dark-alt);
+            font-size: 14px;
+            color: var(--color-dark);
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
-            user-select: text;
         }
 
+        /* Responsive adjustments for offers */
         @media (max-width: 480px) {
             #offers-list {
                 grid-template-columns: 1fr;
             }
             #offers-search-container {
                 max-width: 100%;
-                margin-bottom: 1.5rem;
+                margin-bottom: 20px;
             }
         }
 
-        /* Contact Section */
+        /* Contact Section Styling */
         #contact-section {
             display: none;
-            padding: 2rem 1.2rem;
+            padding: 30px 20px;
             max-width: 700px;
-            margin: 0 auto 3rem auto;
+            margin: 0 auto 40px auto;
             background-color: white;
-            border-radius: 20px;
+            border-radius: 12px;
             box-shadow: var(--shadow);
-            color: var(--color-dark-alt);
-            font-size: 1rem;
-            line-height: 1.65;
-            font-weight: 500;
-            user-select: none;
+            color: var(--color-dark);
+            font-size: 16px;
+            line-height: 1.6;
         }
-
         #contact-section.active {
             display: block;
-            animation: fadeInSection 0.4s ease forwards;
         }
-
         #contact-section h2 {
-            margin-bottom: 1.2rem;
+            margin-bottom: 20px;
             color: var(--color-primary);
-            font-weight: 700;
-            letter-spacing: 0.03em;
-            font-size: 1.5rem;
         }
-
         #contact-section p {
-            margin-bottom: 1rem;
-            font-weight: 400;
-            color: var(--color-dark-alt);
-            white-space: pre-wrap;
+            margin-bottom: 12px;
         }
-
         #contact-section a {
             color: var(--color-secondary);
             text-decoration: none;
             font-weight: 600;
-            transition: color 0.3s ease;
-            font-size: 1rem;
         }
-
         #contact-section a:hover,
         #contact-section a:focus {
-            color: var(--color-primary);
             text-decoration: underline;
-            outline: none;
         }
-
-        .contact-info {
-            margin-bottom: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+        #contact-section .contact-info {
+            margin-bottom: 20px;
         }
-
-        .contact-item {
+        #contact-section .contact-item {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            font-weight: 600;
-            color: var(--color-dark-alt);
+            gap: 12px;
+            margin-bottom: 12px;
         }
-
-        .contact-item span.material-icons {
-            font-size: 26px;
+        #contact-section .material-icons {
+            font-size: 24px;
             color: var(--color-primary);
-            user-select: none;
-        }
-
-        address {
-            font-style: normal;
-            user-select: text;
-        }
-
-        /* Accessibility focus outlines */
-        a:focus,
-        button:focus,
-        .offer-card:focus {
-            outline: 3px solid var(--color-secondary);
-            outline-offset: 3px;
-        }
-
-        /* Prevent zoom on input focus for iOS */
-        input,
-        select,
-        textarea {
-            font-size: 16px;
-            -webkit-text-size-adjust: 100%;
         }
     </style>
+
+    <!-- Icons Material -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#9e2142" />
+    <link rel="apple-touch-icon" href="icon-192.png" />
 </head>
 <body>
     <header>
@@ -1033,8 +823,8 @@
                     <h1>MONEY MINDER</h1>
                     <p>Control de finanzas personales</p>
                 </div>
-                <nav class="main-menu" aria-label="Menú principal de navegación">
-                    <button class="menu-button" id="menu-button" aria-haspopup="true" aria-expanded="false" aria-controls="menu-dropdown" aria-label="Abrir menú principal">
+                <div class="main-menu">
+                    <button class="menu-button" id="menu-button" aria-haspopup="true" aria-expanded="false" aria-controls="menu-dropdown">
                         Menú <span aria-hidden="true">▼</span>
                     </button>
                     <div class="menu-content" id="menu-dropdown" role="menu" aria-label="Menú principal">
@@ -1047,21 +837,20 @@
                         <a href="#" id="menu-contact" role="menuitem" tabindex="0">Contacto / Soporte</a>
                         <a href="#" id="chatbot" role="menuitem" tabindex="0">Chatbot</a>
                     </div>
-                </nav>
+                </div>
             </div>
         </div>
     </header>
 
-    <!-- Sections -->
+    <!-- Existing sections for dashboard, savings, debts, reports, budgets -->
 
-    <div id="dashboard-section" class="section active" tabindex="-1" aria-label="Sección principal del panel">
+    <div id="dashboard-section" class="section active">
       <div class="container">
-        <div class="dashboard" role="region" aria-live="polite" aria-atomic="true" aria-label="Resumen financiero y transacciones recientes">
-          <div class="card" tabindex="0" aria-describedby="balance-desc">
+        <div class="dashboard">
+          <div class="card">
             <div class="card-header">
               <h2>Balance</h2>
             </div>
-            <p id="balance-desc" class="visually-hidden">Balance total, ingresos y gastos</p>
             <div class="balance" id="total-balance">Q.0.00</div>
             <div class="summary">
               <div>Ingresos: <span id="total-income" class="positive">Q.0.00</span></div>
@@ -1069,24 +858,24 @@
             </div>
           </div>
 
-          <div class="card" tabindex="0" aria-label="Formulario para añadir una nueva transacción financiera">
+          <div class="card">
             <div class="card-header">
               <h2>Añadir Transacción</h2>
             </div>
             <form id="transaction-form">
               <div class="form-group">
                 <label for="description">Descripción</label>
-                <input type="text" id="description" placeholder="¿En qué gastaste/recibiste?" required aria-required="true" />
+                <input type="text" id="description" placeholder="¿En qué gastaste/recibiste?" required />
               </div>
 
               <div class="form-group">
                 <label for="amount">Cantidad (Q)</label>
-                <input type="number" id="amount" placeholder="0.00" step="0.01" required aria-required="true" />
+                <input type="number" id="amount" placeholder="0.00" step="0.01" required />
               </div>
 
               <div class="form-group">
                 <label for="type">Tipo</label>
-                <select id="type" required aria-required="true">
+                <select id="type" required>
                   <option value="income">Ingreso</option>
                   <option value="expense">Gasto</option>
                 </select>
@@ -1094,217 +883,257 @@
 
               <div class="form-group">
                 <label for="category">Categoría</label>
-                <select id="category" required aria-required="true">
+                <select id="category" required>
                   <option value="">Selecciona una categoría</option>
                 </select>
               </div>
 
               <div class="form-group">
                 <label for="date">Fecha</label>
-                <input type="date" id="date" required aria-required="true" />
+                <input type="date" id="date" required />
               </div>
 
-              <button type="submit" aria-label="Añadir Transacción Financiera">Añadir Transacción</button>
+              <button type="submit">Añadir Transacción</button>
             </form>
           </div>
 
-          <div class="card" tabindex="0" aria-label="Gráfico de distribución de gastos">
+          <div class="card">
             <div class="card-header">
               <h2>Distribución de Gastos</h2>
             </div>
-            <div class="chart-container" id="expense-chart" aria-live="polite" aria-atomic="true" aria-label="Gráfico de barras mostrando distribución porcentual de gastos">
+            <div class="chart-container" id="expense-chart">
+              <!-- genera las graficas -->
               <p style="text-align: center; padding-top: 120px;">Añade transacciones para ver el gráfico</p>
             </div>
           </div>
         </div>
 
-        <div class="card" tabindex="0" aria-label="Lista de últimas transacciones financieras" style="margin-top: 1.25rem;">
+        <div class="card" style="margin-top: 20px;">
           <div class="card-header">
             <h2>Últimas Transacciones</h2>
-            <button id="clear-transactions" class="btn-danger" aria-label="Borrar todas las transacciones">Borrar Todo</button>
+            <button id="clear-transactions" class="btn-danger">Borrar Todo</button>
           </div>
-          <div class="transactions" id="transaction-list" tabindex="0" aria-live="polite" aria-atomic="true">
+          <div class="transactions" id="transaction-list">
+            <!-- muestra transacciones -->
             <p style="text-align: center; padding: 20px;">No hay transacciones</p>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Savings Section -->
-    <div id="savings-section" class="section" tabindex="-1" aria-label="Sección de metas de ahorro">
-      <div class="container">
-        <div class="dashboard">
-          <div class="card" tabindex="0" aria-label="Formulario para crear metas de ahorro">
-            <div class="card-header">
-              <h2>Metas de Ahorro</h2>
-            </div>
-            <form id="savings-form">
-              <div class="form-group">
-                <label for="goal-name">Nombre de la Meta</label>
-                <input type="text" id="goal-name" placeholder="Ej: Vacaciones, Coche nuevo..." required aria-required="true" />
-              </div>
-
-              <div class="form-group">
-                <label for="goal-amount">Cantidad Objetivo (Q)</label>
-                <input type="number" id="goal-amount" placeholder="0.00" step="0.01" min="1" required aria-required="true" />
-              </div>
-
-              <div class="form-group">
-                <label for="goal-date">Fecha Objetivo</label>
-                <input type="date" id="goal-date" required aria-required="true" />
-              </div>
-
-              <div class="form-group">
-                <label for="current-saved">Cantidad Ahorrada Actualmente (Q)</label>
-                <input type="number" id="current-saved" placeholder="0.00" step="0.01" min="0" required aria-required="true" />
-              </div>
-
-              <button type="submit" aria-label="Crear Meta de Ahorro">Crear Meta de Ahorro</button>
-            </form>
-          </div>
-
-          <div class="card" tabindex="0" aria-label="Lista de metas de ahorro">
-            <div class="card-header">
-              <h2>Mis Metas de Ahorro</h2>
-            </div>
-            <div id="savings-list" tabindex="0" aria-live="polite" aria-atomic="true">
-              <p style="text-align: center; padding: 20px;">No hay metas de ahorro</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Debts Section -->
-    <div id="debts-section" class="section" tabindex="-1" aria-label="Sección de control de deudas">
-      <div class="container">
-        <div class="dashboard">
-          <div class="card" tabindex="0" aria-label="Formulario para controlar deudas">
-            <div class="card-header">
-              <h2>Control de Deudas</h2>
-            </div>
-            <form id="debt-form">
-              <div class="form-group">
-                <label for="debt-name">Nombre de la Deuda</label>
-                <input type="text" id="debt-name" placeholder="Ej: Préstamo coche, Hipoteca..." required aria-required="true" />
-              </div>
-
-              <div class="form-group">
-                <label for="debt-amount">Cantidad Total (Q)</label>
-                <input type="number" id="debt-amount" placeholder="0.00" step="0.01" min="1" required aria-required="true" />
-              </div>
-
-              <div class="form-group">
-                <label for="debt-paid">Cantidad Pagada (Q)</label>
-                <input type="number" id="debt-paid" placeholder="0.00" step="0.01" min="0" aria-required="false" />
-              </div>
-
-              <div class="form-group">
-                <label for="debt-interest">Tasa de Interés Anual (%)</label>
-                <input type="number" id="debt-interest" placeholder="0.00" step="0.01" min="0" aria-required="false" />
-              </div>
-
-              <div class="form-group">
-                <label for="debt-date">Fecha Límite de Pago</label>
-                <input type="date" id="debt-date" aria-required="false" />
-              </div>
-
-              <button type="submit" aria-label="Añadir Deuda">Añadir Deuda</button>
-            </form>
-          </div>
-
-          <div class="card" tabindex="0" aria-label="Lista de deudas registradas">
-            <div class="card-header">
-              <h2>Mis Deudas</h2>
-            </div>
-            <div id="debts-list" tabindex="0" aria-live="polite" aria-atomic="true">
-              <p style="text-align: center; padding: 20px;">No hay deudas registradas</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Reports Section -->
-    <div id="reports-section" class="section" tabindex="-1" aria-label="Sección de reportes e historial">
-      <div class="container">
-        <div class="card" tabindex="0" aria-label="Resumen financiero de transacciones">
+    <!-- Sección de Metas de Ahorro -->
+    <div id="savings-section" class="section">
+      <div class="dashboard">
+        <div class="card">
           <div class="card-header">
-            <h2>Resumen de Transacciones</h2>
+            <h2>Metas de Ahorro</h2>
           </div>
-          <div style="padding: 1rem;">
-            <strong>Ingresos totales:</strong> <span id="report-total-income" class="positive">Q0.00</span><br />
-            <strong>Gastos totales:</strong> <span id="report-total-expense" class="negative">Q0.00</span><br />
-            <strong>Balance:</strong> <span id="report-balance">Q0.00</span>
-          </div>
-        </div>
-
-        <div class="card" tabindex="0" aria-label="Historial de transacciones financieras">
-          <div class="card-header">
-            <h2>Historial de Transacciones</h2>
-          </div>
-          <div style="padding: 1rem;">
-            <label for="report-filter">Filtrar por:</label>
-            <select id="report-filter" aria-label="Filtro de transacciones por tipo">
-              <option value="all">Todas</option>
-              <option value="income">Ingresos</option>
-              <option value="expense">Gastos</option>
-            </select>
-          </div>
-          <div id="report-list" class="transactions" tabindex="0" aria-live="polite" aria-atomic="true">
-            <p style="text-align: center; padding: 20px;">No hay transacciones</p>
-          </div>
-        </div>
-
-        <div class="dashboard" style="margin-top: 1.5rem;">
-          <div class="card" tabindex="0" aria-label="Información adicional de reportes e historial">
-            <div class="card-header">
-              <h2>Reportes / Historial</h2>
-            </div>
-            <p style="padding: 1.25rem;">
-              Aquí podrás consultar reportes detallados de tus ingresos, gastos y transacciones por categoría.
-              (Funcionalidad en desarrollo)
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Budgets Section -->
-    <div id="budgets-section" class="section" tabindex="-1" aria-label="Sección de presupuestos">
-      <div class="container">
-        <div class="card" tabindex="0" aria-label="Formulario para crear presupuestos">
-          <div class="card-header">
-            <h2>Crear Presupuesto</h2>
-          </div>
-          <form id="budget-form" style="padding: 1rem;">
+          <form id="savings-form">
             <div class="form-group">
-              <label for="budget-category">Categoría</label>
-              <select id="budget-category" required aria-required="true">
-                <option value="">Selecciona una categoría</option>
-              </select>
+              <label for="goal-name">Nombre de la Meta</label>
+              <input
+                type="text"
+                id="goal-name"
+                placeholder="Ej: Vacaciones, Coche nuevo..."
+                required
+              />
             </div>
+
             <div class="form-group">
-              <label for="budget-amount">Monto (Q)</label>
-              <input type="number" id="budget-amount" placeholder="0.00" step="0.01" min="1" required aria-required="true" />
+              <label for="goal-amount">Cantidad Objetivo (Q)</label>
+              <input
+                type="number"
+                id="goal-amount"
+                placeholder="0.00"
+                step="0.01"
+                min="1"
+                required
+              />
             </div>
-            <button type="submit" aria-label="Crear Presupuesto">Crear Presupuesto</button>
+
+            <div class="form-group">
+              <label for="goal-date">Fecha Objetivo</label>
+              <input type="date" id="goal-date" required />
+            </div>
+
+            <div class="form-group">
+              <label for="current-saved">Cantidad Ahorrada Actualmente (Q)</label>
+              <input
+                type="number"
+                id="current-saved"
+                placeholder="0.00"
+                step="0.01"
+                min="0"
+                required
+              />
+            </div>
+
+            <button type="submit">Crear Meta de Ahorro</button>
           </form>
         </div>
 
-        <div class="card" tabindex="0" aria-label="Lista de presupuestos">
+        <div class="card">
           <div class="card-header">
-            <h2>Mis Presupuestos</h2>
+            <h2>Mis Metas de Ahorro</h2>
           </div>
-          <div id="budget-list" tabindex="0" aria-live="polite" aria-atomic="true">
-            <p style="text-align: center; padding: 20px;">No hay presupuestos</p>
+          <div id="savings-list">
+            <!-- Las metas se cargarán  aquí -->
+            <p style="text-align: center; padding: 20px;">No hay metas de ahorro</p>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de Control de Deudas -->
+    <div id="debts-section" class="section">
+      <div class="dashboard">
+        <div class="card">
+          <div class="card-header">
+            <h2>Control de Deudas</h2>
+          </div>
+          <form id="debt-form">
+            <div class="form-group">
+              <label for="debt-name">Nombre de la Deuda</label>
+              <input
+                type="text"
+                id="debt-name"
+                placeholder="Ej: Préstamo coche, Hipoteca..."
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="debt-amount">Cantidad Total (Q)</label>
+              <input
+                type="number"
+                id="debt-amount"
+                placeholder="0.00"
+                step="0.01"
+                min="1"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="debt-paid">Cantidad Pagada (Q)</label>
+              <input
+                type="number"
+                id="debt-paid"
+                placeholder="0.00"
+                step="0.01"
+                min="0"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="debt-interest">Tasa de Interés Anual (%)</label>
+              <input
+                type="number"
+                id="debt-interest"
+                placeholder="0.00"
+                step="0.01"
+                min="0"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="debt-date">Fecha Límite de Pago</label>
+              <input type="date" id="debt-date" />
+            </div>
+
+            <button type="submit">Añadir Deuda</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2>Mis Deudas</h2>
+          </div>
+          <div id="debts-list">
+            <p style="text-align: center; padding: 20px;">No hay deudas registradas</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de Reportes / Historial -->
+    <div id="reports-section" class="section">
+      <div class="card">
+        <div class="card-header">
+          <h2>Resumen de Transacciones</h2>
+        </div>
+        <div style="padding: 10px;">
+          <strong>Ingresos totales:</strong> <span id="report-total-income" class="positive">Q0.00</span
+          ><br />
+          <strong>Gastos totales:</strong> <span id="report-total-expense" class="negative">Q0.00</span
+          ><br />
+          <strong>Balance:</strong> <span id="report-balance">Q0.00</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2>Historial de Transacciones</h2>
+        </div>
+        <div style="padding: 10px;">
+          <label for="report-filter">Filtrar por:</label>
+          <select id="report-filter">
+            <option value="all">Todas</option>
+            <option value="income">Ingresos</option>
+            <option value="expense">Gastos</option>
+          </select>
+        </div>
+        <div id="report-list" class="transactions">
+          <p style="text-align: center; padding: 20px;">No hay transacciones</p>
+        </div>
+      </div>
+
+      <div class="dashboard">
+        <div class="card">
+          <div class="card-header">
+            <h2>Reportes / Historial</h2>
+          </div>
+          <p style="padding: 20px;">
+            Aquí podrás consultar reportes detallados de tus ingresos, gastos y transacciones por categoría.
+            (Funcionalidad en desarrollo)
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de Presupuestos -->
+    <div id="budgets-section" class="section">
+      <div class="card">
+        <div class="card-header">
+          <h2>Crear Presupuesto</h2>
+        </div>
+        <form id="budget-form" style="padding: 10px;">
+          <div class="form-group">
+            <label for="budget-category">Categoría</label>
+            <select id="budget-category" required>
+              <option value="">Selecciona una categoría</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="budget-amount">Monto (Q)</label>
+            <input type="number" id="budget-amount" placeholder="0.00" step="0.01" min="1" required />
+          </div>
+          <button type="submit">Crear Presupuesto</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2>Mis Presupuestos</h2>
+        </div>
+        <div id="budget-list">
+          <p style="text-align: center; padding: 20px;">No hay presupuestos</p>
         </div>
       </div>
     </div>
 
     <!-- Chatbot Section -->
-    <div id="chatbot-section" class="section" role="main" aria-label="Chatbot de Finanzas" tabindex="-1">
+    <div id="chatbot-section" class="section" role="main" aria-label="Chatbot de Finanzas">
       <div class="chatbot-container" aria-live="polite" aria-atomic="false" aria-relevant="additions">
         <div class="chatbot-header">
           <span>Asistente Financiero</span>
@@ -1327,8 +1156,8 @@
       </div>
     </div>
 
-    <!-- Offers Section -->
-    <div id="offers-section" class="section" aria-label="Sección de Ofertas de Venta" tabindex="-1">
+    <!-- New Offers Section -->
+    <div id="offers-section" class="section" aria-label="Sección de Ofertas de Venta">
       <div id="offers-search-container">
         <span class="material-icons" aria-hidden="true">search</span>
         <input type="search" id="offers-search" placeholder="Buscar ofertas: motos, teléfonos, ropa, carros..." aria-label="Buscar ofertas" />
@@ -1338,8 +1167,8 @@
       </div>
     </div>
 
-    <!-- Contact Section -->
-    <div id="contact-section" class="section" aria-label="Información de Contacto y Soporte" tabindex="-1">
+    <!-- New Contact Section -->
+    <div id="contact-section" class="section" aria-label="Información de Contacto y Soporte">
       <h2>Contacto y Soporte</h2>
       <div class="contact-info">
         <div class="contact-item">
@@ -1385,16 +1214,18 @@
         ],
       };
 
-      // Select elements
+      // Elemento select de categorías
       const categorySelect = document.getElementById('category');
       const typeSelect = document.getElementById('type');
 
-      // Update categories based on transaction type
+      // Cargar categorías según el tipo de transacción
       typeSelect.addEventListener('change', updateCategories);
 
+      // Función para actualizar las categorías disponibles
       function updateCategories() {
         const type = typeSelect.value;
         categorySelect.innerHTML = '<option value="">Selecciona una categoría</option>';
+
         categories[type].forEach((category) => {
           const option = document.createElement('option');
           option.value = category.toLowerCase();
@@ -1402,10 +1233,14 @@
           categorySelect.appendChild(option);
         });
       }
+
+      // Inicializar las categorías
       updateCategories();
+
+      // Establecer la fecha de hoy como valor predeterminado
       document.getElementById('date').valueAsDate = new Date();
 
-      // Elements for transaction management
+      // Elementos del DOM
       const transactionForm = document.getElementById('transaction-form');
       const transactionList = document.getElementById('transaction-list');
       const totalBalanceEl = document.getElementById('total-balance');
@@ -1413,25 +1248,31 @@
       const totalExpensesEl = document.getElementById('total-expenses');
       const clearButton = document.getElementById('clear-transactions');
 
+      // Cargar transacciones guardadas
       let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 
+      // Función para guardar transacciones en localStorage
       function saveTransactions() {
         localStorage.setItem('transactions', JSON.stringify(transactions));
       }
 
-      function formatCurrency(amount) {
-        return 'Q' + amount.toFixed(2);
-      }
-
+      // Función para calcular y actualizar el balance
       function updateBalance() {
-        const income = transactions.filter(t => t.type === 'income').reduce((acc, t) => acc + t.amount, 0);
-        const expenses = transactions.filter(t => t.type === 'expense').reduce((acc, t) => acc + t.amount, 0);
+        const income = transactions
+          .filter((transaction) => transaction.type === 'income')
+          .reduce((total, transaction) => total + transaction.amount, 0);
+
+        const expenses = transactions
+          .filter((transaction) => transaction.type === 'expense')
+          .reduce((total, transaction) => total + transaction.amount, 0);
+
         const balance = income - expenses;
 
         totalBalanceEl.textContent = formatCurrency(balance);
         totalIncomeEl.textContent = formatCurrency(income);
         totalExpensesEl.textContent = formatCurrency(expenses);
 
+        // Cambiar color del balance según sea positivo o negativo
         totalBalanceEl.className = 'balance';
         if (balance > 0) {
           totalBalanceEl.classList.add('positive');
@@ -1440,100 +1281,153 @@
         }
       }
 
-      transactionForm.addEventListener('submit', (e) => {
+      //tipo de monedass
+      function formatCurrency(amount) {
+        return 'Q' + amount.toFixed(2);
+      }
+
+      // Manejar envío del formulario
+      transactionForm.addEventListener('submit', function (e) {
         e.preventDefault();
 
-        const description = document.getElementById('description').value.trim();
+        const description = document.getElementById('description').value;
         const amount = parseFloat(document.getElementById('amount').value);
         const type = document.getElementById('type').value;
         const category = document.getElementById('category').value;
         const date = document.getElementById('date').value;
 
-        if (!description || isNaN(amount) || amount <= 0 || !category) {
+        if (description.trim() === '' || isNaN(amount) || amount <= 0 || category === '') {
           alert('Por favor, completa todos los campos correctamente.');
           return;
         }
 
-        const transaction = { id: Date.now(), description, amount, type, category, date };
+        // Crear objeto de transacción
+        const transaction = {
+          id: Date.now(),
+          description,
+          amount,
+          type,
+          category,
+          date,
+        };
 
+        // Añadir a la lista de transacciones
         transactions.push(transaction);
+
+        // Guardar y actualizar UI
         saveTransactions();
         updateTransactionList();
         updateBalance();
         updateChart();
 
+        // Reiniciar formulario
         transactionForm.reset();
         document.getElementById('date').valueAsDate = new Date();
         updateCategories();
       });
 
+      // Función para actualizar la lista de transacciones
       function updateTransactionList() {
-        if (transactions.length === 0) {
-          transactionList.innerHTML = '<p style="text-align: center; padding: 20px;">No hay transacciones</p>';
+        // Ordenar transacciones por fecha, más reciente primero
+        const sortedTransactions = [...transactions].sort(
+          (a, b) => new Date(b.date) - new Date(a.date)
+        );
+
+        if (sortedTransactions.length === 0) {
+          transactionList.innerHTML =
+            '<p style="text-align: center; padding: 20px;">No hay transacciones</p>';
           return;
         }
 
         transactionList.innerHTML = '';
-        const sortedTx = [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
 
-        sortedTx.forEach(tx => {
-          const txElement = document.createElement('div');
-          txElement.className = 'transaction-item';
+        sortedTransactions.forEach((transaction) => {
+          const transactionEl = document.createElement('div');
+          transactionEl.classList.add('transaction-item');
 
-          const formattedDate = new Date(tx.date).toLocaleDateString('es-ES');
-          const amountClass = tx.type === 'income' ? 'positive' : 'negative';
-          const sign = tx.type === 'income' ? '+' : '-';
+          const formattedDate = new Date(transaction.date).toLocaleDateString('es-ES');
+          const amountClass = transaction.type === 'income' ? 'positive' : 'negative';
+          const amountPrefix = transaction.type === 'income' ? '+' : '-';
 
-          txElement.innerHTML = `
-            <div>
-              <strong>${tx.description}</strong>
-              <div>${formattedDate} | <span class="category">${tx.category}</span></div>
-            </div>
-            <div class="${amountClass}">${sign}${formatCurrency(tx.amount).slice(1)}</div>
-          `;
-          transactionList.appendChild(txElement);
+          transactionEl.innerHTML = `
+                    <div>
+                        <strong>${transaction.description}</strong>
+                        <div>${formattedDate} | <span class="category">${transaction.category}</span></div>
+                    </div>
+                    <div class="${amountClass}">${amountPrefix}${formatCurrency(
+            transaction.amount
+          ).slice(1)}</div>
+                `;
+
+          transactionList.appendChild(transactionEl);
         });
       }
 
+      // Función para actualizar el gráfico de distribución de gastos
       function updateChart() {
         const expenseChart = document.getElementById('expense-chart');
-        const expenses = transactions.filter(t => t.type === 'expense');
+
+        // Filtrar solo los gastos
+        const expenses = transactions.filter((t) => t.type === 'expense');
 
         if (expenses.length === 0) {
-          expenseChart.innerHTML = '<p style="text-align: center; padding-top: 120px;">Añade transacciones para ver el gráfico</p>';
+          expenseChart.innerHTML =
+            '<p style="text-align: center; padding-top: 120px;">Añade transacciones para ver el gráfico</p>';
           return;
         }
 
+        // Agrupar gastos por categoría
         const expensesByCategory = {};
-        let total = 0;
-        expenses.forEach(exp => {
-          if (!expensesByCategory[exp.category]) expensesByCategory[exp.category] = 0;
-          expensesByCategory[exp.category] += exp.amount;
-          total += exp.amount;
+        let totalExpenses = 0;
+
+        expenses.forEach((expense) => {
+          if (!expensesByCategory[expense.category]) {
+            expensesByCategory[expense.category] = 0;
+          }
+          expensesByCategory[expense.category] += expense.amount;
+          totalExpenses += expense.amount;
         });
 
-        const colors = ['#e74c3c','#3498db','#2ecc71','#f39c12','#9b59b6','#1abc9c','#d35400','#34495e'];
-        let colorIndex = 0;
+        // Crear el gráfico simple de barras
+        expenseChart.innerHTML = '';
 
+        const colors = [
+          '#e74c3c',
+          '#3498db',
+          '#2ecc71',
+          '#f39c12',
+          '#9b59b6',
+          '#1abc9c',
+          '#d35400',
+          '#34495e',
+        ];
+
+        let colorIndex = 0;
         let html = '<div style="display: flex; height: 220px; align-items: flex-end; gap: 10px;">';
 
-        for (const [cat, val] of Object.entries(expensesByCategory)) {
-          const perc = (val / total) * 100;
-          const height = Math.max(perc * 2, 12);
+        for (const category in expensesByCategory) {
+          const percentage = (expensesByCategory[category] / totalExpenses) * 100;
+          const height = Math.max(percentage * 2, 10);
+
           html += `
-            <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
-              <div style="margin-bottom:5px;font-weight:600;">${perc.toFixed(1)}%</div>
-              <div style="background-color:${colors[colorIndex % colors.length]};width:80%;height:${height}px;border-radius:8px 8px 0 0;"></div>
-              <div style="margin-top:6px; font-size: 12px; text-align:center; text-transform: capitalize;">${cat}</div>
-            </div>
-          `;
+                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+                        <div style="margin-bottom: 5px;">${percentage.toFixed(1)}%</div>
+                        <div style="background-color: ${
+                          colors[colorIndex % colors.length]
+                        }; width: 80%; height: ${height}px; border-radius: 4px 4px 0 0;"></div>
+                        <div style="margin-top: 5px; font-size: 12px; text-align: center;">${category}</div>
+                    </div>
+                `;
+
           colorIndex++;
         }
+
         html += '</div>';
         expenseChart.innerHTML = html;
       }
 
-      clearButton.addEventListener('click', () => {
+      // Borrar todas las transacciones
+      clearButton.addEventListener('click', function () {
         if (confirm('¿Estás seguro de que deseas borrar todas las transacciones?')) {
           transactions = [];
           saveTransactions();
@@ -1543,99 +1437,183 @@
         }
       });
 
-      // Initialize UI
+      // Inicializar la aplicación
       updateTransactionList();
       updateBalance();
       updateChart();
 
-      // Variables for other sections saved in localStorage
+      // Variables para las nuevas funcionalidades
       let savingsGoals = JSON.parse(localStorage.getItem('savingsGoals')) || [];
       let debts = JSON.parse(localStorage.getItem('debts')) || [];
       let budgets = JSON.parse(localStorage.getItem('budgets')) || [];
 
-      // Menu elements & sections
+      // Elementos del menú
       const menuButton = document.getElementById('menu-button');
       const menuDropdown = document.getElementById('menu-dropdown');
       const menuDashboard = document.getElementById('menu-dashboard');
       const menuSavings = document.getElementById('menu-savings');
       const menuDebts = document.getElementById('menu-debts');
+
       const menuReports = document.getElementById('menu-reports');
       const menuBudgets = document.getElementById('menu-budgets');
       const menuOffers = document.getElementById('menu-offers');
       const menuContact = document.getElementById('menu-contact');
-      const menuChatbot = document.getElementById('chatbot');
-
-      const dashboardSection = document.getElementById('dashboard-section');
-      const savingsSection = document.getElementById('savings-section');
-      const debtsSection = document.getElementById('debts-section');
       const reportsSection = document.getElementById('reports-section');
       const budgetsSection = document.getElementById('budgets-section');
       const offersSection = document.getElementById('offers-section');
       const contactSection = document.getElementById('contact-section');
+
+      // Secciones
+      const dashboardSection = document.getElementById('dashboard-section');
+      const savingsSection = document.getElementById('savings-section');
+      const debtsSection = document.getElementById('debts-section');
       const chatbotSection = document.getElementById('chatbot-section');
 
-      // Toggle menu
-      ['click', 'touchstart'].forEach(evt => {
-        menuButton.addEventListener(evt, e => {
+      // Formularios
+      const savingsForm = document.getElementById('savings-form');
+      const debtForm = document.getElementById('debt-form');
+      const budgetForm = document.getElementById('budget-form');
+
+      // Listas
+      const savingsList = document.getElementById('savings-list');
+      const debtsList = document.getElementById('debts-list');
+      const budgetList = document.getElementById('budget-list');
+
+      // Mejor compatibilidad táctil
+      ['click', 'touchstart'].forEach((evt) => {
+        menuButton.addEventListener(evt, function (e) {
           e.stopPropagation();
           menuDropdown.classList.toggle('show');
-          menuButton.setAttribute('aria-expanded', menuDropdown.classList.contains('show'));
         });
       });
 
-      // Close menu on outside click
-      ['click', 'touchstart'].forEach(evt => {
-        window.addEventListener(evt, event => {
+      // Cierre de menú más robusto
+      ['click', 'touchstart'].forEach((evt) => {
+        window.addEventListener(evt, function (event) {
           if (!menuDropdown.contains(event.target) && !menuButton.contains(event.target)) {
-            if (menuDropdown.classList.contains('show')) {
-              menuDropdown.classList.remove('show');
-              menuButton.setAttribute('aria-expanded', 'false');
-            }
+            menuDropdown.classList.remove('show');
           }
         });
       });
 
-      // Navigation click handlers to show appropriate section
+      // Mostrar/ocultar menú desplegable
+      menuButton.addEventListener('click', function () {
+        menuDropdown.classList.toggle('show');
+      });
+
+      // Cerrar el menú al hacer clic fuera de él
+      window.addEventListener('click', function (event) {
+        if (
+          !event.target.matches('.menu-button') &&
+          !event.target.parentNode.matches('.menu-button')
+        ) {
+          if (menuDropdown.classList.contains('show')) {
+            menuDropdown.classList.remove('show');
+          }
+        }
+      });
+
+      // Cambiar entre secciones
+      menuDashboard.addEventListener('click', function (e) {
+        e.preventDefault();
+        showSection(dashboardSection);
+      });
+
+      menuSavings.addEventListener('click', function (e) {
+        e.preventDefault();
+        showSection(savingsSection);
+      });
+
+      menuDebts.addEventListener('click', function (e) {
+        e.preventDefault();
+        showSection(debtsSection);
+      });
+
+      menuReports.addEventListener('click', function (e) {
+        e.preventDefault();
+        showSection(reportsSection);
+      });
+
+      menuBudgets.addEventListener('click', function (e) {
+        e.preventDefault();
+        showSection(budgetsSection);
+        budgetSearchInput.value = '';
+        filterAndRenderBudgets('');
+        budgetList.focus();
+      });
+
+      menuOffers.addEventListener('click', function (e) {
+        e.preventDefault();
+        showSection(offersSection);
+        offersSearchInput.value = '';
+        filterAndRenderOffers('');
+        offersSection.querySelector('#offers-list').focus();
+      });
+
+      menuContact.addEventListener('click', function (e) {
+        e.preventDefault();
+        showSection(contactSection);
+      });
+
+      // Chatbot menu link
+      const menuChatbot = document.getElementById('chatbot');
+      menuChatbot.addEventListener('click', function (e) {
+        e.preventDefault();
+        showSection(chatbotSection);
+        setTimeout(() => {
+          document.getElementById('chatbot-input').focus();
+        }, 300);
+      });
+
+      // Show only the selected section and hide others
       function showSection(section) {
-        [dashboardSection, savingsSection, debtsSection, reportsSection, budgetsSection, chatbotSection, offersSection, contactSection].forEach(sec => sec.classList.remove('active'));
+        // Ocultar todas las secciones
+        dashboardSection.classList.remove('active');
+        savingsSection.classList.remove('active');
+        debtsSection.classList.remove('active');
+        reportsSection.classList.remove('active');
+        budgetsSection.classList.remove('active');
+        chatbotSection.classList.remove('active');
+        offersSection.classList.remove('active');
+        contactSection.classList.remove('active');
+
+        // Mostrar la sección seleccionada
         section.classList.add('active');
+
+        // Cerrar el menú
         menuDropdown.classList.remove('show');
-        menuButton.setAttribute('aria-expanded', 'false');
-        section.focus();
       }
 
-      menuDashboard.addEventListener('click', e => { e.preventDefault(); showSection(dashboardSection); });
-      menuSavings.addEventListener('click', e => { e.preventDefault(); showSection(savingsSection); });
-      menuDebts.addEventListener('click', e => { e.preventDefault(); showSection(debtsSection); });
-      menuReports.addEventListener('click', e => { e.preventDefault(); showSection(reportsSection); });
-      menuBudgets.addEventListener('click', e => { e.preventDefault(); showSection(budgetsSection); });
-      menuOffers.addEventListener('click', e => { e.preventDefault(); showSection(offersSection); offersSearchInput.value = ''; filterAndRenderOffers(''); offersSection.querySelector('#offers-list').focus(); });
-      menuContact.addEventListener('click', e => { e.preventDefault(); showSection(contactSection); });
-      menuChatbot.addEventListener('click', e => { e.preventDefault(); showSection(chatbotSection); setTimeout(() => { document.getElementById('chatbot-input').focus(); }, 350); });
-
+      // Inicializar con la sección del dashboard activa
       showSection(dashboardSection);
 
-      // Savings Goals
-      const savingsForm = document.getElementById('savings-form');
-      const savingsList = document.getElementById('savings-list');
+      //FUNCIONES PARA METAS DE AHORRO
 
-      savingsForm.addEventListener('submit', e => {
+      savingsForm.addEventListener('submit', function (e) {
         e.preventDefault();
-        const name = document.getElementById('goal-name').value.trim();
+
+        const name = document.getElementById('goal-name').value;
         const amount = parseFloat(document.getElementById('goal-amount').value);
         const date = document.getElementById('goal-date').value;
         const saved = parseFloat(document.getElementById('current-saved').value) || 0;
 
-        if(!name || isNaN(amount) || amount < 1 || !date) {
-          alert('Por favor, completa todos los campos correctamente en Metas de Ahorro.');
-          return;
-        }
+        // Crear objeto de meta
+        const goal = {
+          id: Date.now(),
+          name,
+          amount,
+          date,
+          saved,
+        };
 
-        const goal = { id: Date.now(), name, amount, date, saved };
+        // Añadir a la lista de metas
         savingsGoals.push(goal);
+
+        // Guardar y actualizar UI
         saveSavingsGoals();
         updateSavingsList();
 
+        // Reiniciar formulario
         savingsForm.reset();
         document.getElementById('goal-date').valueAsDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
       });
@@ -1646,7 +1624,7 @@
 
       function getRecommendations(goalName, amount) {
         const lowerName = goalName.toLowerCase();
-        if(lowerName.includes('moto') || lowerName.includes('motocicleta')) {
+        if (lowerName.includes('moto') || lowerName.includes('motocicleta')) {
           return `
 Ofertas relacionadas:
 - Motocicleta Italika 150Z – Q${amount.toFixed(2)} en <a href="https://www.elektra.com.gt/search/?query=motocicleta" target="_blank" rel="noopener noreferrer">Elektra</a> [Ver oferta]
@@ -1659,13 +1637,17 @@ Ofertas relacionadas:
 
       function updateSavingsList() {
         if (savingsGoals.length === 0) {
-          savingsList.innerHTML = '<p style="text-align: center; padding: 20px;">No hay metas de ahorro</p>';
+          savingsList.innerHTML =
+            '<p style="text-align: center; padding: 20px;">No hay metas de ahorro</p>';
           return;
         }
+
         savingsList.innerHTML = '';
-        savingsGoals.forEach(goal => {
+
+        savingsGoals.forEach((goal) => {
           const progress = (goal.saved / goal.amount) * 100;
           const progressFormatted = Math.min(progress, 100).toFixed(1);
+
           const goalEl = document.createElement('div');
           goalEl.classList.add('goal-item');
 
@@ -1673,40 +1655,48 @@ Ofertas relacionadas:
           const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
 
           const recommendations = getRecommendations(goal.name, goal.amount);
+
           goalEl.innerHTML = `
-            <div><strong>Meta:</strong> ${goal.name}</div>
-            <div><strong>Objetivo:</strong> ${formatCurrency(goal.amount)}</div>
-            <div><strong>Progreso:</strong> ${formatCurrency(goal.saved)} (${progressFormatted}%)</div>
-            <div class="progress-bar" aria-label="Porcentaje de avance en meta de ahorro">
-                <div class="progress" style="width: ${progressFormatted}%">
-                    <span class="progress-text">${progressFormatted}%</span>
+                <div><strong>Meta:</strong> ${goal.name}</div>
+                <div><strong>Objetivo:</strong> ${formatCurrency(goal.amount)}</div>
+                <div><strong>Progreso:</strong> ${formatCurrency(goal.saved)} (${progressFormatted}%)</div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: ${progressFormatted}%">
+                        <span class="progress-text">${progressFormatted}%</span>
+                    </div>
                 </div>
-            </div>
-            ${recommendations ? `<div class="recommendations">${recommendations}</div>` : ''}
-            <div class="goal-actions">
-                <button class="add-savings btn-small" data-id="${goal.id}" aria-label="Añadir ahorro a meta ${goal.name}">Añadir Ahorro</button>
-                <button class="delete-goal btn-small btn-danger" data-id="${goal.id}" aria-label="Eliminar meta ${goal.name}">Eliminar</button>
-            </div>
-          `;
+                ${recommendations ? `<div class="recommendations">${recommendations}</div>` : ''}
+                <div class="goal-actions">
+                    <button class="add-savings btn-small" data-id="${goal.id}">Añadir Ahorro</button>
+                    <button class="delete-goal btn-small btn-danger" data-id="${goal.id}">Eliminar</button>
+                </div>
+            `;
+
           savingsList.appendChild(goalEl);
         });
 
-        document.querySelectorAll('.add-savings').forEach(btn => {
-          btn.onclick = () => {
-            const id = parseInt(btn.getAttribute('data-id'));
-            const goal = savingsGoals.find(g => g.id === id);
-            const amount = parseFloat(prompt(`¿Cuánto quieres añadir a tu meta "${goal.name}"?`, '0'));
+        // Añadir evento a los botones de añadir ahorro
+        document.querySelectorAll('.add-savings').forEach((button) => {
+          button.addEventListener('click', function () {
+            const id = parseInt(this.getAttribute('data-id'));
+            const goal = savingsGoals.find((g) => g.id === id);
+
+            const amount = parseFloat(
+              prompt(`¿Cuánto quieres añadir a tu meta "${goal.name}"?`, '0')
+            );
+
             if (!isNaN(amount) && amount > 0) {
               goal.saved += amount;
 
               const transaction = {
                 id: Date.now(),
                 description: `Ahorro para: ${goal.name}`,
-                amount,
+                amount: amount,
                 type: 'expense',
                 category: 'ahorro',
-                date: new Date().toISOString().split('T')[0]
+                date: new Date().toISOString().split('T')[0],
               };
+
               transactions.push(transaction);
               saveTransactions();
               updateTransactionList();
@@ -1716,46 +1706,51 @@ Ofertas relacionadas:
               saveSavingsGoals();
               updateSavingsList();
             }
-          };
+          });
         });
 
-        document.querySelectorAll('.delete-goal').forEach(btn => {
-          btn.onclick = () => {
-            const id = parseInt(btn.getAttribute('data-id'));
-            const index = savingsGoals.findIndex(g => g.id === id);
+        // Añadir evento a los botones de eliminar meta
+        document.querySelectorAll('.delete-goal').forEach((button) => {
+          button.addEventListener('click', function () {
+            const id = parseInt(this.getAttribute('data-id'));
+            const index = savingsGoals.findIndex((g) => g.id === id);
+
             if (confirm('¿Estás seguro de que deseas eliminar esta meta de ahorro?')) {
               savingsGoals.splice(index, 1);
               saveSavingsGoals();
               updateSavingsList();
             }
-          };
+          });
         });
       }
-      updateSavingsList();
 
-      // Debts Section Logic
-      const debtForm = document.getElementById('debt-form');
-      const debtsList = document.getElementById('debts-list');
+      //FUNCIONES PARA CONTROL DE DEUDAS
 
-      debtForm.addEventListener('submit', e => {
+      debtForm.addEventListener('submit', function (e) {
         e.preventDefault();
-        const name = document.getElementById('debt-name').value.trim();
+
+        const name = document.getElementById('debt-name').value;
         const amount = parseFloat(document.getElementById('debt-amount').value);
         const paid = parseFloat(document.getElementById('debt-paid').value) || 0;
         const interest = parseFloat(document.getElementById('debt-interest').value) || 0;
         const date = document.getElementById('debt-date').value || null;
 
-        if(!name || isNaN(amount) || amount < 1) {
-          alert('Por favor, completa correctamente los campos de deuda.');
-          return;
+        const debt = {
+          id: Date.now(),
+          name,
+          amount,
+          paid,
+          interest,
+          date,
+          isPaid: false,
+        };
+
+        if (paid >= amount) {
+          debt.isPaid = true;
         }
 
-        let isPaid = false;
-        if (paid >= amount) isPaid = true;
-
-        const debt = { id: Date.now(), name, amount, paid, interest, date, isPaid };
-
         debts.push(debt);
+
         saveDebts();
         updateDebtsList();
 
@@ -1768,59 +1763,83 @@ Ofertas relacionadas:
 
       function updateDebtsList() {
         if (debts.length === 0) {
-          debtsList.innerHTML = '<p style="text-align: center; padding: 20px;">No hay deudas registradas</p>';
+          debtsList.innerHTML =
+            '<p style="text-align: center; padding: 20px;">No hay deudas registradas</p>';
           return;
         }
+
         debtsList.innerHTML = '';
-        debts.forEach(debt => {
+
+        debts.forEach((debt) => {
           const progress = (debt.paid / debt.amount) * 100;
           const progressFormatted = Math.min(progress, 100).toFixed(1);
 
           const debtEl = document.createElement('div');
           debtEl.classList.add('debt-item');
-          if (debt.isPaid) debtEl.classList.add('paid');
+
+          if (debt.isPaid) {
+            debtEl.classList.add('paid');
+          }
 
           let dateInfo = '';
           if (debt.date) {
-            const d = debt.date.split('-');
-            dateInfo = `- Fecha límite: ${d[2]}/${d[1]}/${d[0]}`;
+            const dateParts = debt.date.split('-');
+            const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+            dateInfo = `- Fecha límite: ${formattedDate}`;
           }
+
           let interestInfo = '';
-          if (debt.interest > 0) interestInfo = `- Interés: ${debt.interest}%`;
+          if (debt.interest > 0) {
+            interestInfo = `- Interés: ${debt.interest}%`;
+          }
 
           debtEl.innerHTML = `
-            <div><strong>${debt.name}</strong> ${debt.isPaid ? '<span class="positive">(Pagada)</span>' : ''}</div>
-            <div>Total: ${formatCurrency(debt.amount)} ${dateInfo} ${interestInfo}</div>
-            <div class="progress-bar" aria-label="Porcentaje de avance en pago de deuda">
-              <div class="progress" style="width: ${progressFormatted}%">
-                <span class="progress-text">${progressFormatted}%</span>
-              </div>
-            </div>
-            <div>Pagado: ${formatCurrency(debt.paid)} de ${formatCurrency(debt.amount)}</div>
-            <div class="debt-actions">
-            ${!debt.isPaid ? `<button class="add-payment btn-small" data-id="${debt.id}" aria-label="Añadir pago a deuda ${debt.name}">Añadir Pago</button>` : ''}
-            <button class="delete-debt btn-small btn-danger" data-id="${debt.id}" aria-label="Eliminar deuda ${debt.name}">Eliminar</button>
-            </div>
-          `;
+                <div><strong>${debt.name}</strong> ${
+            debt.isPaid ? '<span class="positive">(Pagada)</span>' : ''
+          }</div>
+                <div>Total: ${formatCurrency(debt.amount)} ${dateInfo} ${interestInfo}</div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: ${progressFormatted}%">
+                        <span class="progress-text">${progressFormatted}%</span>
+                    </div>
+                </div>
+                <div>Pagado: ${formatCurrency(debt.paid)} de ${formatCurrency(debt.amount)}</div>
+                <div class="debt-actions">
+                    ${
+                      !debt.isPaid
+                        ? `<button class="add-payment btn-small" data-id="${debt.id}">Añadir Pago</button>`
+                        : ''
+                    }
+                    <button class="delete-debt btn-small btn-danger" data-id="${debt.id}">Eliminar</button>
+                </div>
+            `;
+
           debtsList.appendChild(debtEl);
         });
 
-        document.querySelectorAll('.add-payment').forEach(btn => {
-          btn.onclick = () => {
-            const id = parseInt(btn.getAttribute('data-id'));
-            const debt = debts.find(d => d.id === id);
-            const amount = parseFloat(prompt(`¿Cuánto quieres pagar de tu deuda "${debt.name}"?`, '0'));
+        document.querySelectorAll('.add-payment').forEach((button) => {
+          button.addEventListener('click', function () {
+            const id = parseInt(this.getAttribute('data-id'));
+            const debt = debts.find((d) => d.id === id);
+
+            const amount = parseFloat(
+              prompt(`¿Cuánto quieres pagar de tu deuda "${debt.name}"?`, '0')
+            );
+
             if (!isNaN(amount) && amount > 0) {
               debt.paid += amount;
-              if (debt.paid >= debt.amount) debt.isPaid = true;
+
+              if (debt.paid >= debt.amount) {
+                debt.isPaid = true;
+              }
 
               const transaction = {
                 id: Date.now(),
                 description: `Pago de deuda: ${debt.name}`,
-                amount,
+                amount: amount,
                 type: 'expense',
                 category: 'deudas',
-                date: new Date().toISOString().split('T')[0]
+                date: new Date().toISOString().split('T')[0],
               };
 
               transactions.push(transaction);
@@ -1832,77 +1851,96 @@ Ofertas relacionadas:
               saveDebts();
               updateDebtsList();
             }
-          };
+          });
         });
 
-        document.querySelectorAll('.delete-debt').forEach(btn => {
-          btn.onclick = () => {
-            const id = parseInt(btn.getAttribute('data-id'));
+        document.querySelectorAll('.delete-debt').forEach((button) => {
+          button.addEventListener('click', function () {
+            const id = parseInt(this.getAttribute('data-id'));
+            const index = debts.findIndex((d) => d.id === id);
+
             if (confirm('¿Estás seguro de que deseas eliminar esta deuda?')) {
-              debts = debts.filter(d => d.id !== id);
+              debts.splice(index, 1);
               saveDebts();
               updateDebtsList();
             }
-          };
+          });
         });
       }
-      updateDebtsList();
 
-      // Budget Section Logic
-      const budgetForm = document.getElementById('budget-form');
+      // Variables Reportes
+      const reportTotalIncome = document.getElementById('report-total-income');
+      const reportTotalExpense = document.getElementById('report-total-expense');
+      const reportBalance = document.getElementById('report-balance');
+      const reportList = document.getElementById('report-list');
+      const reportFilter = document.getElementById('report-filter');
+
+      // Variables Presupuestos
       const budgetCategorySelect = document.getElementById('budget-category');
       const budgetAmountInput = document.getElementById('budget-amount');
-      const budgetList = document.getElementById('budget-list');
 
+      // Rellenar categorías en Presupuestos (solo gastos)
       function populateBudgetCategories() {
         budgetCategorySelect.innerHTML = '<option value="">Selecciona una categoría</option>';
-        categories.expense.forEach(cat => {
+        categories.expense.forEach((cat) => {
           const opt = document.createElement('option');
           opt.value = cat.toLowerCase();
           opt.textContent = cat;
           budgetCategorySelect.appendChild(opt);
         });
       }
-      populateBudgetCategories();
 
+      // Guardar presupuestos en localStorage
       function saveBudgets() {
         localStorage.setItem('budgets', JSON.stringify(budgets));
       }
 
+      // Añadir campo 'spent' en presupuestos si no existe
       budgets.forEach(b => {
         if (typeof b.spent !== 'number') {
           b.spent = 0;
         }
       });
 
-      budgetForm.addEventListener('submit', e => {
+      // Manejar creación de presupuestos
+      budgetForm.addEventListener('submit', function (e) {
         e.preventDefault();
         const category = budgetCategorySelect.value;
         const amount = parseFloat(budgetAmountInput.value);
+
         if (!category || isNaN(amount) || amount <= 0) {
           alert('Por favor, selecciona una categoría y un monto válido.');
           return;
         }
+
         const budget = { id: Date.now(), category, amount, spent: 0 };
         budgets.push(budget);
         saveBudgets();
         updateBudgetList();
         budgetForm.reset();
         populateBudgetCategories();
+
         alert('Presupuesto creado y guardado con éxito.');
       });
 
+      // Actualizar lista de presupuestos con botones para abonar y alertas
       function updateBudgetList() {
         if (budgets.length === 0) {
-          budgetList.innerHTML = '<p style="text-align: center; padding: 20px;">No hay presupuestos</p>';
+          budgetList.innerHTML =
+            '<p style="text-align: center; padding: 20px;">No hay presupuestos</p>';
           return;
         }
+
         budgetList.innerHTML = '';
-        budgets.forEach(b => {
+        budgets.forEach((b) => {
           const percent = Math.min((b.spent / b.amount) * 100, 100).toFixed(1);
-          const warningThreshold = 80;
           const overBudget = b.spent > b.amount;
-          const categoryName = categories.expense.find(c => c.toLowerCase() === b.category) || b.category;
+          const warningThreshold = 80; // percent to trigger alert
+
+          const budgetEl = document.createElement('div');
+          budgetEl.classList.add('budget-item');
+
+          const categoryName = categories.expense.find((c) => c.toLowerCase() === b.category) || b.category;
 
           let progressBarClass = 'progress';
           if (percent >= warningThreshold && percent < 100) {
@@ -1910,9 +1948,6 @@ Ofertas relacionadas:
           } else if (percent >= 100) {
             progressBarClass = 'progress negative';
           }
-
-          const budgetEl = document.createElement('div');
-          budgetEl.classList.add('budget-item');
 
           budgetEl.innerHTML = `
             <div><strong>${categoryName}</strong></div>
@@ -1923,31 +1958,44 @@ Ofertas relacionadas:
                 </div>
             </div>
             <div>Gastado: Q${b.spent.toFixed(2)} de Q${b.amount.toFixed(2)}</div>
-            ${percent >= warningThreshold && percent < 100 ? `<div class="budget-alert">¡Alerta! Estás utilizando más del 80% de tu presupuesto.</div>` : ''}
-            ${percent >= 100 ? `<div class="budget-alert">¡Aviso! Has superado tu presupuesto.</div>` : ''}
+            ${
+              percent >= warningThreshold && percent < 100
+                ? `<div class="budget-alert">¡Alerta! Estás utilizando más del 80% de tu presupuesto.</div>`
+                : ''
+            }
+            ${
+              percent >= 100
+                ? `<div class="budget-alert">¡Aviso! Has superado tu presupuesto.</div>`
+                : ''
+            }
             <div class="budget-actions">
-                <button class="add-budget-payment btn-small" data-id="${b.id}" aria-label="Añadir abono al presupuesto ${categoryName}">Añadir Abono</button>
-                <button class="delete-budget btn-small btn-danger" data-id="${b.id}" aria-label="Eliminar presupuesto ${categoryName}">Eliminar</button>
+                <button class="add-budget-payment btn-small" data-id="${b.id}">Añadir Abono</button>
+                <button class="delete-budget btn-small btn-danger" data-id="${b.id}">Eliminar</button>
             </div>
           `;
+
           budgetList.appendChild(budgetEl);
         });
 
-        document.querySelectorAll('.add-budget-payment').forEach(btn => {
-          btn.onclick = () => {
-            const id = parseInt(btn.getAttribute('data-id'));
-            const budget = budgets.find(b => b.id === id);
+        // Añadir evento a los botones de añadir abono
+        document.querySelectorAll('.add-budget-payment').forEach((button) => {
+          button.addEventListener('click', function () {
+            const id = parseInt(this.getAttribute('data-id'));
+            const budget = budgets.find((b) => b.id === id);
+
             const amount = parseFloat(prompt(`¿Cuánto quieres abonar al presupuesto "${budget.category}"?`, '0'));
+
             if (!isNaN(amount) && amount > 0) {
               budget.spent += amount;
 
+              // Registrar transacción tipo gasto para presupuestos (category matches)
               const transaction = {
                 id: Date.now(),
                 description: `Abono a presupuesto: ${budget.category}`,
-                amount,
+                amount: amount,
                 type: 'expense',
                 category: budget.category,
-                date: new Date().toISOString().split('T')[0]
+                date: new Date().toISOString().split('T')[0],
               };
 
               transactions.push(transaction);
@@ -1959,56 +2007,59 @@ Ofertas relacionadas:
               saveBudgets();
               updateBudgetList();
             }
-          };
+          });
         });
 
-        document.querySelectorAll('.delete-budget').forEach(btn => {
-          btn.onclick = () => {
-            const id = parseInt(btn.getAttribute('data-id'));
-            budgets = budgets.filter(b => b.id !== id);
+        // Añadir evento a los botones eliminar presupuesto
+        document.querySelectorAll('.delete-budget').forEach((btn) => {
+          btn.addEventListener('click', function () {
+            const id = parseInt(this.dataset.id);
+            budgets = budgets.filter((b) => b.id !== id);
             saveBudgets();
             updateBudgetList();
-          };
+          });
         });
       }
-      updateBudgetList();
 
-      // Reports Section Logic
-      const reportTotalIncome = document.getElementById('report-total-income');
-      const reportTotalExpense = document.getElementById('report-total-expense');
-      const reportBalance = document.getElementById('report-balance');
-      const reportList = document.getElementById('report-list');
-      const reportFilter = document.getElementById('report-filter');
-
+      // FUNCIONES REPORTES
       function updateReport() {
         const filter = reportFilter.value;
         let filteredTx = [...transactions];
-        if (filter === 'income') filteredTx = transactions.filter(t => t.type === 'income');
-        else if (filter === 'expense') filteredTx = transactions.filter(t => t.type === 'expense');
+        if (filter === 'income') {
+          filteredTx = transactions.filter((t) => t.type === 'income');
+        } else if (filter === 'expense') {
+          filteredTx = transactions.filter((t) => t.type === 'expense');
+        }
 
         if (filteredTx.length === 0) {
-          reportList.innerHTML = '<p style="text-align: center; padding: 20px;">No hay transacciones</p>';
+          reportList.innerHTML =
+            '<p style="text-align: center; padding: 20px;">No hay transacciones</p>';
         } else {
           reportList.innerHTML = '';
-          filteredTx.forEach(t => {
+          filteredTx.forEach((t) => {
             const item = document.createElement('div');
             item.classList.add('transaction-item');
             const formattedDate = new Date(t.date).toLocaleDateString('es-ES');
             const amountClass = t.type === 'income' ? 'positive' : 'negative';
             const prefix = t.type === 'income' ? '+' : '-';
             item.innerHTML = `
-              <div>
-                <strong>${t.description}</strong>
-                <div>${formattedDate} | <span class="category">${t.category}</span></div>
-              </div>
-              <div class="${amountClass}">${prefix}Q${t.amount.toFixed(2)}</div>
+                <div>
+                    <strong>${t.description}</strong>
+                    <div>${formattedDate} | <span class="category">${t.category}</span></div>
+                </div>
+                <div class="${amountClass}">${prefix}Q${t.amount.toFixed(2)}</div>
             `;
             reportList.appendChild(item);
           });
         }
 
-        const income = transactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
-        const expense = transactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
+        // Calcular resumen
+        const income = transactions
+          .filter((t) => t.type === 'income')
+          .reduce((sum, t) => sum + t.amount, 0);
+        const expense = transactions
+          .filter((t) => t.type === 'expense')
+          .reduce((sum, t) => sum + t.amount, 0);
         const balance = income - expense;
 
         reportTotalIncome.textContent = 'Q' + income.toFixed(2);
@@ -2017,12 +2068,199 @@ Ofertas relacionadas:
       }
 
       reportFilter.addEventListener('change', updateReport);
-      updateReport();
 
-      // Update expense and debt categories in lists
+      // Actualizar categorías en presupuestos y listas iniciales
       categories.expense.push('ahorro', 'deudas');
 
-      // Offers Section - Facebook Marketplace style
+      populateBudgetCategories();
+      updateReport();
+      updateBudgetList();
+      updateSavingsList();
+      updateDebtsList();
+
+      if (typeSelect.value === 'expense') {
+        updateCategories();
+      }
+
+      // Chatbot functionality
+      (() => {
+        const chatbotMessages = document.getElementById('chatbot-messages');
+        const chatbotInput = document.getElementById('chatbot-input');
+        const chatbotForm = document.getElementById('chatbot-form');
+        const chatbotSendBtn = document.getElementById('chatbot-send');
+        const chatbotCloseBtn = document.getElementById('chatbot-close');
+
+        const faq = [
+          {
+            questions: ['saldo', 'balance', 'balance actual', 'total'],
+            answer: () => {
+              const income = transactions
+                .filter((t) => t.type === 'income')
+                .reduce((sum, t) => sum + t.amount, 0);
+              const expenses = transactions
+                .filter((t) => t.type === 'expense')
+                .reduce((sum, t) => sum + t.amount, 0);
+              const balance = income - expenses;
+              return `Tu balance actual es ${formatCurrency(balance)}.`;
+            },
+          },
+          {
+            questions: ['ingresos', 'dinero recibido', 'dinero recibido total'],
+            answer: () => {
+              const income = transactions
+                .filter((t) => t.type === 'income')
+                .reduce((sum, t) => sum + t.amount, 0);
+              return `Tus ingresos totales son de ${formatCurrency(income)}.`;
+            },
+          },
+          {
+            questions: ['gastos', 'dinero gastado', 'dinero gastado total'],
+            answer: () => {
+              const expenses = transactions
+                .filter((t) => t.type === 'expense')
+                .reduce((sum, t) => sum + t.amount, 0);
+              return `Tus gastos totales son de ${formatCurrency(expenses)}.`;
+            },
+          },
+          {
+            questions: ['ahorros', 'metas de ahorro'],
+            answer: () => {
+              if (savingsGoals.length === 0) {
+                return 'No tienes metas de ahorro registradas.';
+              }
+
+              let response = 'Tus metas de ahorro son:\n';
+              savingsGoals.forEach((goal, i) => {
+                response += `${i + 1}. ${goal.name} - Ahorrado: ${formatCurrency(
+                  goal.saved
+                )} de ${formatCurrency(goal.amount)}\n`;
+              });
+              return response;
+            },
+          },
+          {
+            questions: ['deudas', 'control de deudas', 'deuda'],
+            answer: () => {
+              if (debts.length === 0) {
+                return 'No tienes deudas registradas.';
+              }
+              let response = 'Tus deudas registradas son:\n';
+              debts.forEach((debt, i) => {
+                response += `${i + 1}. ${debt.name} - Pagado: ${formatCurrency(
+                  debt.paid
+                )} de ${formatCurrency(debt.amount)}\n`;
+              });
+              return response;
+            },
+          },
+          {
+            questions: ['presupuestos', 'presupuesto'],
+            answer: () => {
+              if (budgets.length === 0) {
+                return 'No tienes presupuestos creados.';
+              }
+              let response = 'Tus presupuestos son:\n';
+              budgets.forEach((b, i) => {
+                response += `${i + 1}. ${b.category} - Monto: ${formatCurrency(b.amount)}, Gastado: ${formatCurrency(b.spent)}\n`;
+              });
+              return response;
+            },
+          },
+        ];
+
+        function addMessage(text, sender) {
+          const msgEl = document.createElement('div');
+          msgEl.classList.add('chat-message', sender);
+          msgEl.textContent = text;
+          chatbotMessages.appendChild(msgEl);
+          chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+          chatbotMessages.focus();
+        }
+
+        function botReply(text) {
+          const typingIndicator = document.createElement('div');
+          typingIndicator.classList.add('chat-message', 'bot');
+          typingIndicator.textContent = 'Escribiendo...';
+          chatbotMessages.appendChild(typingIndicator);
+          chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+
+          setTimeout(() => {
+            chatbotMessages.removeChild(typingIndicator);
+            addMessage(text, 'bot');
+          }, 1000);
+        }
+
+        function getBotResponse(userText) {
+          const text = userText.toLowerCase();
+          for (let i = 0; i < faq.length; i++) {
+            const item = faq[i];
+            for (const question of item.questions) {
+              if (text.includes(question)) {
+                return item.answer();
+              }
+            }
+          }
+          return 'Lo siento, no entiendo tu pregunta. Por favor, prueba con otra consulta sobre tus finanzas.';
+        }
+
+        chatbotInput.addEventListener('input', function () {
+          chatbotSendBtn.disabled = this.value.trim() === '';
+        });
+
+        chatbotForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+
+          const userText = chatbotInput.value.trim();
+          if (userText === '') return;
+
+          addMessage(userText, 'user');
+          chatbotInput.value = '';
+          chatbotSendBtn.disabled = true;
+
+          const reply = getBotResponse(userText);
+          botReply(reply);
+        });
+
+        chatbotCloseBtn.addEventListener('click', () => {
+          showSection(dashboardSection);
+          chatbotMessages.innerHTML = '';
+          initChat();
+        });
+
+        chatbotCloseBtn.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            showSection(dashboardSection);
+            chatbotMessages.innerHTML = '';
+            initChat();
+          }
+        });
+
+        function initChat() {
+          addMessage(
+            'Hola! Soy tu asistente financiero. Puedes preguntarme sobre tu saldo, gastos, ingresos, ahorros, deudas y presupuestos.',
+            'bot'
+          );
+        }
+
+        initChat();
+      })();
+
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker
+            .register('service-worker.js')
+            .then(function (registration) {
+              console.log('Service Worker registrado con éxito:', registration.scope);
+            })
+            .catch(function (err) {
+              console.log('Error al registrar Service Worker:', err);
+            });
+        });
+      }
+
+      // Offers section - Facebook Marketplace style
+
       let offers = [
         {
           id: 1,
@@ -2116,152 +2354,8 @@ Ofertas relacionadas:
         filterAndRenderOffers(e.target.value);
       });
 
+      // Render all offers initially at load
       renderOffers(offers);
-
-      // Chatbot functionality
-      (() => {
-        const chatbotMessages = document.getElementById('chatbot-messages');
-        const chatbotInput = document.getElementById('chatbot-input');
-        const chatbotForm = document.getElementById('chatbot-form');
-        const chatbotSendBtn = document.getElementById('chatbot-send');
-        const chatbotCloseBtn = document.getElementById('chatbot-close');
-
-        const faq = [
-          {
-            questions: ['saldo', 'balance', 'balance actual', 'total'],
-            answer: () => {
-              const income = transactions.filter(t => t.type === 'income').reduce((sum,t) => sum + t.amount, 0);
-              const expenses = transactions.filter(t => t.type === 'expense').reduce((sum,t) => sum + t.amount, 0);
-              const balance = income - expenses;
-              return `Tu balance actual es ${formatCurrency(balance)}.`;
-            }
-          },
-          {
-            questions: ['ingresos', 'dinero recibido', 'dinero recibido total'],
-            answer: () => {
-              const income = transactions.filter(t => t.type === 'income').reduce((sum,t) => sum + t.amount, 0);
-              return `Tus ingresos totales son de ${formatCurrency(income)}.`;
-            }
-          },
-          {
-            questions: ['gastos', 'dinero gastado', 'dinero gastado total'],
-            answer: () => {
-              const expenses = transactions.filter(t => t.type === 'expense').reduce((sum,t) => sum + t.amount, 0);
-              return `Tus gastos totales son de ${formatCurrency(expenses)}.`;
-            }
-          },
-          {
-            questions: ['ahorros', 'metas de ahorro'],
-            answer: () => {
-              if (savingsGoals.length === 0) return 'No tienes metas de ahorro registradas.';
-              let response = 'Tus metas de ahorro son:\n';
-              savingsGoals.forEach((goal,i) => {
-                response += `${i+1}. ${goal.name} - Ahorrado: ${formatCurrency(goal.saved)} de ${formatCurrency(goal.amount)}\n`;
-              });
-              return response;
-            }
-          },
-          {
-            questions: ['deudas', 'control de deudas', 'deuda'],
-            answer: () => {
-              if (debts.length === 0) return 'No tienes deudas registradas.';
-              let response = 'Tus deudas registradas son:\n';
-              debts.forEach((debt,i) => {
-                response += `${i+1}. ${debt.name} - Pagado: ${formatCurrency(debt.paid)} de ${formatCurrency(debt.amount)}\n`;
-              });
-              return response;
-            }
-          },
-          {
-            questions: ['presupuestos', 'presupuesto'],
-            answer: () => {
-              if (budgets.length === 0) return 'No tienes presupuestos creados.';
-              let response = 'Tus presupuestos son:\n';
-              budgets.forEach((b,i) => {
-                response += `${i+1}. ${b.category} - Monto: ${formatCurrency(b.amount)}, Gastado: ${formatCurrency(b.spent)}\n`;
-              });
-              return response;
-            }
-          },
-        ];
-
-        function addMessage(text, sender) {
-          const msgEl = document.createElement('div');
-          msgEl.classList.add('chat-message', sender);
-          msgEl.textContent = text;
-          chatbotMessages.appendChild(msgEl);
-          chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-          chatbotMessages.focus();
-        }
-
-        function botReply(text) {
-          const typing = document.createElement('div');
-          typing.classList.add('chat-message', 'bot');
-          typing.textContent = 'Escribiendo...';
-          chatbotMessages.appendChild(typing);
-          chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-
-          setTimeout(() => {
-            chatbotMessages.removeChild(typing);
-            addMessage(text, 'bot');
-          }, 1000);
-        }
-
-        function getBotResponse(userText) {
-          const text = userText.toLowerCase();
-          for (const item of faq) {
-            for (const question of item.questions) {
-              if (text.includes(question)) return item.answer();
-            }
-          }
-          return 'Lo siento, no entiendo tu pregunta. Por favor, prueba con otra consulta sobre tus finanzas.';
-        }
-
-        chatbotInput.addEventListener('input', () => {
-          chatbotSendBtn.disabled = chatbotInput.value.trim() === '';
-        });
-
-        chatbotForm.addEventListener('submit', e => {
-          e.preventDefault();
-          if (chatbotInput.value.trim() === '') return;
-          addMessage(chatbotInput.value, 'user');
-          const reply = getBotResponse(chatbotInput.value);
-          chatbotInput.value = '';
-          chatbotSendBtn.disabled = true;
-          botReply(reply);
-        });
-
-        chatbotCloseBtn.addEventListener('click', () => {
-          showSection(dashboardSection);
-          chatbotMessages.innerHTML = '';
-          initChat();
-        });
-
-        chatbotCloseBtn.addEventListener('keypress', e => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            showSection(dashboardSection);
-            chatbotMessages.innerHTML = '';
-            initChat();
-          }
-        });
-
-        function initChat() {
-          addMessage('Hola! Soy tu asistente financiero. Puedes preguntarme sobre tu saldo, gastos, ingresos, ahorros, deudas y presupuestos.', 'bot');
-        }
-
-        initChat();
-      })();
-
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('service-worker.js').then(registration => {
-            console.log('Service Worker registrado con éxito:', registration.scope);
-          }).catch(err => {
-            console.log('Error al registrar Service Worker:', err);
-          });
-        });
-      }
     </script>
 </body>
 </html>
