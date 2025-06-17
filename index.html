@@ -632,7 +632,7 @@
         }
 
         /* New Offers Section Styles - Inspired by Facebook Marketplace */
-        #offers-section {
+         #offers-section {
             display: none;
             padding: 20px 0;
         }
@@ -685,12 +685,12 @@
             display: flex;
             flex-direction: column;
             transition: box-shadow 0.3s ease;
+            outline: none;
         }
 
         .offer-card:hover,
         .offer-card:focus {
             box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-            outline: none;
         }
 
         .offer-image-container {
@@ -717,7 +717,10 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-start;
+            gap: 10px;
+            font-size: 14px;
+            color: var(--color-dark);
         }
 
         .offer-title {
@@ -730,20 +733,18 @@
         .offer-price {
             font-weight: 700;
             font-size: 16px;
-            margin-bottom: 8px;
             color: var(--color-accent);
         }
 
         .offer-category {
             font-size: 14px;
             color: var(--color-secondary);
-            margin-bottom: 8px;
             text-transform: capitalize;
+            margin-bottom: 6px;
         }
 
         .offer-description {
             font-size: 14px;
-            color: var(--color-dark);
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
@@ -751,6 +752,24 @@
             -webkit-box-orient: vertical;
         }
 
+        .seller-info {
+            margin-top: 8px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+            font-size: 13px;
+            color: var(--color-dark);
+        }
+
+        .seller-info div {
+            margin-bottom: 4px;
+        }
+
+        .seller-info span.label {
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-right: 6px;
+        }
+  
         /* Responsive adjustments for offers */
         @media (max-width: 480px) {
             #offers-list {
@@ -2345,6 +2364,11 @@ Ofertas relacionadas:
             <div class="offer-price">Q${offer.price.toLocaleString('es-GT')}</div>
             <div class="offer-category">${offer.category}</div>
             <div class="offer-description">${offer.description}</div>
+            <div class="seller-info" aria-label="Información del vendedor">
+              <div><span class="label">Vendedor:</span>${offer.seller.name}</div>
+              <div><span class="label">Teléfono:</span><a href="tel:${offer.seller.phone.replace(/[^0-9+]/g, '')}">${offer.seller.phone}</a></div>
+              <div><span class="label">Correo:</span><a href="mailto:${offer.seller.email}">${offer.seller.email}</a></div>
+            </div>
           </div>
         `;
         return div;
