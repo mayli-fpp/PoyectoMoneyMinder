@@ -864,10 +864,8 @@
     <!-- Existing sections for dashboard, savings, debts, reports, budgets -->
 
     <div id="dashboard-section" class="section active">
-      <!-- Dashboard markup unchanged -->
       <div class="container">
         <div class="dashboard">
-          <!-- Cards for balance, add transaction, expense chart etc. -->
           <div class="card">
             <div class="card-header">
               <h2>Balance</h2>
@@ -923,6 +921,7 @@
               <h2>Distribución de Gastos</h2>
             </div>
             <div class="chart-container" id="expense-chart">
+              <!-- genera las graficas -->
               <p style="text-align: center; padding-top: 120px;">Añade transacciones para ver el gráfico</p>
             </div>
           </div>
@@ -934,29 +933,182 @@
             <button id="clear-transactions" class="btn-danger">Borrar Todo</button>
           </div>
           <div class="transactions" id="transaction-list">
+            <!-- muestra transacciones -->
             <p style="text-align: center; padding: 20px;">No hay transacciones</p>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Savings Section -->
+    <!-- Sección de Metas de Ahorro -->
     <div id="savings-section" class="section">
-      <!-- unchanged markup -->
+      <div class="dashboard">
+        <div class="card">
+          <div class="card-header">
+            <h2>Metas de Ahorro</h2>
+          </div>
+          <form id="savings-form">
+            <div class="form-group">
+              <label for="goal-name">Nombre de la Meta</label>
+              <input
+                type="text"
+                id="goal-name"
+                placeholder="Ej: Vacaciones, Coche nuevo..."
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="goal-amount">Cantidad Objetivo (Q)</label>
+              <input
+                type="number"
+                id="goal-amount"
+                placeholder="0.00"
+                step="0.01"
+                min="1"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="goal-date">Fecha Objetivo</label>
+              <input type="date" id="goal-date" required />
+            </div>
+
+            <div class="form-group">
+              <label for="current-saved">Cantidad Ahorrada Actualmente (Q)</label>
+              <input
+                type="number"
+                id="current-saved"
+                placeholder="0.00"
+                step="0.01"
+                min="0"
+                required
+              />
+            </div>
+
+            <button type="submit">Crear Meta de Ahorro</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2>Mis Metas de Ahorro</h2>
+          </div>
+          <div id="savings-list">
+            <!-- Las metas se cargarán  aquí -->
+            <p style="text-align: center; padding: 20px;">No hay metas de ahorro</p>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Debts Section -->
+    <!-- Sección de Control de Deudas -->
     <div id="debts-section" class="section">
-      <!-- unchanged markup -->
+      <div class="dashboard">
+        <div class="card">
+          <div class="card-header">
+            <h2>Control de Deudas</h2>
+          </div>
+          <form id="debt-form">
+            <div class="form-group">
+              <label for="debt-name">Nombre de la Deuda</label>
+              <input
+                type="text"
+                id="debt-name"
+                placeholder="Ej: Préstamo coche, Hipoteca..."
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="debt-amount">Cantidad Total (Q)</label>
+              <input
+                type="number"
+                id="debt-amount"
+                placeholder="0.00"
+                step="0.01"
+                min="1"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="debt-paid">Cantidad Pagada (Q)</label>
+              <input
+                type="number"
+                id="debt-paid"
+                placeholder="0.00"
+                step="0.01"
+                min="0"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="debt-interest">Tasa de Interés Anual (%)</label>
+              <input
+                type="number"
+                id="debt-interest"
+                placeholder="0.00"
+                step="0.01"
+                min="0"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="debt-date">Fecha Límite de Pago</label>
+              <input type="date" id="debt-date" />
+            </div>
+
+            <button type="submit">Añadir Deuda</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2>Mis Deudas</h2>
+          </div>
+          <div id="debts-list">
+            <p style="text-align: center; padding: 20px;">No hay deudas registradas</p>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Reports Section -->
+    <!-- Sección de Reportes / Historial -->
     <div id="reports-section" class="section">
-      <!-- unchanged markup -->
-    </div>
+      <div class="card">
+        <div class="card-header">
+          <h2>Resumen de Transacciones</h2>
+        </div>
+        <div style="padding: 10px;">
+          <strong>Ingresos totales:</strong> <span id="report-total-income" class="positive">Q0.00</span
+          ><br />
+          <strong>Gastos totales:</strong> <span id="report-total-expense" class="negative">Q0.00</span
+          ><br />
+          <strong>Balance:</strong> <span id="report-balance">Q0.00</span>
+        </div>
+      </div>
 
-    <!-- Budgets Section -->
-    <div id="budgets-section" class="section" aria-label="Sección de Presupuestos">
+      <div class="card">
+        <div class="card-header">
+          <h2>Historial de Transacciones</h2>
+        </div>
+        <div style="padding: 10px;">
+          <label for="report-filter">Filtrar por:</label>
+          <select id="report-filter">
+            <option value="all">Todas</option>
+            <option value="income">Ingresos</option>
+            <option value="expense">Gastos</option>
+          </select>
+        </div>
+        <div id="report-list" class="transactions">
+          <p style="text-align: center; padding: 20px;">No hay transacciones</p>
+        </div>
+      </div>
+
+    <!-- Sección de Presupuestos -->
+    <div id="budgets-section" class="section">
       <div class="card">
         <div class="card-header">
           <h2>Crear Presupuesto</h2>
@@ -1010,7 +1162,7 @@
       </div>
     </div>
 
-    <!-- Offers Section -->
+    <!-- New Offers Section -->
     <div id="offers-section" class="section" aria-label="Sección de Ofertas de Venta">
       <div id="offers-search-container">
         <span class="material-icons" aria-hidden="true">search</span>
@@ -1021,7 +1173,7 @@
       </div>
     </div>
 
-    <!-- Contact Section -->
+    <!-- New Contact Section -->
     <div id="contact-section" class="section" aria-label="Información de Contacto y Soporte">
       <h2>Contacto y Soporte</h2>
       <div class="contact-info">
@@ -1031,7 +1183,7 @@
         </div>
         <div class="contact-item">
           <span class="material-icons" aria-hidden="true">phone</span>
-          <a href="tel:+50212345678">+502  32181393</a>
+          <a href="tel:+50232181393">+502  32181393</a>
         </div>
         <div class="contact-item">
           <span class="material-icons" aria-hidden="true">location_on</span>
@@ -1068,11 +1220,14 @@
         ],
       };
 
+      // Elemento select de categorías
       const categorySelect = document.getElementById('category');
       const typeSelect = document.getElementById('type');
 
+      // Cargar categorías según el tipo de transacción
       typeSelect.addEventListener('change', updateCategories);
 
+      // Función para actualizar las categorías disponibles
       function updateCategories() {
         const type = typeSelect.value;
         categorySelect.innerHTML = '<option value="">Selecciona una categoría</option>';
@@ -1085,11 +1240,13 @@
         });
       }
 
+      // Inicializar las categorías
       updateCategories();
 
+      // Establecer la fecha de hoy como valor predeterminado
       document.getElementById('date').valueAsDate = new Date();
 
-      // DOM elements for transactions
+      // Elementos del DOM
       const transactionForm = document.getElementById('transaction-form');
       const transactionList = document.getElementById('transaction-list');
       const totalBalanceEl = document.getElementById('total-balance');
@@ -1097,12 +1254,15 @@
       const totalExpensesEl = document.getElementById('total-expenses');
       const clearButton = document.getElementById('clear-transactions');
 
+      // Cargar transacciones guardadas
       let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 
+      // Función para guardar transacciones en localStorage
       function saveTransactions() {
         localStorage.setItem('transactions', JSON.stringify(transactions));
       }
 
+      // Función para calcular y actualizar el balance
       function updateBalance() {
         const income = transactions
           .filter((transaction) => transaction.type === 'income')
@@ -1118,6 +1278,7 @@
         totalIncomeEl.textContent = formatCurrency(income);
         totalExpensesEl.textContent = formatCurrency(expenses);
 
+        // Cambiar color del balance según sea positivo o negativo
         totalBalanceEl.className = 'balance';
         if (balance > 0) {
           totalBalanceEl.classList.add('positive');
@@ -1126,10 +1287,12 @@
         }
       }
 
+      //tipo de monedass
       function formatCurrency(amount) {
         return 'Q' + amount.toFixed(2);
       }
 
+      // Manejar envío del formulario
       transactionForm.addEventListener('submit', function (e) {
         e.preventDefault();
 
@@ -1144,6 +1307,7 @@
           return;
         }
 
+        // Crear objeto de transacción
         const transaction = {
           id: Date.now(),
           description,
@@ -1153,19 +1317,24 @@
           date,
         };
 
+        // Añadir a la lista de transacciones
         transactions.push(transaction);
 
+        // Guardar y actualizar UI
         saveTransactions();
         updateTransactionList();
         updateBalance();
         updateChart();
 
+        // Reiniciar formulario
         transactionForm.reset();
         document.getElementById('date').valueAsDate = new Date();
         updateCategories();
       });
 
+      // Función para actualizar la lista de transacciones
       function updateTransactionList() {
+        // Ordenar transacciones por fecha, más reciente primero
         const sortedTransactions = [...transactions].sort(
           (a, b) => new Date(b.date) - new Date(a.date)
         );
@@ -1200,9 +1369,11 @@
         });
       }
 
+      // Función para actualizar el gráfico de distribución de gastos
       function updateChart() {
         const expenseChart = document.getElementById('expense-chart');
 
+        // Filtrar solo los gastos
         const expenses = transactions.filter((t) => t.type === 'expense');
 
         if (expenses.length === 0) {
@@ -1211,6 +1382,7 @@
           return;
         }
 
+        // Agrupar gastos por categoría
         const expensesByCategory = {};
         let totalExpenses = 0;
 
@@ -1222,6 +1394,7 @@
           totalExpenses += expense.amount;
         });
 
+        // Crear el gráfico simple de barras
         expenseChart.innerHTML = '';
 
         const colors = [
@@ -1259,6 +1432,7 @@
         expenseChart.innerHTML = html;
       }
 
+      // Borrar todas las transacciones
       clearButton.addEventListener('click', function () {
         if (confirm('¿Estás seguro de que deseas borrar todas las transacciones?')) {
           transactions = [];
@@ -1269,11 +1443,12 @@
         }
       });
 
+      // Inicializar la aplicación
       updateTransactionList();
       updateBalance();
       updateChart();
 
-      // Variables para nuevas funcionalidades
+      // Variables para las nuevas funcionalidades
       let savingsGoals = JSON.parse(localStorage.getItem('savingsGoals')) || [];
       let debts = JSON.parse(localStorage.getItem('debts')) || [];
       let budgets = JSON.parse(localStorage.getItem('budgets')) || [];
@@ -1284,42 +1459,55 @@
       const menuDashboard = document.getElementById('menu-dashboard');
       const menuSavings = document.getElementById('menu-savings');
       const menuDebts = document.getElementById('menu-debts');
+
       const menuReports = document.getElementById('menu-reports');
       const menuBudgets = document.getElementById('menu-budgets');
       const menuOffers = document.getElementById('menu-offers');
       const menuContact = document.getElementById('menu-contact');
-      const menuChatbot = document.getElementById('chatbot');
+      const reportsSection = document.getElementById('reports-section');
+      const budgetsSection = document.getElementById('budgets-section');
+      const offersSection = document.getElementById('offers-section');
+      const contactSection = document.getElementById('contact-section');
 
       // Secciones
       const dashboardSection = document.getElementById('dashboard-section');
       const savingsSection = document.getElementById('savings-section');
       const debtsSection = document.getElementById('debts-section');
-      const reportsSection = document.getElementById('reports-section');
-      const budgetsSection = document.getElementById('budgets-section');
-      const offersSection = document.getElementById('offers-section');
-      const contactSection = document.getElementById('contact-section');
       const chatbotSection = document.getElementById('chatbot-section');
 
-      // Agregar eventos con escucha para múltiples eventos para compatibilidad táctil
+      // Formularios
+      const savingsForm = document.getElementById('savings-form');
+      const debtForm = document.getElementById('debt-form');
+      const budgetForm = document.getElementById('budget-form');
+
+      // Listas
+      const savingsList = document.getElementById('savings-list');
+      const debtsList = document.getElementById('debts-list');
+      const budgetList = document.getElementById('budget-list');
+
+      // Mejor compatibilidad táctil
       ['click', 'touchstart'].forEach((evt) => {
         menuButton.addEventListener(evt, function (e) {
           e.stopPropagation();
           menuDropdown.classList.toggle('show');
-          const expanded = menuButton.getAttribute('aria-expanded') === 'true';
-          menuButton.setAttribute('aria-expanded', String(!expanded));
         });
       });
 
+      // Cierre de menú más robusto
       ['click', 'touchstart'].forEach((evt) => {
         window.addEventListener(evt, function (event) {
           if (!menuDropdown.contains(event.target) && !menuButton.contains(event.target)) {
             menuDropdown.classList.remove('show');
-            menuButton.setAttribute('aria-expanded', 'false');
           }
         });
       });
 
-      // Cerrar menú al hacer clic fuera
+      // Mostrar/ocultar menú desplegable
+      menuButton.addEventListener('click', function () {
+        menuDropdown.classList.toggle('show');
+      });
+
+      // Cerrar el menú al hacer clic fuera de él
       window.addEventListener('click', function (event) {
         if (
           !event.target.matches('.menu-button') &&
@@ -1327,35 +1515,11 @@
         ) {
           if (menuDropdown.classList.contains('show')) {
             menuDropdown.classList.remove('show');
-            menuButton.setAttribute('aria-expanded', 'false');
           }
         }
       });
 
-      // Centralizada función para cerrar menú y mostrar sección
-      function showSection(section) {
-        // Quitar 'active' de todas
-        const allSections = [
-          dashboardSection,
-          savingsSection,
-          debtsSection,
-          reportsSection,
-          budgetsSection,
-          offersSection,
-          contactSection,
-          chatbotSection,
-        ];
-        allSections.forEach((sec) => sec.classList.remove('active'));
-
-        // Mostrar la que corresponda
-        section.classList.add('active');
-
-        // Cerrar menú
-        menuDropdown.classList.remove('show');
-        menuButton.setAttribute('aria-expanded', 'false');
-      }
-
-      // Assign event handlers to menu link elements to show their sections
+      // Cambiar entre secciones
       menuDashboard.addEventListener('click', function (e) {
         e.preventDefault();
         showSection(dashboardSection);
@@ -1379,12 +1543,17 @@
       menuBudgets.addEventListener('click', function (e) {
         e.preventDefault();
         showSection(budgetsSection);
-        // Reset search and focus on budget list if needed
+        budgetSearchInput.value = '';
+        filterAndRenderBudgets('');
+        budgetList.focus();
       });
 
       menuOffers.addEventListener('click', function (e) {
         e.preventDefault();
         showSection(offersSection);
+        offersSearchInput.value = '';
+        filterAndRenderOffers('');
+        offersSection.querySelector('#offers-list').focus();
       });
 
       menuContact.addEventListener('click', function (e) {
@@ -1392,6 +1561,8 @@
         showSection(contactSection);
       });
 
+      // Chatbot menu link
+      const menuChatbot = document.getElementById('chatbot');
       menuChatbot.addEventListener('click', function (e) {
         e.preventDefault();
         showSection(chatbotSection);
@@ -1400,9 +1571,827 @@
         }, 300);
       });
 
-      // Other functions for savings, debts, budgets, reports, chatbot, offers remain unchanged
+      // Show only the selected section and hide others
+      function showSection(section) {
+        // Ocultar todas las secciones
+        dashboardSection.classList.remove('active');
+        savingsSection.classList.remove('active');
+        debtsSection.classList.remove('active');
+        reportsSection.classList.remove('active');
+        budgetsSection.classList.remove('active');
+        chatbotSection.classList.remove('active');
+        offersSection.classList.remove('active');
+        contactSection.classList.remove('active');
 
-      // Initialization calls later in original code remain same
+        // Mostrar la sección seleccionada
+        section.classList.add('active');
+
+        // Cerrar el menú
+        menuDropdown.classList.remove('show');
+      }
+
+      // Inicializar con la sección del dashboard activa
+      showSection(dashboardSection);
+
+      //FUNCIONES PARA METAS DE AHORRO
+
+      savingsForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const name = document.getElementById('goal-name').value;
+        const amount = parseFloat(document.getElementById('goal-amount').value);
+        const date = document.getElementById('goal-date').value;
+        const saved = parseFloat(document.getElementById('current-saved').value) || 0;
+
+        // Crear objeto de meta
+        const goal = {
+          id: Date.now(),
+          name,
+          amount,
+          date,
+          saved,
+        };
+
+        // Añadir a la lista de metas
+        savingsGoals.push(goal);
+
+        // Guardar y actualizar UI
+        saveSavingsGoals();
+        updateSavingsList();
+
+        // Reiniciar formulario
+        savingsForm.reset();
+        document.getElementById('goal-date').valueAsDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+      });
+
+      function saveSavingsGoals() {
+        localStorage.setItem('savingsGoals', JSON.stringify(savingsGoals));
+      }
+
+      function getRecommendations(goalName, amount) {
+        const lowerName = goalName.toLowerCase();
+        if (lowerName.includes('moto') || lowerName.includes('motocicleta')) {
+          return `
+Ofertas relacionadas:
+- Motocicleta Italika 150Z – Q${amount.toFixed(2)} en <a href="https://www.elektra.com.gt/search/?query=motocicleta" target="_blank" rel="noopener noreferrer">Elektra</a> [Ver oferta]
+- Motos usadas desde Q${(amount * 0.75).toFixed(2)} en <a href="https://www.olx.com.gt/motocicletas" target="_blank" rel="noopener noreferrer">OLX Guatemala</a> [Ver oferta]
+- Accesorios para motocicletas en <a href="https://www.amazon.com.mx/s?k=accesorios+motocicleta" target="_blank" rel="noopener noreferrer">Amazon</a> [Ver oferta]
+          `;
+        }
+        return '';
+      }
+
+      function updateSavingsList() {
+        if (savingsGoals.length === 0) {
+          savingsList.innerHTML =
+            '<p style="text-align: center; padding: 20px;">No hay metas de ahorro</p>';
+          return;
+        }
+
+        savingsList.innerHTML = '';
+
+        savingsGoals.forEach((goal) => {
+          const progress = (goal.saved / goal.amount) * 100;
+          const progressFormatted = Math.min(progress, 100).toFixed(1);
+
+          const goalEl = document.createElement('div');
+          goalEl.classList.add('goal-item');
+
+          const dateParts = goal.date.split('-');
+          const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+
+          const recommendations = getRecommendations(goal.name, goal.amount);
+
+          goalEl.innerHTML = `
+                <div><strong>Meta:</strong> ${goal.name}</div>
+                <div><strong>Objetivo:</strong> ${formatCurrency(goal.amount)}</div>
+                <div><strong>Progreso:</strong> ${formatCurrency(goal.saved)} (${progressFormatted}%)</div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: ${progressFormatted}%">
+                        <span class="progress-text">${progressFormatted}%</span>
+                    </div>
+                </div>
+                ${recommendations ? `<div class="recommendations">${recommendations}</div>` : ''}
+                <div class="goal-actions">
+                    <button class="add-savings btn-small" data-id="${goal.id}">Añadir Ahorro</button>
+                    <button class="delete-goal btn-small btn-danger" data-id="${goal.id}">Eliminar</button>
+                </div>
+            `;
+
+          savingsList.appendChild(goalEl);
+        });
+
+        // Añadir evento a los botones de añadir ahorro
+        document.querySelectorAll('.add-savings').forEach((button) => {
+          button.addEventListener('click', function () {
+            const id = parseInt(this.getAttribute('data-id'));
+            const goal = savingsGoals.find((g) => g.id === id);
+
+            const amount = parseFloat(
+              prompt(`¿Cuánto quieres añadir a tu meta "${goal.name}"?`, '0')
+            );
+
+            if (!isNaN(amount) && amount > 0) {
+              goal.saved += amount;
+
+              const transaction = {
+                id: Date.now(),
+                description: `Ahorro para: ${goal.name}`,
+                amount: amount,
+                type: 'expense',
+                category: 'ahorro',
+                date: new Date().toISOString().split('T')[0],
+              };
+
+              transactions.push(transaction);
+              saveTransactions();
+              updateTransactionList();
+              updateBalance();
+              updateChart();
+
+              saveSavingsGoals();
+              updateSavingsList();
+            }
+          });
+        });
+
+        // Añadir evento a los botones de eliminar meta
+        document.querySelectorAll('.delete-goal').forEach((button) => {
+          button.addEventListener('click', function () {
+            const id = parseInt(this.getAttribute('data-id'));
+            const index = savingsGoals.findIndex((g) => g.id === id);
+
+            if (confirm('¿Estás seguro de que deseas eliminar esta meta de ahorro?')) {
+              savingsGoals.splice(index, 1);
+              saveSavingsGoals();
+              updateSavingsList();
+            }
+          });
+        });
+      }
+
+      //FUNCIONES PARA CONTROL DE DEUDAS
+
+      debtForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const name = document.getElementById('debt-name').value;
+        const amount = parseFloat(document.getElementById('debt-amount').value);
+        const paid = parseFloat(document.getElementById('debt-paid').value) || 0;
+        const interest = parseFloat(document.getElementById('debt-interest').value) || 0;
+        const date = document.getElementById('debt-date').value || null;
+
+        const debt = {
+          id: Date.now(),
+          name,
+          amount,
+          paid,
+          interest,
+          date,
+          isPaid: false,
+        };
+
+        if (paid >= amount) {
+          debt.isPaid = true;
+        }
+
+        debts.push(debt);
+
+        saveDebts();
+        updateDebtsList();
+
+        debtForm.reset();
+      });
+
+      function saveDebts() {
+        localStorage.setItem('debts', JSON.stringify(debts));
+      }
+
+      function updateDebtsList() {
+        if (debts.length === 0) {
+          debtsList.innerHTML =
+            '<p style="text-align: center; padding: 20px;">No hay deudas registradas</p>';
+          return;
+        }
+
+        debtsList.innerHTML = '';
+
+        debts.forEach((debt) => {
+          const progress = (debt.paid / debt.amount) * 100;
+          const progressFormatted = Math.min(progress, 100).toFixed(1);
+
+          const debtEl = document.createElement('div');
+          debtEl.classList.add('debt-item');
+
+          if (debt.isPaid) {
+            debtEl.classList.add('paid');
+          }
+
+          let dateInfo = '';
+          if (debt.date) {
+            const dateParts = debt.date.split('-');
+            const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+            dateInfo = `- Fecha límite: ${formattedDate}`;
+          }
+
+          let interestInfo = '';
+          if (debt.interest > 0) {
+            interestInfo = `- Interés: ${debt.interest}%`;
+          }
+
+          debtEl.innerHTML = `
+                <div><strong>${debt.name}</strong> ${
+            debt.isPaid ? '<span class="positive">(Pagada)</span>' : ''
+          }</div>
+                <div>Total: ${formatCurrency(debt.amount)} ${dateInfo} ${interestInfo}</div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: ${progressFormatted}%">
+                        <span class="progress-text">${progressFormatted}%</span>
+                    </div>
+                </div>
+                <div>Pagado: ${formatCurrency(debt.paid)} de ${formatCurrency(debt.amount)}</div>
+                <div class="debt-actions">
+                    ${
+                      !debt.isPaid
+                        ? `<button class="add-payment btn-small" data-id="${debt.id}">Añadir Pago</button>`
+                        : ''
+                    }
+                    <button class="delete-debt btn-small btn-danger" data-id="${debt.id}">Eliminar</button>
+                </div>
+            `;
+
+          debtsList.appendChild(debtEl);
+        });
+
+        document.querySelectorAll('.add-payment').forEach((button) => {
+          button.addEventListener('click', function () {
+            const id = parseInt(this.getAttribute('data-id'));
+            const debt = debts.find((d) => d.id === id);
+
+            const amount = parseFloat(
+              prompt(`¿Cuánto quieres pagar de tu deuda "${debt.name}"?`, '0')
+            );
+
+            if (!isNaN(amount) && amount > 0) {
+              debt.paid += amount;
+
+              if (debt.paid >= debt.amount) {
+                debt.isPaid = true;
+              }
+
+              const transaction = {
+                id: Date.now(),
+                description: `Pago de deuda: ${debt.name}`,
+                amount: amount,
+                type: 'expense',
+                category: 'deudas',
+                date: new Date().toISOString().split('T')[0],
+              };
+
+              transactions.push(transaction);
+              saveTransactions();
+              updateTransactionList();
+              updateBalance();
+              updateChart();
+
+              saveDebts();
+              updateDebtsList();
+            }
+          });
+        });
+
+        document.querySelectorAll('.delete-debt').forEach((button) => {
+          button.addEventListener('click', function () {
+            const id = parseInt(this.getAttribute('data-id'));
+            const index = debts.findIndex((d) => d.id === id);
+
+            if (confirm('¿Estás seguro de que deseas eliminar esta deuda?')) {
+              debts.splice(index, 1);
+              saveDebts();
+              updateDebtsList();
+            }
+          });
+        });
+      }
+
+      // Variables Reportes
+      const reportTotalIncome = document.getElementById('report-total-income');
+      const reportTotalExpense = document.getElementById('report-total-expense');
+      const reportBalance = document.getElementById('report-balance');
+      const reportList = document.getElementById('report-list');
+      const reportFilter = document.getElementById('report-filter');
+
+      // Variables Presupuestos
+      const budgetCategorySelect = document.getElementById('budget-category');
+      const budgetAmountInput = document.getElementById('budget-amount');
+
+      // Rellenar categorías en Presupuestos (solo gastos)
+      function populateBudgetCategories() {
+        budgetCategorySelect.innerHTML = '<option value="">Selecciona una categoría</option>';
+        categories.expense.forEach((cat) => {
+          const opt = document.createElement('option');
+          opt.value = cat.toLowerCase();
+          opt.textContent = cat;
+          budgetCategorySelect.appendChild(opt);
+        });
+      }
+
+      // Guardar presupuestos en localStorage
+      function saveBudgets() {
+        localStorage.setItem('budgets', JSON.stringify(budgets));
+      }
+
+      // Añadir campo 'spent' en presupuestos si no existe
+      budgets.forEach(b => {
+        if (typeof b.spent !== 'number') {
+          b.spent = 0;
+        }
+      });
+
+      // Manejar creación de presupuestos
+      budgetForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const category = budgetCategorySelect.value;
+        const amount = parseFloat(budgetAmountInput.value);
+
+        if (!category || isNaN(amount) || amount <= 0) {
+          alert('Por favor, selecciona una categoría y un monto válido.');
+          return;
+        }
+
+        const budget = { id: Date.now(), category, amount, spent: 0 };
+        budgets.push(budget);
+        saveBudgets();
+        updateBudgetList();
+        budgetForm.reset();
+        populateBudgetCategories();
+
+        alert('Presupuesto creado y guardado con éxito.');
+      });
+
+      // Actualizar lista de presupuestos con botones para abonar y alertas
+      function updateBudgetList() {
+        if (budgets.length === 0) {
+          budgetList.innerHTML =
+            '<p style="text-align: center; padding: 20px;">No hay presupuestos</p>';
+          return;
+        }
+
+        budgetList.innerHTML = '';
+        budgets.forEach((b) => {
+          const percent = Math.min((b.spent / b.amount) * 100, 100).toFixed(1);
+          const overBudget = b.spent > b.amount;
+          const warningThreshold = 80; // percent to trigger alert
+
+          const budgetEl = document.createElement('div');
+          budgetEl.classList.add('budget-item');
+
+          const categoryName = categories.expense.find((c) => c.toLowerCase() === b.category) || b.category;
+
+          let progressBarClass = 'progress';
+          if (percent >= warningThreshold && percent < 100) {
+            progressBarClass += ' warning';
+          } else if (percent >= 100) {
+            progressBarClass = 'progress negative';
+          }
+
+          budgetEl.innerHTML = `
+            <div><strong>${categoryName}</strong></div>
+            <div>Presupuesto: Q${b.amount.toFixed(2)}</div>
+            <div class="progress-bar" aria-label="Porcentaje gastado en presupuesto">
+                <div class="${progressBarClass}" style="width: ${percent}%">
+                    <span class="progress-text">${percent}%</span>
+                </div>
+            </div>
+            <div>Gastado: Q${b.spent.toFixed(2)} de Q${b.amount.toFixed(2)}</div>
+            ${
+              percent >= warningThreshold && percent < 100
+                ? `<div class="budget-alert">¡Alerta! Estás utilizando más del 80% de tu presupuesto.</div>`
+                : ''
+            }
+            ${
+              percent >= 100
+                ? `<div class="budget-alert">¡Aviso! Has superado tu presupuesto.</div>`
+                : ''
+            }
+            <div class="budget-actions">
+                <button class="add-budget-payment btn-small" data-id="${b.id}">Añadir Abono</button>
+                <button class="delete-budget btn-small btn-danger" data-id="${b.id}">Eliminar</button>
+            </div>
+          `;
+
+          budgetList.appendChild(budgetEl);
+        });
+
+        // Añadir evento a los botones de añadir abono
+        document.querySelectorAll('.add-budget-payment').forEach((button) => {
+          button.addEventListener('click', function () {
+            const id = parseInt(this.getAttribute('data-id'));
+            const budget = budgets.find((b) => b.id === id);
+
+            const amount = parseFloat(prompt(`¿Cuánto quieres abonar al presupuesto "${budget.category}"?`, '0'));
+
+            if (!isNaN(amount) && amount > 0) {
+              budget.spent += amount;
+
+              // Registrar transacción tipo gasto para presupuestos (category matches)
+              const transaction = {
+                id: Date.now(),
+                description: `Abono a presupuesto: ${budget.category}`,
+                amount: amount,
+                type: 'expense',
+                category: budget.category,
+                date: new Date().toISOString().split('T')[0],
+              };
+
+              transactions.push(transaction);
+              saveTransactions();
+              updateTransactionList();
+              updateBalance();
+              updateChart();
+
+              saveBudgets();
+              updateBudgetList();
+            }
+          });
+        });
+
+        // Añadir evento a los botones eliminar presupuesto
+        document.querySelectorAll('.delete-budget').forEach((btn) => {
+          btn.addEventListener('click', function () {
+            const id = parseInt(this.dataset.id);
+            budgets = budgets.filter((b) => b.id !== id);
+            saveBudgets();
+            updateBudgetList();
+          });
+        });
+      }
+
+      // FUNCIONES REPORTES
+      function updateReport() {
+        const filter = reportFilter.value;
+        let filteredTx = [...transactions];
+        if (filter === 'income') {
+          filteredTx = transactions.filter((t) => t.type === 'income');
+        } else if (filter === 'expense') {
+          filteredTx = transactions.filter((t) => t.type === 'expense');
+        }
+
+        if (filteredTx.length === 0) {
+          reportList.innerHTML =
+            '<p style="text-align: center; padding: 20px;">No hay transacciones</p>';
+        } else {
+          reportList.innerHTML = '';
+          filteredTx.forEach((t) => {
+            const item = document.createElement('div');
+            item.classList.add('transaction-item');
+            const formattedDate = new Date(t.date).toLocaleDateString('es-ES');
+            const amountClass = t.type === 'income' ? 'positive' : 'negative';
+            const prefix = t.type === 'income' ? '+' : '-';
+            item.innerHTML = `
+                <div>
+                    <strong>${t.description}</strong>
+                    <div>${formattedDate} | <span class="category">${t.category}</span></div>
+                </div>
+                <div class="${amountClass}">${prefix}Q${t.amount.toFixed(2)}</div>
+            `;
+            reportList.appendChild(item);
+          });
+        }
+
+        // Calcular resumen
+        const income = transactions
+          .filter((t) => t.type === 'income')
+          .reduce((sum, t) => sum + t.amount, 0);
+        const expense = transactions
+          .filter((t) => t.type === 'expense')
+          .reduce((sum, t) => sum + t.amount, 0);
+        const balance = income - expense;
+
+        reportTotalIncome.textContent = 'Q' + income.toFixed(2);
+        reportTotalExpense.textContent = 'Q' + expense.toFixed(2);
+        reportBalance.textContent = 'Q' + balance.toFixed(2);
+      }
+
+      reportFilter.addEventListener('change', updateReport);
+
+      // Actualizar categorías en presupuestos y listas iniciales
+      categories.expense.push('ahorro', 'deudas');
+
+      populateBudgetCategories();
+      updateReport();
+      updateBudgetList();
+      updateSavingsList();
+      updateDebtsList();
+
+      if (typeSelect.value === 'expense') {
+        updateCategories();
+      }
+
+      // Chatbot functionality
+      (() => {
+        const chatbotMessages = document.getElementById('chatbot-messages');
+        const chatbotInput = document.getElementById('chatbot-input');
+        const chatbotForm = document.getElementById('chatbot-form');
+        const chatbotSendBtn = document.getElementById('chatbot-send');
+        const chatbotCloseBtn = document.getElementById('chatbot-close');
+
+        const faq = [
+          {
+            questions: ['saldo', 'balance', 'balance actual', 'total'],
+            answer: () => {
+              const income = transactions
+                .filter((t) => t.type === 'income')
+                .reduce((sum, t) => sum + t.amount, 0);
+              const expenses = transactions
+                .filter((t) => t.type === 'expense')
+                .reduce((sum, t) => sum + t.amount, 0);
+              const balance = income - expenses;
+              return `Tu balance actual es ${formatCurrency(balance)}.`;
+            },
+          },
+          {
+            questions: ['ingresos', 'dinero recibido', 'dinero recibido total'],
+            answer: () => {
+              const income = transactions
+                .filter((t) => t.type === 'income')
+                .reduce((sum, t) => sum + t.amount, 0);
+              return `Tus ingresos totales son de ${formatCurrency(income)}.`;
+            },
+          },
+          {
+            questions: ['gastos', 'dinero gastado', 'dinero gastado total'],
+            answer: () => {
+              const expenses = transactions
+                .filter((t) => t.type === 'expense')
+                .reduce((sum, t) => sum + t.amount, 0);
+              return `Tus gastos totales son de ${formatCurrency(expenses)}.`;
+            },
+          },
+          {
+            questions: ['ahorros', 'metas de ahorro'],
+            answer: () => {
+              if (savingsGoals.length === 0) {
+                return 'No tienes metas de ahorro registradas.';
+              }
+
+              let response = 'Tus metas de ahorro son:\n';
+              savingsGoals.forEach((goal, i) => {
+                response += `${i + 1}. ${goal.name} - Ahorrado: ${formatCurrency(
+                  goal.saved
+                )} de ${formatCurrency(goal.amount)}\n`;
+              });
+              return response;
+            },
+          },
+          {
+            questions: ['deudas', 'control de deudas', 'deuda'],
+            answer: () => {
+              if (debts.length === 0) {
+                return 'No tienes deudas registradas.';
+              }
+              let response = 'Tus deudas registradas son:\n';
+              debts.forEach((debt, i) => {
+                response += `${i + 1}. ${debt.name} - Pagado: ${formatCurrency(
+                  debt.paid
+                )} de ${formatCurrency(debt.amount)}\n`;
+              });
+              return response;
+            },
+          },
+          {
+            questions: ['presupuestos', 'presupuesto'],
+            answer: () => {
+              if (budgets.length === 0) {
+                return 'No tienes presupuestos creados.';
+              }
+              let response = 'Tus presupuestos son:\n';
+              budgets.forEach((b, i) => {
+                response += `${i + 1}. ${b.category} - Monto: ${formatCurrency(b.amount)}, Gastado: ${formatCurrency(b.spent)}\n`;
+              });
+              return response;
+            },
+          },
+        ];
+
+        function addMessage(text, sender) {
+          const msgEl = document.createElement('div');
+          msgEl.classList.add('chat-message', sender);
+          msgEl.textContent = text;
+          chatbotMessages.appendChild(msgEl);
+          chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+          chatbotMessages.focus();
+        }
+
+        function botReply(text) {
+          const typingIndicator = document.createElement('div');
+          typingIndicator.classList.add('chat-message', 'bot');
+          typingIndicator.textContent = 'Escribiendo...';
+          chatbotMessages.appendChild(typingIndicator);
+          chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+
+          setTimeout(() => {
+            chatbotMessages.removeChild(typingIndicator);
+            addMessage(text, 'bot');
+          }, 1000);
+        }
+
+        function getBotResponse(userText) {
+          const text = userText.toLowerCase();
+          for (let i = 0; i < faq.length; i++) {
+            const item = faq[i];
+            for (const question of item.questions) {
+              if (text.includes(question)) {
+                return item.answer();
+              }
+            }
+          }
+          return 'Lo siento, no entiendo tu pregunta. Por favor, prueba con otra consulta sobre tus finanzas.';
+        }
+
+        chatbotInput.addEventListener('input', function () {
+          chatbotSendBtn.disabled = this.value.trim() === '';
+        });
+
+        chatbotForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+
+          const userText = chatbotInput.value.trim();
+          if (userText === '') return;
+
+          addMessage(userText, 'user');
+          chatbotInput.value = '';
+          chatbotSendBtn.disabled = true;
+
+          const reply = getBotResponse(userText);
+          botReply(reply);
+        });
+
+        chatbotCloseBtn.addEventListener('click', () => {
+          showSection(dashboardSection);
+          chatbotMessages.innerHTML = '';
+          initChat();
+        });
+
+        chatbotCloseBtn.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            showSection(dashboardSection);
+            chatbotMessages.innerHTML = '';
+            initChat();
+          }
+        });
+
+        function initChat() {
+          addMessage(
+            'Hola! Soy tu asistente financiero. Puedes preguntarme sobre tu saldo, gastos, ingresos, ahorros, deudas y presupuestos.',
+            'bot'
+          );
+        }
+
+        initChat();
+      })();
+
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker
+            .register('service-worker.js')
+            .then(function (registration) {
+              console.log('Service Worker registrado con éxito:', registration.scope);
+            })
+            .catch(function (err) {
+              console.log('Error al registrar Service Worker:', err);
+            });
+        });
+      }
+
+      // Offers section - Facebook Marketplace style
+
+      let offers = [
+        {
+         id: 1,
+          title: "Motocicleta Italika 150Z",
+          description: "Motocicleta Italika en excelente estado, modelo 2020, bajo kilometraje.",
+          price: 13500,
+          category: "motos",
+          image: "https://somosmoto.pe/images/models/gallery/italika-150sz-2018-gallery-578a72.jpg",
+          seller: {
+            name: "Juan Pérez",
+            phone: "+502 3218 1393",
+            email: "juanperez@gmail.com"
+          }
+        },
+        {
+          id: 2,
+          title: "iPhone 13 Pro",
+          description: "Teléfono Apple iPhone 13 Pro, 128GB, color plata, casi nuevo.",
+          price: 8500,
+          category: "teléfonos",
+          image: "https://img.pccomponentes.com/articles/57/578903/1819-apple-iphone-13-pro-max-256gb-plata-libre.jpg",
+          seller: {
+            name: "María Gómez",
+            phone: "+502 3218 1393",
+            email: "mariagomez@gmail.com"
+          }
+        },
+        {
+          id: 3,
+          title: "Chaqueta de cuero",
+          description: "Chaqueta de cuero auténtico para hombre, talla M, color negro.",
+          price: 1200,
+          category: "ropa",
+          image: "https://www.cueroshazard.com/wp-content/uploads/Chaqueta-Cuero-Negro-con-bolsillos.jpg",
+          seller: {
+            name: "Carlos López",
+            phone: "+502 5555 7890",
+            email: "carloslopez@gmail.com"
+          }
+        },
+        {
+          id: 4,
+          title: "Carro Toyota Corolla 2015",
+          description: "Carro usado en buen estado, gasolina, transmisión automática.",
+          price: 67500,
+          category: "carros",
+          image: "https://www.motortrend.com/uploads/sites/10/2015/11/2015-toyota-corolla-l-at-sedan-angular-front.png?fit=around%7C875:492.1875",
+          seller: {
+            name: "Ana Martínez",
+            phone: "+502 5555 2345",
+            email: "anamartinez@gmail.com"
+          }
+        },
+        {
+          id: 5,
+          title: "Samsung Galaxy S21",
+          description: "Smartphone Samsung Galaxy S21, desbloqueado, 256GB.",
+          price: 7500,
+          category: "teléfonos",
+          image: "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/6446/6446739_sd.jpg",
+          seller: {
+            name: "Luis Fernández",
+            phone: "+502 5555 3456",
+            email: "luisfernandez@gmail.com"
+          }
+        },
+      ];
+
+      const offersListEl = document.getElementById('offers-list');
+      const offersSearchInput = document.getElementById('offers-search');
+
+      function createOfferCard(offer) {
+        const div = document.createElement('div');
+        div.className = 'offer-card';
+        div.tabIndex = 0;
+        div.innerHTML = `
+          <div class="offer-image-container">
+            <img src="${offer.image}" alt="${offer.title} - Imagen de producto" onerror="this.onerror=null;this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/7f5b5d56-03b1-4896-be1a-8c66605391e2.png';" />
+          </div>
+          <div class="offer-details">
+            <div class="offer-title">${offer.title}</div>
+            <div class="offer-price">Q${offer.price.toLocaleString('es-GT')}</div>
+            <div class="offer-category">${offer.category}</div>
+            <div class="offer-description">${offer.description}</div>
+            <div class="seller-info" aria-label="Información del vendedor">
+              <div><span class="label">Vendedor:</span>${offer.seller.name}</div>
+              <div><span class="label">Teléfono:</span><a href="tel:${offer.seller.phone.replace(/[^0-9+]/g, '')}">${offer.seller.phone}</a></div>
+              <div><span class="label">Correo:</span><a href="mailto:${offer.seller.email}">${offer.seller.email}</a></div>
+            </div>
+          </div>
+        `;
+        return div;
+      }
+
+      function renderOffers(offersArray) {
+        offersListEl.innerHTML = '';
+        if (offersArray.length === 0) {
+          offersListEl.innerHTML = '<p style="text-align:center; padding: 20px;">No se encontraron ofertas.</p>';
+          return;
+        }
+        offersArray.forEach(offer => {
+          offersListEl.appendChild(createOfferCard(offer));
+        });
+      }
+
+      function filterAndRenderOffers(query) {
+        const q = query.trim().toLowerCase();
+        if (q === '') {
+          renderOffers(offers);
+          return;
+        }
+        const filtered = offers.filter(offer =>
+          offer.title.toLowerCase().includes(q) ||
+          offer.description.toLowerCase().includes(q) ||
+          offer.category.toLowerCase().includes(q)
+        );
+        renderOffers(filtered);
+      }
+
+      offersSearchInput.addEventListener('input', e => {
+        filterAndRenderOffers(e.target.value);
+      });
+
+      // Render all offers initially at load
+      renderOffers(offers);
     </script>
 </body>
 </html>
