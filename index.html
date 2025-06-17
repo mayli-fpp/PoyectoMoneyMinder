@@ -2330,6 +2330,11 @@ Ofertas relacionadas:
             <div class="offer-price">Q${offer.price.toLocaleString('es-GT')}</div>
             <div class="offer-category">${offer.category}</div>
             <div class="offer-description">${offer.description}</div>
+            <div class="seller-info" aria-label="Información del vendedor">
+              <div><span class="label">Vendedor:</span>${offer.seller.name}</div>
+              <div><span class="label">Teléfono:</span><a href="tel:${offer.seller.phone.replace(/[^0-9+]/g, '')}">${offer.seller.phone}</a></div>
+              <div><span class="label">Correo:</span><a href="mailto:${offer.seller.email}">${offer.seller.email}</a></div>
+            </div>
           </div>
         `;
         return div;
