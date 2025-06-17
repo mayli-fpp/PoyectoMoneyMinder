@@ -685,12 +685,12 @@
             display: flex;
             flex-direction: column;
             transition: box-shadow 0.3s ease;
-            outline: none;
         }
 
         .offer-card:hover,
         .offer-card:focus {
             box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            outline: none;
         }
 
         .offer-image-container {
@@ -717,10 +717,7 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
-            gap: 10px;
-            font-size: 14px;
-            color: var(--color-dark);
+            justify-content: space-between;
         }
 
         .offer-title {
@@ -733,41 +730,25 @@
         .offer-price {
             font-weight: 700;
             font-size: 16px;
+            margin-bottom: 8px;
             color: var(--color-accent);
         }
 
         .offer-category {
             font-size: 14px;
             color: var(--color-secondary);
+            margin-bottom: 8px;
             text-transform: capitalize;
-            margin-bottom: 6px;
         }
 
         .offer-description {
             font-size: 14px;
+            color: var(--color-dark);
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
-        }
-
-        .seller-info {
-            margin-top: 8px;
-            padding-top: 10px;
-            border-top: 1px solid #ddd;
-            font-size: 13px;
-            color: var(--color-dark);
-        }
-
-        .seller-info div {
-            margin-bottom: 4px;
-        }
-
-        .seller-info span.label {
-            font-weight: 600;
-            color: var(--color-primary);
-            margin-right: 6px;
         }
 
         /* Responsive adjustments for offers */
@@ -921,6 +902,7 @@
               <h2>Distribución de Gastos</h2>
             </div>
             <div class="chart-container" id="expense-chart">
+              <!-- genera las graficas -->
               <p style="text-align: center; padding-top: 120px;">Añade transacciones para ver el gráfico</p>
             </div>
           </div>
@@ -932,6 +914,7 @@
             <button id="clear-transactions" class="btn-danger">Borrar Todo</button>
           </div>
           <div class="transactions" id="transaction-list">
+            <!-- muestra transacciones -->
             <p style="text-align: center; padding: 20px;">No hay transacciones</p>
           </div>
         </div>
@@ -994,6 +977,7 @@
             <h2>Mis Metas de Ahorro</h2>
           </div>
           <div id="savings-list">
+            <!-- Las metas se cargarán  aquí -->
             <p style="text-align: center; padding: 20px;">No hay metas de ahorro</p>
           </div>
         </div>
@@ -1079,10 +1063,10 @@
           <h2>Resumen de Transacciones</h2>
         </div>
         <div style="padding: 10px;">
-          <strong>Ingresos totales:</strong> <span id="report-total-income" class="positive">Q0.00</span>
-          <br />
-          <strong>Gastos totales:</strong> <span id="report-total-expense" class="negative">Q0.00</span>
-          <br />
+          <strong>Ingresos totales:</strong> <span id="report-total-income" class="positive">Q0.00</span
+          ><br />
+          <strong>Gastos totales:</strong> <span id="report-total-expense" class="negative">Q0.00</span
+          ><br />
           <strong>Balance:</strong> <span id="report-balance">Q0.00</span>
         </div>
       </div>
@@ -1101,6 +1085,18 @@
         </div>
         <div id="report-list" class="transactions">
           <p style="text-align: center; padding: 20px;">No hay transacciones</p>
+        </div>
+      </div>
+
+      <div class="dashboard">
+        <div class="card">
+          <div class="card-header">
+            <h2>Reportes / Historial</h2>
+          </div>
+          <p style="padding: 20px;">
+            Aquí podrás consultar reportes detallados de tus ingresos, gastos y transacciones por categoría.
+            (Funcionalidad en desarrollo)
+          </p>
         </div>
       </div>
     </div>
@@ -1181,7 +1177,7 @@
         </div>
         <div class="contact-item">
           <span class="material-icons" aria-hidden="true">phone</span>
-          <a href="tel:+50212345678">+502  32181393</a>
+          <a href="tel:+50232181393">+502 3218 1393</a>
         </div>
         <div class="contact-item">
           <span class="material-icons" aria-hidden="true">location_on</span>
@@ -1483,10 +1479,6 @@
       const debtsList = document.getElementById('debts-list');
       const budgetList = document.getElementById('budget-list');
 
-      // Search Inputs
-      const offersSearchInput = document.getElementById('offers-search');
-      // No budget search input exists, so no budgetSearchInput declaration is needed
-
       // Mejor compatibilidad táctil
       ['click', 'touchstart'].forEach((evt) => {
         menuButton.addEventListener(evt, function (e) {
@@ -1545,7 +1537,8 @@
       menuBudgets.addEventListener('click', function (e) {
         e.preventDefault();
         showSection(budgetsSection);
-        // Removed references to budgetSearchInput and filterAndRenderBudgets because there is no budget search input
+        budgetSearchInput.value = '';
+        filterAndRenderBudgets('');
         budgetList.focus();
       });
 
@@ -1560,7 +1553,6 @@
       menuContact.addEventListener('click', function (e) {
         e.preventDefault();
         showSection(contactSection);
-        contactSection.focus?.();
       });
 
       // Chatbot menu link
@@ -1595,16 +1587,683 @@
       // Inicializar con la sección del dashboard activa
       showSection(dashboardSection);
 
-      // The rest of your existing code for savings goals, debts, budgets, reports, chatbot, offers, and contact sections remains unchanged.
-      // I did not modify any other logic beyond fixing the undefined variable for budgets menu and potential minor focus calls.
+      //FUNCIONES PARA METAS DE AHORRO
 
-      //... The rest of your JavaScript code for savings, debts, budgets, chatbot, offers, etc.
+      savingsForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const name = document.getElementById('goal-name').value;
+        const amount = parseFloat(document.getElementById('goal-amount').value);
+        const date = document.getElementById('goal-date').value;
+        const saved = parseFloat(document.getElementById('current-saved').value) || 0;
+
+        // Crear objeto de meta
+        const goal = {
+          id: Date.now(),
+          name,
+          amount,
+          date,
+          saved,
+        };
+
+        // Añadir a la lista de metas
+        savingsGoals.push(goal);
+
+        // Guardar y actualizar UI
+        saveSavingsGoals();
+        updateSavingsList();
+
+        // Reiniciar formulario
+        savingsForm.reset();
+        document.getElementById('goal-date').valueAsDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+      });
+
+      function saveSavingsGoals() {
+        localStorage.setItem('savingsGoals', JSON.stringify(savingsGoals));
+      }
+
+      function getRecommendations(goalName, amount) {
+        const lowerName = goalName.toLowerCase();
+        if (lowerName.includes('moto') || lowerName.includes('motocicleta')) {
+          return `
+Ofertas relacionadas:
+- Motocicleta Italika 150Z – Q${amount.toFixed(2)} en <a href="https://www.elektra.com.gt/search/?query=motocicleta" target="_blank" rel="noopener noreferrer">Elektra</a> [Ver oferta]
+- Motos usadas desde Q${(amount * 0.75).toFixed(2)} en <a href="https://www.olx.com.gt/motocicletas" target="_blank" rel="noopener noreferrer">OLX Guatemala</a> [Ver oferta]
+- Accesorios para motocicletas en <a href="https://www.amazon.com.mx/s?k=accesorios+motocicleta" target="_blank" rel="noopener noreferrer">Amazon</a> [Ver oferta]
+          `;
+        }
+        return '';
+      }
+
+      function updateSavingsList() {
+        if (savingsGoals.length === 0) {
+          savingsList.innerHTML =
+            '<p style="text-align: center; padding: 20px;">No hay metas de ahorro</p>';
+          return;
+        }
+
+        savingsList.innerHTML = '';
+
+        savingsGoals.forEach((goal) => {
+          const progress = (goal.saved / goal.amount) * 100;
+          const progressFormatted = Math.min(progress, 100).toFixed(1);
+
+          const goalEl = document.createElement('div');
+          goalEl.classList.add('goal-item');
+
+          const dateParts = goal.date.split('-');
+          const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+
+          const recommendations = getRecommendations(goal.name, goal.amount);
+
+          goalEl.innerHTML = `
+                <div><strong>Meta:</strong> ${goal.name}</div>
+                <div><strong>Objetivo:</strong> ${formatCurrency(goal.amount)}</div>
+                <div><strong>Progreso:</strong> ${formatCurrency(goal.saved)} (${progressFormatted}%)</div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: ${progressFormatted}%">
+                        <span class="progress-text">${progressFormatted}%</span>
+                    </div>
+                </div>
+                ${recommendations ? `<div class="recommendations">${recommendations}</div>` : ''}
+                <div class="goal-actions">
+                    <button class="add-savings btn-small" data-id="${goal.id}">Añadir Ahorro</button>
+                    <button class="delete-goal btn-small btn-danger" data-id="${goal.id}">Eliminar</button>
+                </div>
+            `;
+
+          savingsList.appendChild(goalEl);
+        });
+
+        // Añadir evento a los botones de añadir ahorro
+        document.querySelectorAll('.add-savings').forEach((button) => {
+          button.addEventListener('click', function () {
+            const id = parseInt(this.getAttribute('data-id'));
+            const goal = savingsGoals.find((g) => g.id === id);
+
+            const amount = parseFloat(
+              prompt(`¿Cuánto quieres añadir a tu meta "${goal.name}"?`, '0')
+            );
+
+            if (!isNaN(amount) && amount > 0) {
+              goal.saved += amount;
+
+              const transaction = {
+                id: Date.now(),
+                description: `Ahorro para: ${goal.name}`,
+                amount: amount,
+                type: 'expense',
+                category: 'ahorro',
+                date: new Date().toISOString().split('T')[0],
+              };
+
+              transactions.push(transaction);
+              saveTransactions();
+              updateTransactionList();
+              updateBalance();
+              updateChart();
+
+              saveSavingsGoals();
+              updateSavingsList();
+            }
+          });
+        });
+
+        // Añadir evento a los botones de eliminar meta
+        document.querySelectorAll('.delete-goal').forEach((button) => {
+          button.addEventListener('click', function () {
+            const id = parseInt(this.getAttribute('data-id'));
+            const index = savingsGoals.findIndex((g) => g.id === id);
+
+            if (confirm('¿Estás seguro de que deseas eliminar esta meta de ahorro?')) {
+              savingsGoals.splice(index, 1);
+              saveSavingsGoals();
+              updateSavingsList();
+            }
+          });
+        });
+      }
+
+      //FUNCIONES PARA CONTROL DE DEUDAS
+
+      debtForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const name = document.getElementById('debt-name').value;
+        const amount = parseFloat(document.getElementById('debt-amount').value);
+        const paid = parseFloat(document.getElementById('debt-paid').value) || 0;
+        const interest = parseFloat(document.getElementById('debt-interest').value) || 0;
+        const date = document.getElementById('debt-date').value || null;
+
+        const debt = {
+          id: Date.now(),
+          name,
+          amount,
+          paid,
+          interest,
+          date,
+          isPaid: false,
+        };
+
+        if (paid >= amount) {
+          debt.isPaid = true;
+        }
+
+        debts.push(debt);
+
+        saveDebts();
+        updateDebtsList();
+
+        debtForm.reset();
+      });
+
+      function saveDebts() {
+        localStorage.setItem('debts', JSON.stringify(debts));
+      }
+
+      function updateDebtsList() {
+        if (debts.length === 0) {
+          debtsList.innerHTML =
+            '<p style="text-align: center; padding: 20px;">No hay deudas registradas</p>';
+          return;
+        }
+
+        debtsList.innerHTML = '';
+
+        debts.forEach((debt) => {
+          const progress = (debt.paid / debt.amount) * 100;
+          const progressFormatted = Math.min(progress, 100).toFixed(1);
+
+          const debtEl = document.createElement('div');
+          debtEl.classList.add('debt-item');
+
+          if (debt.isPaid) {
+            debtEl.classList.add('paid');
+          }
+
+          let dateInfo = '';
+          if (debt.date) {
+            const dateParts = debt.date.split('-');
+            const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+            dateInfo = `- Fecha límite: ${formattedDate}`;
+          }
+
+          let interestInfo = '';
+          if (debt.interest > 0) {
+            interestInfo = `- Interés: ${debt.interest}%`;
+          }
+
+          debtEl.innerHTML = `
+                <div><strong>${debt.name}</strong> ${
+            debt.isPaid ? '<span class="positive">(Pagada)</span>' : ''
+          }</div>
+                <div>Total: ${formatCurrency(debt.amount)} ${dateInfo} ${interestInfo}</div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: ${progressFormatted}%">
+                        <span class="progress-text">${progressFormatted}%</span>
+                    </div>
+                </div>
+                <div>Pagado: ${formatCurrency(debt.paid)} de ${formatCurrency(debt.amount)}</div>
+                <div class="debt-actions">
+                    ${
+                      !debt.isPaid
+                        ? `<button class="add-payment btn-small" data-id="${debt.id}">Añadir Pago</button>`
+                        : ''
+                    }
+                    <button class="delete-debt btn-small btn-danger" data-id="${debt.id}">Eliminar</button>
+                </div>
+            `;
+
+          debtsList.appendChild(debtEl);
+        });
+
+        document.querySelectorAll('.add-payment').forEach((button) => {
+          button.addEventListener('click', function () {
+            const id = parseInt(this.getAttribute('data-id'));
+            const debt = debts.find((d) => d.id === id);
+
+            const amount = parseFloat(
+              prompt(`¿Cuánto quieres pagar de tu deuda "${debt.name}"?`, '0')
+            );
+
+            if (!isNaN(amount) && amount > 0) {
+              debt.paid += amount;
+
+              if (debt.paid >= debt.amount) {
+                debt.isPaid = true;
+              }
+
+              const transaction = {
+                id: Date.now(),
+                description: `Pago de deuda: ${debt.name}`,
+                amount: amount,
+                type: 'expense',
+                category: 'deudas',
+                date: new Date().toISOString().split('T')[0],
+              };
+
+              transactions.push(transaction);
+              saveTransactions();
+              updateTransactionList();
+              updateBalance();
+              updateChart();
+
+              saveDebts();
+              updateDebtsList();
+            }
+          });
+        });
+
+        document.querySelectorAll('.delete-debt').forEach((button) => {
+          button.addEventListener('click', function () {
+            const id = parseInt(this.getAttribute('data-id'));
+            const index = debts.findIndex((d) => d.id === id);
+
+            if (confirm('¿Estás seguro de que deseas eliminar esta deuda?')) {
+              debts.splice(index, 1);
+              saveDebts();
+              updateDebtsList();
+            }
+          });
+        });
+      }
+
+      // Variables Reportes
+      const reportTotalIncome = document.getElementById('report-total-income');
+      const reportTotalExpense = document.getElementById('report-total-expense');
+      const reportBalance = document.getElementById('report-balance');
+      const reportList = document.getElementById('report-list');
+      const reportFilter = document.getElementById('report-filter');
+
+      // Variables Presupuestos
+      const budgetCategorySelect = document.getElementById('budget-category');
+      const budgetAmountInput = document.getElementById('budget-amount');
+
+      // Rellenar categorías en Presupuestos (solo gastos)
+      function populateBudgetCategories() {
+        budgetCategorySelect.innerHTML = '<option value="">Selecciona una categoría</option>';
+        categories.expense.forEach((cat) => {
+          const opt = document.createElement('option');
+          opt.value = cat.toLowerCase();
+          opt.textContent = cat;
+          budgetCategorySelect.appendChild(opt);
+        });
+      }
+
+      // Guardar presupuestos en localStorage
+      function saveBudgets() {
+        localStorage.setItem('budgets', JSON.stringify(budgets));
+      }
+
+      // Añadir campo 'spent' en presupuestos si no existe
+      budgets.forEach(b => {
+        if (typeof b.spent !== 'number') {
+          b.spent = 0;
+        }
+      });
+
+      // Manejar creación de presupuestos
+      budgetForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const category = budgetCategorySelect.value;
+        const amount = parseFloat(budgetAmountInput.value);
+
+        if (!category || isNaN(amount) || amount <= 0) {
+          alert('Por favor, selecciona una categoría y un monto válido.');
+          return;
+        }
+
+        const budget = { id: Date.now(), category, amount, spent: 0 };
+        budgets.push(budget);
+        saveBudgets();
+        updateBudgetList();
+        budgetForm.reset();
+        populateBudgetCategories();
+
+        alert('Presupuesto creado y guardado con éxito.');
+      });
+
+      // Actualizar lista de presupuestos con botones para abonar y alertas
+      function updateBudgetList() {
+        if (budgets.length === 0) {
+          budgetList.innerHTML =
+            '<p style="text-align: center; padding: 20px;">No hay presupuestos</p>';
+          return;
+        }
+
+        budgetList.innerHTML = '';
+        budgets.forEach((b) => {
+          const percent = Math.min((b.spent / b.amount) * 100, 100).toFixed(1);
+          const overBudget = b.spent > b.amount;
+          const warningThreshold = 80; // percent to trigger alert
+
+          const budgetEl = document.createElement('div');
+          budgetEl.classList.add('budget-item');
+
+          const categoryName = categories.expense.find((c) => c.toLowerCase() === b.category) || b.category;
+
+          let progressBarClass = 'progress';
+          if (percent >= warningThreshold && percent < 100) {
+            progressBarClass += ' warning';
+          } else if (percent >= 100) {
+            progressBarClass = 'progress negative';
+          }
+
+          budgetEl.innerHTML = `
+            <div><strong>${categoryName}</strong></div>
+            <div>Presupuesto: Q${b.amount.toFixed(2)}</div>
+            <div class="progress-bar" aria-label="Porcentaje gastado en presupuesto">
+                <div class="${progressBarClass}" style="width: ${percent}%">
+                    <span class="progress-text">${percent}%</span>
+                </div>
+            </div>
+            <div>Gastado: Q${b.spent.toFixed(2)} de Q${b.amount.toFixed(2)}</div>
+            ${
+              percent >= warningThreshold && percent < 100
+                ? `<div class="budget-alert">¡Alerta! Estás utilizando más del 80% de tu presupuesto.</div>`
+                : ''
+            }
+            ${
+              percent >= 100
+                ? `<div class="budget-alert">¡Aviso! Has superado tu presupuesto.</div>`
+                : ''
+            }
+            <div class="budget-actions">
+                <button class="add-budget-payment btn-small" data-id="${b.id}">Añadir Abono</button>
+                <button class="delete-budget btn-small btn-danger" data-id="${b.id}">Eliminar</button>
+            </div>
+          `;
+
+          budgetList.appendChild(budgetEl);
+        });
+
+        // Añadir evento a los botones de añadir abono
+        document.querySelectorAll('.add-budget-payment').forEach((button) => {
+          button.addEventListener('click', function () {
+            const id = parseInt(this.getAttribute('data-id'));
+            const budget = budgets.find((b) => b.id === id);
+
+            const amount = parseFloat(prompt(`¿Cuánto quieres abonar al presupuesto "${budget.category}"?`, '0'));
+
+            if (!isNaN(amount) && amount > 0) {
+              budget.spent += amount;
+
+              // Registrar transacción tipo gasto para presupuestos (category matches)
+              const transaction = {
+                id: Date.now(),
+                description: `Abono a presupuesto: ${budget.category}`,
+                amount: amount,
+                type: 'expense',
+                category: budget.category,
+                date: new Date().toISOString().split('T')[0],
+              };
+
+              transactions.push(transaction);
+              saveTransactions();
+              updateTransactionList();
+              updateBalance();
+              updateChart();
+
+              saveBudgets();
+              updateBudgetList();
+            }
+          });
+        });
+
+        // Añadir evento a los botones eliminar presupuesto
+        document.querySelectorAll('.delete-budget').forEach((btn) => {
+          btn.addEventListener('click', function () {
+            const id = parseInt(this.dataset.id);
+            budgets = budgets.filter((b) => b.id !== id);
+            saveBudgets();
+            updateBudgetList();
+          });
+        });
+      }
+
+      // FUNCIONES REPORTES
+      function updateReport() {
+        const filter = reportFilter.value;
+        let filteredTx = [...transactions];
+        if (filter === 'income') {
+          filteredTx = transactions.filter((t) => t.type === 'income');
+        } else if (filter === 'expense') {
+          filteredTx = transactions.filter((t) => t.type === 'expense');
+        }
+
+        if (filteredTx.length === 0) {
+          reportList.innerHTML =
+            '<p style="text-align: center; padding: 20px;">No hay transacciones</p>';
+        } else {
+          reportList.innerHTML = '';
+          filteredTx.forEach((t) => {
+            const item = document.createElement('div');
+            item.classList.add('transaction-item');
+            const formattedDate = new Date(t.date).toLocaleDateString('es-ES');
+            const amountClass = t.type === 'income' ? 'positive' : 'negative';
+            const prefix = t.type === 'income' ? '+' : '-';
+            item.innerHTML = `
+                <div>
+                    <strong>${t.description}</strong>
+                    <div>${formattedDate} | <span class="category">${t.category}</span></div>
+                </div>
+                <div class="${amountClass}">${prefix}Q${t.amount.toFixed(2)}</div>
+            `;
+            reportList.appendChild(item);
+          });
+        }
+
+        // Calcular resumen
+        const income = transactions
+          .filter((t) => t.type === 'income')
+          .reduce((sum, t) => sum + t.amount, 0);
+        const expense = transactions
+          .filter((t) => t.type === 'expense')
+          .reduce((sum, t) => sum + t.amount, 0);
+        const balance = income - expense;
+
+        reportTotalIncome.textContent = 'Q' + income.toFixed(2);
+        reportTotalExpense.textContent = 'Q' + expense.toFixed(2);
+        reportBalance.textContent = 'Q' + balance.toFixed(2);
+      }
+
+      reportFilter.addEventListener('change', updateReport);
+
+      // Actualizar categorías en presupuestos y listas iniciales
+      categories.expense.push('ahorro', 'deudas');
+
+      populateBudgetCategories();
+      updateReport();
+      updateBudgetList();
+      updateSavingsList();
+      updateDebtsList();
+
+      if (typeSelect.value === 'expense') {
+        updateCategories();
+      }
+
+      // Chatbot functionality
+      (() => {
+        const chatbotMessages = document.getElementById('chatbot-messages');
+        const chatbotInput = document.getElementById('chatbot-input');
+        const chatbotForm = document.getElementById('chatbot-form');
+        const chatbotSendBtn = document.getElementById('chatbot-send');
+        const chatbotCloseBtn = document.getElementById('chatbot-close');
+
+        const faq = [
+          {
+            questions: ['saldo', 'balance', 'balance actual', 'total'],
+            answer: () => {
+              const income = transactions
+                .filter((t) => t.type === 'income')
+                .reduce((sum, t) => sum + t.amount, 0);
+              const expenses = transactions
+                .filter((t) => t.type === 'expense')
+                .reduce((sum, t) => sum + t.amount, 0);
+              const balance = income - expenses;
+              return `Tu balance actual es ${formatCurrency(balance)}.`;
+            },
+          },
+          {
+            questions: ['ingresos', 'dinero recibido', 'dinero recibido total'],
+            answer: () => {
+              const income = transactions
+                .filter((t) => t.type === 'income')
+                .reduce((sum, t) => sum + t.amount, 0);
+              return `Tus ingresos totales son de ${formatCurrency(income)}.`;
+            },
+          },
+          {
+            questions: ['gastos', 'dinero gastado', 'dinero gastado total'],
+            answer: () => {
+              const expenses = transactions
+                .filter((t) => t.type === 'expense')
+                .reduce((sum, t) => sum + t.amount, 0);
+              return `Tus gastos totales son de ${formatCurrency(expenses)}.`;
+            },
+          },
+          {
+            questions: ['ahorros', 'metas de ahorro'],
+            answer: () => {
+              if (savingsGoals.length === 0) {
+                return 'No tienes metas de ahorro registradas.';
+              }
+
+              let response = 'Tus metas de ahorro son:\n';
+              savingsGoals.forEach((goal, i) => {
+                response += `${i + 1}. ${goal.name} - Ahorrado: ${formatCurrency(
+                  goal.saved
+                )} de ${formatCurrency(goal.amount)}\n`;
+              });
+              return response;
+            },
+          },
+          {
+            questions: ['deudas', 'control de deudas', 'deuda'],
+            answer: () => {
+              if (debts.length === 0) {
+                return 'No tienes deudas registradas.';
+              }
+              let response = 'Tus deudas registradas son:\n';
+              debts.forEach((debt, i) => {
+                response += `${i + 1}. ${debt.name} - Pagado: ${formatCurrency(
+                  debt.paid
+                )} de ${formatCurrency(debt.amount)}\n`;
+              });
+              return response;
+            },
+          },
+          {
+            questions: ['presupuestos', 'presupuesto'],
+            answer: () => {
+              if (budgets.length === 0) {
+                return 'No tienes presupuestos creados.';
+              }
+              let response = 'Tus presupuestos son:\n';
+              budgets.forEach((b, i) => {
+                response += `${i + 1}. ${b.category} - Monto: ${formatCurrency(b.amount)}, Gastado: ${formatCurrency(b.spent)}\n`;
+              });
+              return response;
+            },
+          },
+        ];
+
+        function addMessage(text, sender) {
+          const msgEl = document.createElement('div');
+          msgEl.classList.add('chat-message', sender);
+          msgEl.textContent = text;
+          chatbotMessages.appendChild(msgEl);
+          chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+          chatbotMessages.focus();
+        }
+
+        function botReply(text) {
+          const typingIndicator = document.createElement('div');
+          typingIndicator.classList.add('chat-message', 'bot');
+          typingIndicator.textContent = 'Escribiendo...';
+          chatbotMessages.appendChild(typingIndicator);
+          chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+
+          setTimeout(() => {
+            chatbotMessages.removeChild(typingIndicator);
+            addMessage(text, 'bot');
+          }, 1000);
+        }
+
+        function getBotResponse(userText) {
+          const text = userText.toLowerCase();
+          for (let i = 0; i < faq.length; i++) {
+            const item = faq[i];
+            for (const question of item.questions) {
+              if (text.includes(question)) {
+                return item.answer();
+              }
+            }
+          }
+          return 'Lo siento, no entiendo tu pregunta. Por favor, prueba con otra consulta sobre tus finanzas.';
+        }
+
+        chatbotInput.addEventListener('input', function () {
+          chatbotSendBtn.disabled = this.value.trim() === '';
+        });
+
+        chatbotForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+
+          const userText = chatbotInput.value.trim();
+          if (userText === '') return;
+
+          addMessage(userText, 'user');
+          chatbotInput.value = '';
+          chatbotSendBtn.disabled = true;
+
+          const reply = getBotResponse(userText);
+          botReply(reply);
+        });
+
+        chatbotCloseBtn.addEventListener('click', () => {
+          showSection(dashboardSection);
+          chatbotMessages.innerHTML = '';
+          initChat();
+        });
+
+        chatbotCloseBtn.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            showSection(dashboardSection);
+            chatbotMessages.innerHTML = '';
+            initChat();
+          }
+        });
+
+        function initChat() {
+          addMessage(
+            'Hola! Soy tu asistente financiero. Puedes preguntarme sobre tu saldo, gastos, ingresos, ahorros, deudas y presupuestos.',
+            'bot'
+          );
+        }
+
+        initChat();
+      })();
+
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker
+            .register('service-worker.js')
+            .then(function (registration) {
+              console.log('Service Worker registrado con éxito:', registration.scope);
+            })
+            .catch(function (err) {
+              console.log('Error al registrar Service Worker:', err);
+            });
+        });
+      }
 
       // Offers section - Facebook Marketplace style
 
       let offers = [
         {
-         id: 1,
+          id: 1,
           title: "Motocicleta Italika 150Z",
           description: "Motocicleta Italika en excelente estado, modelo 2020, bajo kilometraje.",
           price: 13500,
@@ -1671,6 +2330,7 @@
       ];
 
       const offersListEl = document.getElementById('offers-list');
+      const offersSearchInput = document.getElementById('offers-search');
 
       function createOfferCard(offer) {
         const div = document.createElement('div');
@@ -1685,11 +2345,6 @@
             <div class="offer-price">Q${offer.price.toLocaleString('es-GT')}</div>
             <div class="offer-category">${offer.category}</div>
             <div class="offer-description">${offer.description}</div>
-            <div class="seller-info" aria-label="Información del vendedor">
-              <div><span class="label">Vendedor:</span>${offer.seller.name}</div>
-              <div><span class="label">Teléfono:</span><a href="tel:${offer.seller.phone.replace(/[^0-9+]/g, '')}">${offer.seller.phone}</a></div>
-              <div><span class="label">Correo:</span><a href="mailto:${offer.seller.email}">${offer.seller.email}</a></div>
-            </div>
           </div>
         `;
         return div;
