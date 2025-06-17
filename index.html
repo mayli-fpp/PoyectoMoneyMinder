@@ -861,6 +861,8 @@
         </div>
     </header>
 
+    <!-- Existing sections for dashboard, savings, debts, reports, budgets -->
+
     <div id="dashboard-section" class="section active">
       <div class="container">
         <div class="dashboard">
@@ -1160,18 +1162,18 @@
       </div>
     </div>
 
-    <!-- seccion ofertas -->
+    <!-- New Offers Section -->
     <div id="offers-section" class="section" aria-label="Sección de Ofertas de Venta">
       <div id="offers-search-container">
         <span class="material-icons" aria-hidden="true">search</span>
         <input type="search" id="offers-search" placeholder="Buscar ofertas: motos, teléfonos, ropa, carros..." aria-label="Buscar ofertas" />
       </div>
       <div id="offers-list" tabindex="0" aria-live="polite">
-        <!-- aca se veran las ofertas -->
+        <!-- Inserts offer cards dynamically -->
       </div>
     </div>
 
-    <!-- Seccion contacto -->
+    <!-- New Contact Section -->
     <div id="contact-section" class="section" aria-label="Información de Contacto y Soporte">
       <h2>Contacto y Soporte</h2>
       <div class="contact-info">
@@ -1181,7 +1183,7 @@
         </div>
         <div class="contact-item">
           <span class="material-icons" aria-hidden="true">phone</span>
-          <a href="tel:+50212345678">+502 3218 1393</a>
+          <a href="tel:+50212345678">+502  32181393</a>
         </div>
         <div class="contact-item">
           <span class="material-icons" aria-hidden="true">location_on</span>
@@ -1202,7 +1204,7 @@
     </footer>
 
     <script>
-      // Categorias
+      // Categories for income and expenses
       const categories = {
         income: ['Salario', 'Inversiones', 'Regalos', 'Ventas', 'Otros'],
         expense: [
@@ -1569,7 +1571,7 @@
         }, 300);
       });
 
-      // Mostrar solo opcion seleccionada
+      // Show only the selected section and hide others
       function showSection(section) {
         // Ocultar todas las secciones
         dashboardSection.classList.remove('active');
@@ -1631,8 +1633,8 @@
         if (lowerName.includes('moto') || lowerName.includes('motocicleta')) {
           return `
 Ofertas relacionadas:
-- Motocicleta Italika 150Z – Q${amount.toFixed(2)} en <a href="https://www.elektra.com.gt/moto-de-trabajo-125z-italika-negra/p" target="_blank" rel="noopener noreferrer">Elektra</a> [Ver oferta]
-- Motos usadas desde Q${(amount * 0.75).toFixed(2)} en <a href="https://www.encuentra24.com/guatemala-es/autos-motos" target="_blank" rel="noopener noreferrer">Encuantra 24 Guatemala</a> [Ver oferta]
+- Motocicleta Italika 150Z – Q${amount.toFixed(2)} en <a href="https://www.elektra.com.gt/search/?query=motocicleta" target="_blank" rel="noopener noreferrer">Elektra</a> [Ver oferta]
+- Motos usadas desde Q${(amount * 0.75).toFixed(2)} en <a href="https://www.olx.com.gt/motocicletas" target="_blank" rel="noopener noreferrer">OLX Guatemala</a> [Ver oferta]
 - Accesorios para motocicletas en <a href="https://www.amazon.com.mx/s?k=accesorios+motocicleta" target="_blank" rel="noopener noreferrer">Amazon</a> [Ver oferta]
           `;
         }
@@ -1939,7 +1941,7 @@ Ofertas relacionadas:
         budgets.forEach((b) => {
           const percent = Math.min((b.spent / b.amount) * 100, 100).toFixed(1);
           const overBudget = b.spent > b.amount;
-          const warningThreshold = 80; // alerta de presupuesto
+          const warningThreshold = 80; // percent to trigger alert
 
           const budgetEl = document.createElement('div');
           budgetEl.classList.add('budget-item');
@@ -2086,7 +2088,7 @@ Ofertas relacionadas:
         updateCategories();
       }
 
-      // Chatbot Funcionalidades
+      // Chatbot functionality
       (() => {
         const chatbotMessages = document.getElementById('chatbot-messages');
         const chatbotInput = document.getElementById('chatbot-input');
@@ -2263,7 +2265,7 @@ Ofertas relacionadas:
         });
       }
 
-      // funcion ofertas 
+      // Offers section - Facebook Marketplace style
 
       let offers = [
         {
@@ -2388,7 +2390,7 @@ Ofertas relacionadas:
         filterAndRenderOffers(e.target.value);
       });
 
-      // Renderizar todas las ofertas inicialmente en local
+      // Render all offers initially at load
       renderOffers(offers);
     </script>
 </body>
