@@ -685,12 +685,12 @@
             display: flex;
             flex-direction: column;
             transition: box-shadow 0.3s ease;
+            outline: none;
         }
 
         .offer-card:hover,
         .offer-card:focus {
             box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-            outline: none;
         }
 
         .offer-image-container {
@@ -717,7 +717,10 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-start;
+            gap: 10px;
+            font-size: 14px;
+            color: var(--color-dark);
         }
 
         .offer-title {
@@ -730,25 +733,41 @@
         .offer-price {
             font-weight: 700;
             font-size: 16px;
-            margin-bottom: 8px;
             color: var(--color-accent);
         }
 
         .offer-category {
             font-size: 14px;
             color: var(--color-secondary);
-            margin-bottom: 8px;
             text-transform: capitalize;
+            margin-bottom: 6px;
         }
 
         .offer-description {
             font-size: 14px;
-            color: var(--color-dark);
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
+        }
+
+        .seller-info {
+            margin-top: 8px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+            font-size: 13px;
+            color: var(--color-dark);
+        }
+
+        .seller-info div {
+            margin-bottom: 4px;
+        }
+
+        .seller-info span.label {
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-right: 6px;
         }
 
         /* Responsive adjustments for offers */
