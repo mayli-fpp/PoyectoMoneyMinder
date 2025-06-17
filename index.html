@@ -6,7 +6,7 @@
     <meta name="description" content="finanzas" />
     <meta name="Autor" content="Mayli" />
     <link rel="stylesheet" href="style.css" />
-    <title>Money minder </title>
+    <title>Money minder</title>
     <style>
         :root {
             --color-primary: #9e2142;
@@ -685,12 +685,12 @@
             display: flex;
             flex-direction: column;
             transition: box-shadow 0.3s ease;
-            outline: none;
         }
 
         .offer-card:hover,
         .offer-card:focus {
             box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            outline: none;
         }
 
         .offer-image-container {
@@ -717,10 +717,7 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
-            gap: 10px;
-            font-size: 14px;
-            color: var(--color-dark);
+            justify-content: space-between;
         }
 
         .offer-title {
@@ -733,41 +730,25 @@
         .offer-price {
             font-weight: 700;
             font-size: 16px;
+            margin-bottom: 8px;
             color: var(--color-accent);
         }
 
         .offer-category {
             font-size: 14px;
             color: var(--color-secondary);
+            margin-bottom: 8px;
             text-transform: capitalize;
-            margin-bottom: 6px;
         }
 
         .offer-description {
             font-size: 14px;
+            color: var(--color-dark);
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
-        }
-
-        .seller-info {
-            margin-top: 8px;
-            padding-top: 10px;
-            border-top: 1px solid #ddd;
-            font-size: 13px;
-            color: var(--color-dark);
-        }
-
-        .seller-info div {
-            margin-bottom: 4px;
-        }
-
-        .seller-info span.label {
-            font-weight: 600;
-            color: var(--color-primary);
-            margin-right: 6px;
         }
 
         /* Responsive adjustments for offers */
@@ -779,6 +760,52 @@
                 max-width: 100%;
                 margin-bottom: 20px;
             }
+        }
+
+        /* Contact Section Styling */
+        #contact-section {
+            display: none;
+            padding: 30px 20px;
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            color: var(--color-dark);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        #contact-section.active {
+            display: block;
+        }
+        #contact-section h2 {
+            margin-bottom: 20px;
+            color: var(--color-primary);
+        }
+        #contact-section p {
+            margin-bottom: 12px;
+        }
+        #contact-section a {
+            color: var(--color-secondary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        #contact-section a:hover,
+        #contact-section a:focus {
+            text-decoration: underline;
+        }
+        #contact-section .contact-info {
+            margin-bottom: 20px;
+        }
+        #contact-section .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        #contact-section .material-icons {
+            font-size: 24px;
+            color: var(--color-primary);
         }
     </style>
 
@@ -1061,6 +1088,19 @@
         </div>
       </div>
 
+      <div class="dashboard">
+        <div class="card">
+          <div class="card-header">
+            <h2>Reportes / Historial</h2>
+          </div>
+          <p style="padding: 20px;">
+            Aquí podrás consultar reportes detallados de tus ingresos, gastos y transacciones por categoría.
+            (Funcionalidad en desarrollo)
+          </p>
+        </div>
+      </div>
+    </div>
+
     <!-- Sección de Presupuestos -->
     <div id="budgets-section" class="section">
       <div class="card">
@@ -1137,7 +1177,7 @@
         </div>
         <div class="contact-item">
           <span class="material-icons" aria-hidden="true">phone</span>
-          <a href="tel:+50212345678">+502 3218 1393</a>
+          <a href="tel:+50212345678">+502 1234 5678</a>
         </div>
         <div class="contact-item">
           <span class="material-icons" aria-hidden="true">location_on</span>
@@ -1587,8 +1627,8 @@
         if (lowerName.includes('moto') || lowerName.includes('motocicleta')) {
           return `
 Ofertas relacionadas:
-- Motocicleta Italika 150Z – Q${amount.toFixed(2)} en <a href="https://www.elektra.com.gt/moto-de-trabajo-125z-italika-negra/p" rel="noopener noreferrer">Elektra</a> [Ver oferta]
-- Motos usadas desde Q${(amount * 0.75).toFixed(2)} en <a href="https://www.encuentra24.com/guatemala-es/autos-motos" target="_blank" rel="noopener noreferrer">OLX Guatemala</a> [Ver oferta]
+- Motocicleta Italika 150Z – Q${amount.toFixed(2)} en <a href="https://www.elektra.com.gt/search/?query=motocicleta" target="_blank" rel="noopener noreferrer">Elektra</a> [Ver oferta]
+- Motos usadas desde Q${(amount * 0.75).toFixed(2)} en <a href="https://www.olx.com.gt/motocicletas" target="_blank" rel="noopener noreferrer">OLX Guatemala</a> [Ver oferta]
 - Accesorios para motocicletas en <a href="https://www.amazon.com.mx/s?k=accesorios+motocicleta" target="_blank" rel="noopener noreferrer">Amazon</a> [Ver oferta]
           `;
         }
@@ -2228,12 +2268,7 @@ Ofertas relacionadas:
           description: "Motocicleta Italika en excelente estado, modelo 2020, bajo kilometraje.",
           price: 13500,
           category: "motos",
-          image: "https://somosmoto.pe/images/models/gallery/italika-150sz-2018-gallery-578a72.jpg",
-          seller: {
-            name: "Juan Pérez",
-            phone: "+502 3218 1393",
-            email: "juanperez@gmail.com"
-          }
+          image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/3e33dd73-5f6c-4298-9792-ff272e96e689.png",
         },
         {
           id: 2,
@@ -2241,12 +2276,7 @@ Ofertas relacionadas:
           description: "Teléfono Apple iPhone 13 Pro, 128GB, color plata, casi nuevo.",
           price: 8500,
           category: "teléfonos",
-          image: "https://img.pccomponentes.com/articles/57/578903/1819-apple-iphone-13-pro-max-256gb-plata-libre.jpg",
-          seller: {
-            name: "María Gómez",
-            phone: "+502 3218 1393",
-            email: "mariagomez@gmail.com"
-          }
+          image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/762df5f4-1d99-4f2b-a076-e9e2a016144b.png",
         },
         {
           id: 3,
@@ -2254,12 +2284,7 @@ Ofertas relacionadas:
           description: "Chaqueta de cuero auténtico para hombre, talla M, color negro.",
           price: 1200,
           category: "ropa",
-          image: "https://www.cueroshazard.com/wp-content/uploads/Chaqueta-Cuero-Negro-con-bolsillos.jpg",
-          seller: {
-            name: "Carlos López",
-            phone: "+502 5555 7890",
-            email: "carloslopez@gmail.com"
-          }
+          image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/aeda3788-cef1-4bd8-b643-d207f902e850.png",
         },
         {
           id: 4,
@@ -2267,12 +2292,7 @@ Ofertas relacionadas:
           description: "Carro usado en buen estado, gasolina, transmisión automática.",
           price: 67500,
           category: "carros",
-          image: "https://www.motortrend.com/uploads/sites/10/2015/11/2015-toyota-corolla-l-at-sedan-angular-front.png?fit=around%7C875:492.1875",
-          seller: {
-            name: "Ana Martínez",
-            phone: "+502 5555 2345",
-            email: "anamartinez@gmail.com"
-          }
+          image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b62efc61-fc61-49c8-975c-1c200823fdfe.png",
         },
         {
           id: 5,
@@ -2280,12 +2300,7 @@ Ofertas relacionadas:
           description: "Smartphone Samsung Galaxy S21, desbloqueado, 256GB.",
           price: 7500,
           category: "teléfonos",
-          image: "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/6446/6446739_sd.jpg",
-          seller: {
-            name: "Luis Fernández",
-            phone: "+502 5555 3456",
-            email: "luisfernandez@gmail.com"
-          }
+          image: "https://placehold.co/400x300?text=Samsung+Galaxy+S21",
         },
       ];
 
@@ -2305,11 +2320,6 @@ Ofertas relacionadas:
             <div class="offer-price">Q${offer.price.toLocaleString('es-GT')}</div>
             <div class="offer-category">${offer.category}</div>
             <div class="offer-description">${offer.description}</div>
-            <div class="seller-info" aria-label="Información del vendedor">
-              <div><span class="label">Vendedor:</span>${offer.seller.name}</div>
-              <div><span class="label">Teléfono:</span><a href="tel:${offer.seller.phone.replace(/[^0-9+]/g, '')}">${offer.seller.phone}</a></div>
-              <div><span class="label">Correo:</span><a href="mailto:${offer.seller.email}">${offer.seller.email}</a></div>
-            </div>
           </div>
         `;
         return div;
