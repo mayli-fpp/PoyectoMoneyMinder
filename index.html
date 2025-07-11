@@ -1290,12 +1290,20 @@
                         <input type="password" id="reg-confirm-password" placeholder="Repite tu contraseña" required />
                     </div>
                     <div class="form-group">
-                        <label for="reg-role">Tipo de Cuenta</label>
-                        <select id="reg-role" required>
-                            <option value="user">Usuario</option>
-                            <option value="partner">Socio</option>
-                        </select>
-                    </div>
+                    <label for="reg-phone">Teléfono</label>
+                    <input type="tel" id="reg-phone" placeholder="Ingresa tu número de teléfono" required />
+                </div>
+                <div class="form-group">
+                    <label for="reg-email">Correo Electrónico</label>
+                    <input type="email" id="reg-email" placeholder="Ingresa tu correo electrónico" required />
+                </div>
+                <div class="form-group">
+                    <label for="reg-role">Tipo de Cuenta</label>
+                    <select id="reg-role" required>
+                        <option value="user">Usuario</option>
+                        <option value="partner">Socio</option>
+                    </select>
+                </div>
                     <button type="submit">Crear Cuenta</button>
                     <p id="register-message" style="margin-top: 10px;"></p>
                     <p style="margin-top: 15px;">¿Ya tienes cuenta? <a href="#" id="link-to-login">Inicia sesión aquí</a></p>
@@ -2406,8 +2414,8 @@ Ofertas relacionadas:
           image: document.getElementById('offer-image').value || 'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/405842fe-32bd-4599-9f18-8a1932899dd8.png',
           seller: {
             name: currentUser.username,
-            phone: '+502 0000 0000', // Esto debería venir de un perfil completo
-            email: currentUser.username + '@ejemplo.com'
+            phone: currentUser.phone || '+502 0000 0000',
+            email: currentUser.email || currentUser.username + '@ejemplo.com'
           }
         };
 
@@ -2597,9 +2605,27 @@ Ofertas relacionadas:
       // Si no hay usuarios registrados, añadir algunos de ejemplo
       if (registeredUsers.length === 0) {
         registeredUsers = [
-          { username: 'usuario1', password: 'password123', role: 'user' },
-          { username: 'socio1', password: 'socio123', role: 'partner' },
-          { username: 'admin', password: 'admin123', role: 'admin' }
+          { 
+            username: 'usuario1', 
+            password: 'password123', 
+            role: 'user',
+            phone: '+502 12345678',
+            email: 'usuario1@ejemplo.com' 
+          },
+          { 
+            username: 'socio1', 
+            password: 'socio123', 
+            role: 'partner',
+            phone: '+502 87654321',
+            email: 'socio1@ejemplo.com'
+          },
+          { 
+            username: 'admin', 
+            password: 'admin123', 
+            role: 'admin',
+            phone: '+502 11223344',
+            email: 'admin@ejemplo.com'
+          }
         ];
         localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
       }
@@ -2668,7 +2694,9 @@ Ofertas relacionadas:
           return;
         }
 
-        const newUser = { username, password, role };
+        const phone = document.getElementById('reg-phone').value;
+        const email = document.getElementById('reg-email').value;
+        const newUser = { username, password, role, phone, email };
         registeredUsers.push(newUser);
         saveRegisteredUsers();
 
