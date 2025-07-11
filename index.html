@@ -146,6 +146,14 @@
             background-color: #c0392b;
         }
 
+        .btn-accent {
+            background-color: var(--color-accent);
+        }
+
+        .btn-accent:hover {
+            background-color: #219653;
+        }
+
         .transactions {
             max-height: 300px;
             overflow-y: auto;
@@ -2727,6 +2735,38 @@ Ofertas relacionadas:
 
       // Llamar a updateLoginStatus al cargar la página para reflejar el estado actual
       updateLoginStatus();
+
+      // Nueva oferta button functionality
+      const newOfferBtn = document.getElementById('new-offer-btn');
+      newOfferBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('offer-title').focus();
+      });
+
+      // Update login status to show/hide new offer button
+      function updateLoginStatus() {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (currentUser) {
+          menuLogin.textContent = `Cerrar Sesión (${currentUser.username})`;
+          menuLogin.removeEventListener('click', handleLoginClick);
+          menuLogin.addEventListener('click', handleLogoutClick);
+          menuRegister.style.display = 'none';
+          
+          // Show partner sections if applicable
+          if (currentUser.role === 'partner') {
+            addOfferSection.style.display = 'block';
+            newOfferBtn.style.display = 'block';
+          } else {
+            newOfferBtn.style.display = 'none';
+          }
+        } else {
+          menuLogin.textContent = 'Iniciar Sesión';
+          menuLogin.removeEventListener('click', handleLogoutClick);
+          menuLogin.addEventListener('click', handleLoginClick);
+          menuRegister.style.display = 'block';
+          newOfferBtn.style.display = 'none';
+        }
+      }
     </script>
 </body>
 </html>
