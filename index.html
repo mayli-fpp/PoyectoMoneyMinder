@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="finanzas" />
     <meta name="Autor" content="Mayli" />
-    <link rel="stylesheet" href="style.css" />
     <title>Money minder</title>
     <style>
         :root {
@@ -855,6 +854,7 @@
                         <a href="#" id="menu-offers" role="menuitem" tabindex="0">Ofertas</a>
                         <a href="#" id="menu-contact" role="menuitem" tabindex="0">Contacto / Soporte</a>
                         <a href="#" id="chatbot" role="menuitem" tabindex="0">Chatbot</a>
+                        <a href="#" id="menu-login" role="menuitem" tabindex="0">Iniciar Sesión</a> <!-- Nuevo enlace -->
                     </div>
                 </div>
             </div>
@@ -1199,6 +1199,29 @@
       <p>Estamos aquí para ayudarte con cualquier consulta o problema que tengas. No dudes en contactarnos.</p>
     </div>
 
+    <!-- Sección de Inicio de Sesión -->
+    <div id="login-section" class="section" aria-label="Inicio de Sesión de Usuarios y Socios">
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Iniciar Sesión</h2>
+                </div>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="username">Usuario</label>
+                        <input type="text" id="username" placeholder="Ingresa tu usuario" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" placeholder="Ingresa tu contraseña" required />
+                    </div>
+                    <button type="submit">Acceder</button>
+                    <p id="login-message" style="color: var(--color-danger); margin-top: 10px;"></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <footer>
       <div class="container">
         <p>Mayli &copy; 2025 - Finanzas personales</p>
@@ -1466,10 +1489,12 @@
       const menuBudgets = document.getElementById('menu-budgets');
       const menuOffers = document.getElementById('menu-offers');
       const menuContact = document.getElementById('menu-contact');
+      const menuLogin = document.getElementById('menu-login'); // Nuevo
       const reportsSection = document.getElementById('reports-section');
       const budgetsSection = document.getElementById('budgets-section');
       const offersSection = document.getElementById('offers-section');
       const contactSection = document.getElementById('contact-section');
+      const loginSection = document.getElementById('login-section'); // Nuevo
 
       // Secciones
       const dashboardSection = document.getElementById('dashboard-section');
@@ -1545,8 +1570,8 @@
       menuBudgets.addEventListener('click', function (e) {
         e.preventDefault();
         showSection(budgetsSection);
-        budgetSearchInput.value = '';
-        filterAndRenderBudgets('');
+        // budgetSearchInput.value = ''; // Comentado porque budgetSearchInput no está definido
+        // filterAndRenderBudgets(''); // Comentado porque filterAndRenderBudgets no está definido
         budgetList.focus();
       });
 
@@ -1573,6 +1598,13 @@
         }, 300);
       });
 
+      // Login menu link
+      menuLogin.addEventListener('click', function (e) { // Nuevo
+        e.preventDefault();
+        showSection(loginSection);
+        document.getElementById('username').focus(); // Enfocar el campo de usuario al mostrar
+      });
+
       // Show only the selected section and hide others
       function showSection(section) {
         // Ocultar todas las secciones
@@ -1584,6 +1616,7 @@
         chatbotSection.classList.remove('active');
         offersSection.classList.remove('active');
         contactSection.classList.remove('active');
+        loginSection.classList.remove('active'); // Nuevo
 
         // Mostrar la sección seleccionada
         section.classList.add('active');
@@ -2394,7 +2427,86 @@ Ofertas relacionadas:
 
       // Render all offers initially at load
       renderOffers(offers);
+
+      // Lógica de Inicio de Sesión
+      const loginForm = document.getElementById('login-form');
+      const usernameInput = document.getElementById('username');
+      const passwordInput = document.getElementById('password');
+      const loginMessage = document.getElementById('login-message');
+
+      // Usuarios de ejemplo (en una aplicación real, esto vendría de un servidor/BD)
+      const users = [
+        { username: 'usuario1', password: 'password123', role: 'user' },
+        { username: 'socio1', password: 'socio123', role: 'partner' },
+        { username: 'admin', password: 'admin123', role: 'admin' }
+      ];
+
+      loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const username = usernameInput.value;
+        const password = passwordInput.value;
+
+        const foundUser = users.find(user => user.username === username && user.password === password);
+
+        if (foundUser) {
+          loginMessage.style.color = 'var(--color-accent)';
+          loginMessage.textContent = `¡Bienvenido, ${foundUser.username}! Has iniciado sesión como ${foundUser.role}.`;
+          // Aquí podrías guardar el estado de la sesión (ej. en localStorage o sessionStorage)
+          // y redirigir al usuario a una página o sección específica.
+          localStorage.setItem('currentUser', JSON.stringify(foundUser));
+          
+          // Opcional: Ocultar el formulario de login y mostrar un mensaje de éxito
+          // o redirigir al dashboard.
+          setTimeout(() => {
+            showSection(dashboardSection); // Redirigir al dashboard
+            loginForm.reset(); // Limpiar el formulario
+            loginMessage.textContent = ''; // Limpiar el mensaje
+            updateLoginStatus(); // Actualizar el estado de login en el menú
+          }, 1500);
+
+        } else {
+          loginMessage.style.color = 'var(--color-danger)';
+          loginMessage.textContent = 'Usuario o contraseña incorrectos.';
+        }
+      });
+
+      // Función para actualizar el estado de login en el menú (opcional)
+      function updateLoginStatus() {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (currentUser) {
+          menuLogin.textContent = `Cerrar Sesión (${currentUser.username})`;
+          menuLogin.removeEventListener('click', handleLoginClick); // Remover el listener anterior
+          menuLogin.addEventListener('click', handleLogoutClick); // Añadir listener para cerrar sesión
+        } else {
+          menuLogin.textContent = 'Iniciar Sesión';
+          menuLogin.removeEventListener('click', handleLogoutClick); // Remover el listener anterior
+          menuLogin.addEventListener('click', handleLoginClick); // Añadir listener para iniciar sesión
+        }
+      }
+
+      // Manejadores de eventos para el botón de login/logout
+      function handleLoginClick(e) {
+        e.preventDefault();
+        showSection(loginSection);
+        document.getElementById('username').focus();
+      }
+
+      function handleLogoutClick(e) {
+        e.preventDefault();
+        if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+          localStorage.removeItem('currentUser');
+          alert('Sesión cerrada.');
+          updateLoginStatus();
+          showSection(dashboardSection); // Redirigir al dashboard
+        }
+      }
+
+      // Asignar el manejador inicial al cargar la página
+      menuLogin.addEventListener('click', handleLoginClick);
+
+      // Llamar a updateLoginStatus al cargar la página para reflejar el estado actual
+      updateLoginStatus();
     </script>
 </body>
 </html>
-
