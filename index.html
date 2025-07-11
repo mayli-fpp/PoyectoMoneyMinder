@@ -854,7 +854,8 @@
                         <a href="#" id="menu-offers" role="menuitem" tabindex="0">Ofertas</a>
                         <a href="#" id="menu-contact" role="menuitem" tabindex="0">Contacto / Soporte</a>
                         <a href="#" id="chatbot" role="menuitem" tabindex="0">Chatbot</a>
-                        <a href="#" id="menu-login" role="menuitem" tabindex="0">Iniciar Sesión</a> <!-- Nuevo enlace -->
+                        <a href="#" id="menu-login" role="menuitem" tabindex="0">Iniciar Sesión</a>
+                        <a href="#" id="menu-register" role="menuitem" tabindex="0">Registrarse</a> <!-- Nuevo enlace de registro -->
                     </div>
                 </div>
             </div>
@@ -1217,6 +1218,42 @@
                     </div>
                     <button type="submit">Acceder</button>
                     <p id="login-message" style="color: var(--color-danger); margin-top: 10px;"></p>
+                    <p style="margin-top: 15px;">¿No tienes cuenta? <a href="#" id="link-to-register">Regístrate aquí</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de Registro -->
+    <div id="register-section" class="section" aria-label="Registro de Nueva Cuenta">
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Registrarse</h2>
+                </div>
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="reg-username">Usuario</label>
+                        <input type="text" id="reg-username" placeholder="Elige un nombre de usuario" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-password">Contraseña</label>
+                        <input type="password" id="reg-password" placeholder="Crea una contraseña" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-confirm-password">Confirmar Contraseña</label>
+                        <input type="password" id="reg-confirm-password" placeholder="Repite tu contraseña" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-role">Tipo de Cuenta</label>
+                        <select id="reg-role" required>
+                            <option value="user">Usuario</option>
+                            <option value="partner">Socio</option>
+                        </select>
+                    </div>
+                    <button type="submit">Crear Cuenta</button>
+                    <p id="register-message" style="margin-top: 10px;"></p>
+                    <p style="margin-top: 15px;">¿Ya tienes cuenta? <a href="#" id="link-to-login">Inicia sesión aquí</a></p>
                 </form>
             </div>
         </div>
@@ -1489,12 +1526,14 @@
       const menuBudgets = document.getElementById('menu-budgets');
       const menuOffers = document.getElementById('menu-offers');
       const menuContact = document.getElementById('menu-contact');
-      const menuLogin = document.getElementById('menu-login'); // Nuevo
+      const menuLogin = document.getElementById('menu-login');
+      const menuRegister = document.getElementById('menu-register'); // Nuevo
       const reportsSection = document.getElementById('reports-section');
       const budgetsSection = document.getElementById('budgets-section');
       const offersSection = document.getElementById('offers-section');
       const contactSection = document.getElementById('contact-section');
-      const loginSection = document.getElementById('login-section'); // Nuevo
+      const loginSection = document.getElementById('login-section');
+      const registerSection = document.getElementById('register-section'); // Nuevo
 
       // Secciones
       const dashboardSection = document.getElementById('dashboard-section');
@@ -1598,11 +1637,14 @@
         }, 300);
       });
 
-      // Login menu link
-      menuLogin.addEventListener('click', function (e) { // Nuevo
+      // Login menu link (manejador inicial)
+      menuLogin.addEventListener('click', handleLoginClick);
+
+      // Register menu link
+      menuRegister.addEventListener('click', function (e) { // Nuevo
         e.preventDefault();
-        showSection(loginSection);
-        document.getElementById('username').focus(); // Enfocar el campo de usuario al mostrar
+        showSection(registerSection);
+        document.getElementById('reg-username').focus(); // Enfocar el campo de usuario al mostrar
       });
 
       // Show only the selected section and hide others
@@ -1616,7 +1658,8 @@
         chatbotSection.classList.remove('active');
         offersSection.classList.remove('active');
         contactSection.classList.remove('active');
-        loginSection.classList.remove('active'); // Nuevo
+        loginSection.classList.remove('active');
+        registerSection.classList.remove('active'); // Nuevo
 
         // Mostrar la sección seleccionada
         section.classList.add('active');
@@ -2428,36 +2471,53 @@ Ofertas relacionadas:
       // Render all offers initially at load
       renderOffers(offers);
 
-      // Lógica de Inicio de Sesión
+      // Lógica de Inicio de Sesión y Registro
       const loginForm = document.getElementById('login-form');
       const usernameInput = document.getElementById('username');
       const passwordInput = document.getElementById('password');
       const loginMessage = document.getElementById('login-message');
+      const linkToRegister = document.getElementById('link-to-register'); // Nuevo enlace en login
 
-      // Usuarios de ejemplo (en una aplicación real, esto vendría de un servidor/BD)
-      const users = [
-        { username: 'usuario1', password: 'password123', role: 'user' },
-        { username: 'socio1', password: 'socio123', role: 'partner' },
-        { username: 'admin', password: 'admin123', role: 'admin' }
-      ];
+      const registerForm = document.getElementById('register-form'); // Nuevo formulario de registro
+      const regUsernameInput = document.getElementById('reg-username');
+      const regPasswordInput = document.getElementById('reg-password');
+      const regConfirmPasswordInput = document.getElementById('reg-confirm-password');
+      const regRoleSelect = document.getElementById('reg-role');
+      const registerMessage = document.getElementById('register-message');
+      const linkToLogin = document.getElementById('link-to-login'); // Nuevo enlace en registro
 
+      // Cargar usuarios existentes o inicializar con un array vacío
+      let registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+
+      // Si no hay usuarios registrados, añadir algunos de ejemplo
+      if (registeredUsers.length === 0) {
+        registeredUsers = [
+          { username: 'usuario1', password: 'password123', role: 'user' },
+          { username: 'socio1', password: 'socio123', role: 'partner' },
+          { username: 'admin', password: 'admin123', role: 'admin' }
+        ];
+        localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+      }
+
+      // Función para guardar usuarios en localStorage
+      function saveRegisteredUsers() {
+        localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+      }
+
+      // Lógica del formulario de LOGIN
       loginForm.addEventListener('submit', function(e) {
         e.preventDefault();
 
         const username = usernameInput.value;
         const password = passwordInput.value;
 
-        const foundUser = users.find(user => user.username === username && user.password === password);
+        const foundUser = registeredUsers.find(user => user.username === username && user.password === password);
 
         if (foundUser) {
           loginMessage.style.color = 'var(--color-accent)';
           loginMessage.textContent = `¡Bienvenido, ${foundUser.username}! Has iniciado sesión como ${foundUser.role}.`;
-          // Aquí podrías guardar el estado de la sesión (ej. en localStorage o sessionStorage)
-          // y redirigir al usuario a una página o sección específica.
           localStorage.setItem('currentUser', JSON.stringify(foundUser));
           
-          // Opcional: Ocultar el formulario de login y mostrar un mensaje de éxito
-          // o redirigir al dashboard.
           setTimeout(() => {
             showSection(dashboardSection); // Redirigir al dashboard
             loginForm.reset(); // Limpiar el formulario
@@ -2471,6 +2531,70 @@ Ofertas relacionadas:
         }
       });
 
+      // Lógica del formulario de REGISTRO
+      registerForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const username = regUsernameInput.value.trim();
+        const password = regPasswordInput.value;
+        const confirmPassword = regConfirmPasswordInput.value;
+        const role = regRoleSelect.value;
+
+        registerMessage.style.color = 'var(--color-danger)'; // Color por defecto para errores
+
+        if (username === '' || password === '' || confirmPassword === '') {
+          registerMessage.textContent = 'Por favor, completa todos los campos.';
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          registerMessage.textContent = 'Las contraseñas no coinciden.';
+          return;
+        }
+
+        if (password.length < 6) {
+            registerMessage.textContent = 'La contraseña debe tener al menos 6 caracteres.';
+            return;
+        }
+
+        const userExists = registeredUsers.some(user => user.username === username);
+        if (userExists) {
+          registerMessage.textContent = 'El nombre de usuario ya existe. Por favor, elige otro.';
+          return;
+        }
+
+        const newUser = { username, password, role };
+        registeredUsers.push(newUser);
+        saveRegisteredUsers();
+
+        registerMessage.style.color = 'var(--color-accent)';
+        registerMessage.textContent = `¡Cuenta creada con éxito para ${username} como ${role}! Ahora puedes iniciar sesión.`;
+        
+        // Opcional: Limpiar el formulario y redirigir al login
+        setTimeout(() => {
+          registerForm.reset();
+          registerMessage.textContent = '';
+          showSection(loginSection); // Redirigir a la sección de login
+        }, 2000);
+      });
+
+      // Enlaces entre login y registro
+      linkToRegister.addEventListener('click', function(e) {
+        e.preventDefault();
+        showSection(registerSection);
+        document.getElementById('reg-username').focus();
+        loginForm.reset(); // Limpiar formulario de login
+        loginMessage.textContent = ''; // Limpiar mensaje de login
+      });
+
+      linkToLogin.addEventListener('click', function(e) {
+        e.preventDefault();
+        showSection(loginSection);
+        document.getElementById('username').focus();
+        registerForm.reset(); // Limpiar formulario de registro
+        registerMessage.textContent = ''; // Limpiar mensaje de registro
+      });
+
       // Función para actualizar el estado de login en el menú (opcional)
       function updateLoginStatus() {
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -2478,10 +2602,12 @@ Ofertas relacionadas:
           menuLogin.textContent = `Cerrar Sesión (${currentUser.username})`;
           menuLogin.removeEventListener('click', handleLoginClick); // Remover el listener anterior
           menuLogin.addEventListener('click', handleLogoutClick); // Añadir listener para cerrar sesión
+          menuRegister.style.display = 'none'; // Ocultar enlace de registro si ya está logueado
         } else {
           menuLogin.textContent = 'Iniciar Sesión';
           menuLogin.removeEventListener('click', handleLogoutClick); // Remover el listener anterior
           menuLogin.addEventListener('click', handleLoginClick); // Añadir listener para iniciar sesión
+          menuRegister.style.display = 'block'; // Mostrar enlace de registro
         }
       }
 
@@ -2501,9 +2627,6 @@ Ofertas relacionadas:
           showSection(dashboardSection); // Redirigir al dashboard
         }
       }
-
-      // Asignar el manejador inicial al cargar la página
-      menuLogin.addEventListener('click', handleLoginClick);
 
       // Llamar a updateLoginStatus al cargar la página para reflejar el estado actual
       updateLoginStatus();
