@@ -6,21 +6,24 @@
     <meta name="description" content="finanzas" />
     <meta name="Autor" content="Mayli" />
     <title>Money minder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --color-primary: #9e214f;
+            --color-primary: #9e2160;
             --color-secondary: #3498db;
             --color-accent: #27ae60;
             --color-danger: #e74c3c;
             --color-warning: #f39c12;
             --color-light: #f5f5f5;
             --color-dark: #333;
-            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.15);
             --chatbot-bg: #ffffff;
             --chatbot-bubble-bg-user: #3498db;
             --chatbot-bubble-bg-bot: #f0f0f0;
             --chatbot-text-user: #fff;
             --chatbot-text-bot: #333;
+            --border-radius: 12px;
         }
 
         /* Global resets and fonts */
@@ -28,55 +31,48 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            background: var(--body-bg); /* Aplicar el degradado */
+            background-color: #223661;
             color: var(--color-dark);
-            min-height: 100vh; /* Asegura que el degradado cubra toda la altura */
-            display: flex;
-            flex-direction: column;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            flex-grow: 1; /* Permite que el contenido crezca y empuje el footer hacia abajo */
         }
 
         header {
             background-color: var(--color-primary);
             color: white;
-            padding: 25px 0; /* Más padding */
-            margin-bottom: 40px; /* Más espacio */
+            padding: 20px 0;
+            margin-bottom: 30px;
             box-shadow: var(--shadow);
-            position: sticky; /* Sticky header */
-            top: 0;
-            z-index: 100;
+            border-bottom-left-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
         }
 
-        h1 {
-            font-size: 2.8em; /* Más grande */
-            letter-spacing: 1px;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
-        }
-
-        header p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-
+        h1,
         h2,
         h3 {
             margin-bottom: 15px;
+            font-weight: 600;
+            color: white; /* Ensure headers in primary background are white */
+        }
+        header h1, header p {
+            color: white;
         }
 
         .dashboard {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 20px;
+            gap: 25px;
         }
 
         @media (min-width: 768px) {
@@ -92,79 +88,84 @@
         }
 
         .card {
-            background-color: var(--card-bg);
-            border-radius: 15px; /* Bordes más redondeados */
-            padding: 25px; /* Más padding */
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
             box-shadow: var(--shadow);
-            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animación al pasar el ratón */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .card:hover {
-            transform: translateY(-5px); /* Efecto de elevación */
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
         }
 
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px; /* Más espacio */
-            border-bottom: 2px solid var(--color-light); /* Borde más grueso y claro */
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
             padding-bottom: 15px;
         }
-
         .card-header h2 {
-            color: var(--color-primary); /* Título de tarjeta con color primario */
-            font-size: 1.8em;
+            color: var(--color-primary);
+            margin-bottom: 0;
         }
 
         .balance {
-            font-size: 3em; /* Más grande */
-            font-weight: bold;
+            font-size: 32px;
+            font-weight: 700;
             margin-bottom: 10px;
-            color: var(--color-dark); /* Color por defecto */
+        }
+
+        .summary div {
+            font-size: 16px;
+            margin-bottom: 5px;
         }
 
         .positive {
             color: var(--color-accent);
+            font-weight: 600;
         }
 
         .negative {
             color: var(--color-danger);
-        }
-
-        .summary div {
-            font-size: 1.1em;
-            margin-bottom: 5px;
+            font-weight: 600;
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             font-weight: 500;
+            color: var(--color-dark);
+            font-size: 15px;
         }
 
         input,
         select,
         textarea {
             width: 100%;
-            padding: 12px; /* Más padding */
-            border: 1px solid var(--color-light); /* Borde más suave */
-            border-radius: 8px; /* Bordes redondeados */
-            font-size: 1em;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            background-color: #F8F8F8; /* Fondo ligeramente gris */
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            background-color: var(--color-light);
         }
 
         input:focus,
         select:focus,
         textarea:focus {
             border-color: var(--color-secondary);
-            box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.2); /* Sombra de enfoque */
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
             outline: none;
         }
 
@@ -172,20 +173,26 @@
             background-color: var(--color-secondary);
             color: white;
             border: none;
-            padding: 12px 25px; /* Más padding */
-            border-radius: 8px; /* Bordes redondeados */
+            padding: 12px 20px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 1.1em;
+            font-size: 16px;
             font-weight: 600;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            min-height: 48px; /* Mayor altura para accesibilidad */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.2s;
+            min-height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         button:hover {
-            background-color: #00ACC1; /* Tono más oscuro al pasar el ratón */
+            background-color: #2980b9;
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        button:active {
+            transform: translateY(0);
         }
 
         .btn-danger {
@@ -193,7 +200,7 @@
         }
 
         .btn-danger:hover {
-            background-color: #D32F2F;
+            background-color: #c0392b;
         }
 
         .btn-accent {
@@ -201,83 +208,68 @@
         }
 
         .btn-accent:hover {
-            background-color: #689F38;
-        }
-
-        .btn-small {
-            padding: 8px 15px;
-            font-size: 0.9em;
-            border-radius: 6px;
-            min-height: 38px;
+            background-color: #219653;
         }
 
         .transactions {
-            max-height: 350px; /* Un poco más de altura */
+            max-height: 350px;
             overflow-y: auto;
-            padding-right: 10px; /* Espacio para la barra de desplazamiento */
+            padding-right: 10px; /* For scrollbar */
         }
 
         .transaction-item {
-            padding: 15px; /* Más padding */
-            border-bottom: 1px solid var(--color-light);
+            padding: 15px;
+            border-bottom: 1px solid #eee;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: var(--card-bg); /* Fondo blanco para cada item */
-            border-radius: 8px;
-            margin-bottom: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Sombra sutil */
             transition: background-color 0.2s ease;
-        }
-
-        .transaction-item:hover {
-            background-color: #F5F5F5; /* Ligero cambio de color al pasar el ratón */
         }
 
         .transaction-item:last-child {
             border-bottom: none;
         }
-
-        .transaction-item strong {
-            color: var(--color-primary);
-            font-size: 1.1em;
+        .transaction-item:hover {
+            background-color: #f9f9f9;
         }
 
         .transaction-item .category {
-            background-color: var(--color-secondary); /* Color de categoría más llamativo */
-            color: white;
+            background-color: #eef;
+            color: var(--color-secondary);
             padding: 4px 10px;
-            border-radius: 20px; /* Más redondeado */
-            font-size: 0.85em;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-top: 5px;
+            display: inline-block;
+        }
+        .transaction-item strong {
             font-weight: 600;
-            margin-left: 10px;
+            color: var(--color-dark);
         }
 
         .chart-container {
-            height: 320px; /* Ajustar altura */
+            height: 300px;
             position: relative;
             display: flex;
-            justify-content: center;
             align-items: center;
-            background-color: var(--color-light); /* Fondo claro para el área del gráfico */
-            border-radius: 10px;
-        }
-
-        /* Estilos para las barras del gráfico */
-        .chart-container > div {
-            background-color: var(--card-bg); /* Fondo de las barras */
+            justify-content: center;
+            background-color: var(--color-light);
             border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            padding: 15px;
+        }
+        .chart-container p {
+            color: #666;
         }
 
         footer {
-            margin-top: 50px; /* Más espacio */
+            margin-top: 50px;
             text-align: center;
             padding: 25px;
             background-color: var(--color-primary);
             color: white;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            border-top-left-radius: var(--border-radius);
+            border-top-right-radius: var(--border-radius);
+            box-shadow: var(--shadow);
         }
 
         /* Estilos para el menú */
@@ -285,6 +277,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .main-menu {
@@ -296,47 +290,43 @@
             background-color: var(--color-secondary);
             color: white;
             border: none;
-            padding: 12px 20px;
+            padding: 10px 18px;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 1.1em;
+            font-size: 16px;
             display: flex;
             align-items: center;
             gap: 8px;
             min-height: 48px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-
-        .menu-button:hover {
-            background-color: #00ACC1;
-            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
 
         .menu-content {
             display: none;
             position: absolute;
             right: 0;
-            background-color: var(--card-bg);
-            min-width: 250px; /* Más ancho */
-            box-shadow: var(--shadow);
+            background-color: white;
+            min-width: 240px;
+            box-shadow: var(--shadow-hover);
             z-index: 10;
-            border-radius: 10px; /* Bordes más redondeados */
+            border-radius: var(--border-radius);
             overflow: hidden;
-            padding: 10px 0; /* Padding interno */
+            top: calc(100% + 10px); /* Position below button */
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
         }
 
         .menu-content a {
             color: var(--color-dark);
-            padding: 15px 20px; /* Más padding */
+            padding: 14px 20px;
             text-decoration: none;
-            display: flex; /* Para alinear iconos si se añaden */
-            align-items: center;
-            gap: 10px;
-            border-bottom: 1px solid var(--color-light);
-            min-height: 50px; /* Mayor altura */
-            font-size: 1.05em;
-            transition: background-color 0.2s ease, color 0.2s ease;
+            display: block;
+            border-bottom: 1px solid #f0f0f0;
+            min-height: 48px;
+            line-height: 20px;
+            transition: background-color 0.2s, color 0.2s;
+            font-weight: 500;
         }
 
         .menu-content a:last-child {
@@ -345,18 +335,22 @@
 
         .menu-content a:hover,
         .menu-content a:focus {
-            background-color: var(--color-light);
-            color: var(--color-primary);
+            background-color: var(--color-secondary);
+            color: white;
             outline: none;
         }
 
         .show {
             display: block;
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* Estilos para secciones */
         .section {
             display: none;
+            padding-top: 20px;
+            padding-bottom: 40px;
         }
 
         .section.active {
@@ -366,25 +360,27 @@
         /* Estilos para metas de ahorro */
         .progress-bar {
             width: 100%;
-            background-color: var(--color-light);
-            border-radius: 10px; /* Más redondeado */
-            margin: 12px 0;
-            height: 25px; /* Más alto */
-            overflow: hidden;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin: 15px 0;
             position: relative;
+            height: 25px;
+            overflow: hidden;
         }
 
         .progress {
             height: 100%;
             background-color: var(--color-accent);
             border-radius: 10px;
-            transition: width 0.5s ease-out; /* Transición más suave */
+            transition: width 0.5s ease;
             position: relative;
             display: flex;
             align-items: center;
             justify-content: flex-end;
             padding-right: 10px;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
         }
 
         .progress-text {
@@ -392,35 +388,33 @@
             right: 10px;
             color: #fff;
             font-weight: bold;
-            font-size: 0.9em;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            top: 50%;
+            transform: translateY(-50%);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
 
         .progress.warning {
             background-color: var(--color-warning);
         }
-
-        .progress.negative { /* Para presupuestos superados */
+        .progress.negative { /* For budgets over 100% */
             background-color: var(--color-danger);
         }
 
         .goal-item,
         .debt-item,
         .budget-item {
-            background-color: var(--card-bg);
-            border-radius: 12px;
+            background-color: #fefefe;
+            border-radius: var(--border-radius);
             padding: 20px;
-            margin-bottom: 15px;
-            border-left: 6px solid var(--color-secondary); /* Borde más grueso */
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-bottom: 20px;
+            border-left: 6px solid var(--color-secondary);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            transition: transform 0.2s ease;
         }
-
         .goal-item:hover,
         .debt-item:hover,
         .budget-item:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
         }
 
         .goal-actions,
@@ -428,11 +422,18 @@
         .budget-actions {
             display: flex;
             gap: 10px;
-            margin-top: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
         }
 
         .debt-item.paid {
             border-left: 6px solid var(--color-accent);
+        }
+
+        .btn-small {
+            padding: 8px 15px;
+            font-size: 14px;
+            min-height: 38px;
         }
 
         /* Budget alert style */
@@ -441,15 +442,16 @@
             font-weight: 700;
             margin-top: 10px;
             padding: 8px 12px;
-            background-color: #FFEBEE; /* Fondo suave para la alerta */
+            background-color: rgba(231, 76, 60, 0.1);
             border-radius: 6px;
             border: 1px solid var(--color-danger);
+            font-size: 14px;
         }
 
         /* Aumentar tamaño de botones para accesibilidad */
         button,
         .menu-content a {
-            min-height: 48px; /* Ajustado a 48px */
+            min-height: 48px;
         }
 
         /* Prevenir zoom al enfocar inputs en iOS */
@@ -462,101 +464,113 @@
         /* Modo oscuro automático */
         @media (prefers-color-scheme: dark) {
             body {  
-                background: linear-gradient(135deg, #1A237E 0%, #0D47A1 100%); /* Degradado oscuro */
-                color: #E0E0E0;
+                background-color: #1a1a2e;
+                color: #e0e0e0;
             }
             header,
             footer {
-                background-color: #4A148C; /* Púrpura oscuro para header/footer */
+                background-color: #6a1231;
                 color: #fff;
             }
             .card {
-                background-color: #2C2C2C; /* Fondo de tarjeta oscuro */
-                color: #E0E0E0;
-                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+                background-color: #2a2a4a;
+                color: #e0e0e0;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             }
             .card:hover {
-                box-shadow: 0 12px 25px rgba(0, 0, 0, 0.6);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            }
+            .card-header h2 {
+                color: var(--color-primary);
             }
             .menu-content {
-                background-color: #3A3A3A;
-                color: #E0E0E0;
+                background-color: #3a3a5a;
+                box-shadow: var(--shadow-hover);
             }
             .menu-content a {
-                color: #E0E0E0;
-                border-bottom: 1px solid #555;
+                color: #e0e0e0;
+                border-bottom: 1px solid #4a4a6a;
             }
             .menu-content a:hover {
-                background-color: #4A4A4A;
+                background-color: var(--color-secondary);
+                color: white;
             }
             .goal-item, .debt-item, .budget-item {
-                background-color: #3A3A3A;
-                color: #E0E0E0;
+                background-color: #3a3a5a;
+                color: #e0e0e0;
                 border-left-color: var(--color-secondary);
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            }
-            .goal-item:hover, .debt-item:hover, .budget-item:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             }
             input, select, textarea {
-                background-color: #3A3A3A;
-                border-color: #555;
-                color: #E0E0E0;
+                background-color: #4a4a6a;
+                border-color: #5a5a7a;
+                color: #e0e0e0;
             }
             input:focus, select:focus, textarea:focus {
-                box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.4);
+                border-color: var(--color-secondary);
+                box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.4);
             }
             .transaction-item {
-                background-color: #3A3A3A;
-                border-bottom-color: #555;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+                border-bottom-color: #4a4a6a;
             }
             .transaction-item:hover {
-                background-color: #4A4A4A;
-            }
-            .transaction-item strong {
-                color: var(--color-secondary);
+                background-color: #3a3a5a;
             }
             .transaction-item .category {
-                background-color: var(--color-primary);
+                background-color: #5a5a7a;
+                color: #e0e0e0;
             }
-            .chatbot-messages {
-                background: #2C2C2C;
+            .chart-container {
+                background-color: #3a3a5a;
             }
-            .chat-message.bot {
-                background-color: #4A4A4A;
-                color: #E0E0E0;
+            .chart-container p {
+                color: #bbb;
             }
-            .chatbot-input {
-                background: #3A3A3A;
-                border-top-color: #555;
+            .recommendations {
+                background: #2a4a3a;
+                border-left-color: var(--color-accent);
+                color: #c0e0c0;
             }
-            .chatbot-input input[type="text"] {
-                background-color: #4A4A4A;
-                border-color: #555;
-                color: #E0E0E0;
+            .recommendations a {
+                color: var(--color-secondary);
+            }
+            .budget-alert {
+                background-color: rgba(231, 76, 60, 0.2);
+                border-color: var(--color-danger);
             }
             #offers-search-container {
-                background-color: #3A3A3A;
-                border-color: #555;
-            }
-            #offers-search {
-                background-color: transparent;
-                color: #E0E0E0;
-            }
-            .offer-card {
-                background-color: #3A3A3A;
+                background-color: #2a2a4a;
+                border-color: #4a4a6a;
                 box-shadow: var(--shadow);
             }
+            #offers-search {
+                background-color: #2a2a4a;
+                color: #e0e0e0;
+            }
+            .offer-card {
+                background: #2a2a4a;
+                box-shadow: var(--shadow);
+            }
+            .offer-card:hover,
+            .offer-card:focus {
+                box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            }
             .offer-details {
-                color: #E0E0E0;
+                color: #e0e0e0;
             }
             .seller-info {
-                border-top-color: #555;
-                color: #E0E0E0;
+                border-top-color: #4a4a6a;
+                color: #e0e0e0;
             }
-            .seller-info span.label {
+            #contact-section {
+                background-color: #2a2a4a;
+                color: #e0e0e0;
+                box-shadow: var(--shadow);
+            }
+            #contact-section h2 {
+                color: var(--color-primary);
+            }
+            #contact-section a {
                 color: var(--color-secondary);
             }
         }
@@ -565,12 +579,15 @@
         @media (min-width: 992px) {
             #budgets-section .card {
                 max-width: 600px;
-                margin: 0 auto 20px auto;
+                margin: 0 auto 25px auto;
+            }
+            .dashboard {
+                grid-template-columns: repeat(3, 1fr);
             }
         }
 
         /* Mejoras menú móviles */
-        @media (max-width: 480px) {
+        @media (max-width: 767px) {
             .header-content {
                 flex-direction: column;
                 align-items: flex-start;
@@ -579,12 +596,20 @@
             .menu-button {
                 width: 100%;
                 justify-content: center;
+                margin-top: 15px;
             }
 
             .menu-content {
                 width: 100%;
                 right: auto;
                 left: 0;
+                top: calc(100% + 5px);
+            }
+            h1 {
+                font-size: 28px;
+            }
+            header p {
+                font-size: 16px;
             }
         }
 
@@ -600,16 +625,90 @@
 
             input,
             select,
-            button {
-                font-size: 18px;
+            button,
+            textarea {
+                font-size: 16px;
+                padding: 10px 12px;
+                min-height: 44px;
             }
 
             .card {
-                padding: 15px;
+                padding: 20px;
             }
 
             .dashboard {
-                gap: 15px;
+                gap: 20px;
+            }
+            .balance {
+                font-size: 28px;
+            }
+            .summary div {
+                font-size: 15px;
+            }
+            .transaction-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+                padding: 12px;
+            }
+            .transaction-item .category {
+                margin-top: 0;
+            }
+            .chart-container {
+                height: auto;
+                min-height: 200px;
+            }
+            .progress-bar {
+                height: 22px;
+            }
+            .progress {
+                font-size: 13px;
+            }
+            .btn-small {
+                padding: 6px 12px;
+                font-size: 13px;
+                min-height: 36px;
+            }
+            .goal-item, .debt-item, .budget-item {
+                padding: 18px;
+            }
+            .budget-alert {
+                font-size: 13px;
+            }
+            #offers-search-container {
+                padding: 6px 12px;
+            }
+            #offers-search {
+                font-size: 15px;
+            }
+            .offer-card {
+                border-radius: 8px;
+            }
+            .offer-image-container {
+                height: 160px;
+            }
+            .offer-details {
+                padding: 12px 15px;
+                font-size: 13px;
+            }
+            .offer-title {
+                font-size: 16px;
+            }
+            .offer-price {
+                font-size: 15px;
+            }
+            .seller-info {
+                font-size: 12px;
+            }
+            #contact-section {
+                padding: 25px 15px;
+                font-size: 15px;
+            }
+            #contact-section .contact-item {
+                gap: 10px;
+            }
+            #contact-section .material-icons {
+                font-size: 22px;
             }
         }
 
@@ -620,24 +719,10 @@
             }
         }
 
-        /* Mejorar visualización de transacciones y gráficos en móvil */
-        @media (max-width: 480px) {
-            .transaction-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 5px;
-            }
-
-            .chart-container {
-                height: auto;
-                min-height: 200px;
-            }
-        }
-
         /* Footer compacto para móvil */
         @media (max-width: 480px) {
             footer p {
-                font-size: 14px;
+                font-size: 13px;
             }
         }
 
@@ -659,90 +744,97 @@
             max-width: 450px;
             height: 600px;
             background: var(--chatbot-bg);
-            box-shadow: var(--shadow);
-            border-radius: 20px; /* Más redondeado */
+            box-shadow: var(--shadow-hover);
+            border-radius: var(--border-radius);
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            font-size: 14px;
+            font-size: 15px;
         }
 
         .chatbot-header {
             background-color: var(--color-primary);
             color: white;
-            padding: 15px 20px; /* Más padding */
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-weight: 600;
-            font-size: 1.2em; /* Más grande */
+            font-size: 18px;
             user-select: none;
-            border-top-left-radius: 20px; /* Coincidir con el contenedor */
-            border-top-right-radius: 20px;
+            border-top-left-radius: var(--border-radius);
+            border-top-right-radius: var(--border-radius);
         }
 
         .chatbot-header .material-icons {
             cursor: pointer;
             user-select: none;
+            font-size: 24px;
+            transition: transform 0.2s ease;
+        }
+        .chatbot-header .material-icons:hover {
+            transform: scale(1.1);
         }
 
         .chatbot-messages {
             flex: 1;
-            padding: 15px 20px; /* Más padding */
+            padding: 15px 18px;
             overflow-y: auto;
-            background: #FDFDFD; /* Fondo más claro */
+            background: #fafafa;
             display: flex;
             flex-direction: column;
+            gap: 10px;
         }
 
         .chat-message {
-            max-width: 75%;
-            margin-bottom: 12px;
-            padding: 12px 18px; /* Más padding */
-            border-radius: 25px; /* Más redondeado */
-            line-height: 1.4;
+            max-width: 80%;
+            padding: 12px 18px;
+            border-radius: 25px;
+            line-height: 1.5;
             word-wrap: break-word;
             user-select: text;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08); /* Sombra más suave */
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
             animation: fadeIn 0.3s ease forwards;
+            font-size: 15px;
         }
 
         .chat-message.bot {
             background-color: var(--chatbot-bubble-bg-bot);
             color: var(--chatbot-text-bot);
             align-self: flex-start;
-            border-bottom-left-radius: 8px; /* Esquina inferior izquierda menos redondeada */
+            border-bottom-left-radius: 6px;
         }
 
         .chat-message.user {
             background-color: var(--chatbot-bubble-bg-user);
             color: var(--chatbot-text-user);
             align-self: flex-end;
-            border-bottom-right-radius: 8px; /* Esquina inferior derecha menos redondeada */
+            border-bottom-right-radius: 6px;
         }
 
         .chatbot-input {
             display: flex;
-            border-top: 1px solid var(--color-light);
-            padding: 15px; /* Más padding */
-            background: var(--chatbot-bg);
-            border-bottom-left-radius: 20px; /* Coincidir con el contenedor */
-            border-bottom-right-radius: 20px;
+            border-top: 1px solid #ddd;
+            padding: 12px;
+            background: #fff;
+            border-bottom-left-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
         }
 
         .chatbot-input input[type="text"] {
             flex: 1;
-            padding: 12px 18px; /* Más padding */
-            font-size: 1em;
-            border: 1px solid var(--color-light);
-            border-radius: 28px; /* Más redondeado */
+            padding: 12px 18px;
+            font-size: 15px;
+            border: 1px solid #ddd;
+            border-radius: 28px;
             outline: none;
-            transition: border-color 0.3s;
-            background-color: #F0F4F5; /* Fondo suave */
+            transition: border-color 0.3s, box-shadow 0.3s;
+            background-color: var(--color-light);
         }
 
         .chatbot-input input[type="text"]:focus {
             border-color: var(--color-secondary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
         }
 
         .chatbot-input button {
@@ -751,12 +843,16 @@
             cursor: pointer;
             margin-left: 10px;
             color: var(--color-secondary);
-            font-size: 32px; /* Icono más grande */
+            font-size: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
             user-select: none;
-            transition: color 0.3s;
+            transition: color 0.3s, transform 0.2s;
+            min-height: 48px;
+            min-width: 48px;
+            padding: 0;
+            border-radius: 50%;
         }
 
         .chatbot-input button:disabled {
@@ -766,6 +862,7 @@
 
         .chatbot-input button:hover:not(:disabled) {
             color: var(--color-primary);
+            transform: scale(1.1);
         }
 
         /* Scrollbar style for messages */
@@ -775,64 +872,127 @@
 
         .chatbot-messages::-webkit-scrollbar-track {
             background: #f1f1f1;
+            border-radius: 10px;
         }
 
         .chatbot-messages::-webkit-scrollbar-thumb {
             background-color: var(--color-secondary);
-            border-radius: 20px;
+            border-radius: 10px;
             border: 2px solid #f1f1f1;
+        }
+        @media (prefers-color-scheme: dark) {
+            .chatbot-container {
+                background: #2a2a4a;
+            }
+            .chatbot-messages {
+                background: #3a3a5a;
+            }
+            .chat-message.bot {
+                background-color: #4a4a6a;
+                color: #e0e0e0;
+            }
+            .chatbot-input {
+                background: #2a2a4a;
+                border-top-color: #4a4a6a;
+            }
+            .chatbot-input input[type="text"] {
+                background-color: #3a3a5a;
+                border-color: #5a5a7a;
+                color: #e0e0e0;
+            }
+            .chatbot-messages::-webkit-scrollbar-track {
+                background: #3a3a5a;
+            }
+            .chatbot-messages::-webkit-scrollbar-thumb {
+                background-color: var(--color-secondary);
+                border: 2px solid #3a3a5a;
+            }
         }
 
         /* Responsive tweaks */
         @media (max-width: 480px) {
             .chatbot-container {
-                height: 400px;
+                height: 450px;
                 max-width: 100%;
+                border-radius: 8px;
+            }
+            .chatbot-header {
+                padding: 12px 15px;
+                font-size: 16px;
+                border-top-left-radius: 8px;
+                border-top-right-radius: 8px;
+            }
+            .chatbot-messages {
+                padding: 12px 15px;
+            }
+            .chat-message {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+            .chatbot-input {
+                padding: 10px;
+                border-bottom-left-radius: 8px;
+                border-bottom-right-radius: 8px;
+            }
+            .chatbot-input input[type="text"] {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+            .chatbot-input button {
+                font-size: 26px;
+                min-height: 40px;
+                min-width: 40px;
             }
         }
 
         /* Animation for chat messages */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         /* Recommendations block style */
         .recommendations {
-            margin-top: 15px;
+            margin-top: 20px;
             background: #e9f7ef;
-            border-left: 6px solid var(--color-accent);
-            padding: 10px 15px;
-            border-radius: 6px;
-            font-size: 14px;
+            border-left: 8px solid var(--color-accent);
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            font-size: 15px;
             color: #205522;
             white-space: pre-line;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
         .recommendations strong {
             font-weight: 600;
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            color: var(--color-accent);
+            font-size: 16px;
         }
 
         .recommendations ul {
-            margin-top: 6px;
-            padding-left: 20px;
+            margin-top: 8px;
+            padding-left: 25px;
+            list-style: disc;
         }
 
         .recommendations ul li {
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
 
         .recommendations a {
             color: var(--color-primary);
             text-decoration: none;
             font-weight: 600;
+            transition: color 0.2s, text-decoration 0.2s;
         }
 
         .recommendations a:hover,
         .recommendations a:focus {
             text-decoration: underline;
+            color: var(--color-secondary);
         }
 
         /* New Offers Section Styles - Inspired by Facebook Marketplace */
@@ -845,22 +1005,26 @@
         }
 
         #offers-search-container {
-            max-width: 600px;
-            margin: 0 auto 30px;
+            max-width: 700px;
+            margin: 0 auto 40px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            border: 1px solid var(--color-light); /* Borde más suave */
-            border-radius: 30px; /* Más redondeado */
-            padding: 10px 20px; /* Más padding */
-            background-color: var(--card-bg);
+            gap: 12px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            padding: 10px 20px;
+            background-color: white;
             box-shadow: var(--shadow);
-            margin-bottom: 40px; /* Más espacio */
+            transition: box-shadow 0.3s ease;
+        }
+        #offers-search-container:focus-within {
+            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.3);
+            border-color: var(--color-secondary);
         }
 
         #offers-search-container .material-icons {
-            font-size: 28px; /* Icono más grande */
-            color: var(--color-primary);
+            font-size: 26px;
+            color: var(--color-secondary);
             user-select: none;
         }
 
@@ -868,45 +1032,49 @@
             flex: 1;
             border: none;
             outline: none;
-            font-size: 1.1em; /* Más grande */
+            font-size: 17px;
             border-radius: 24px;
-            padding: 10px 15px; /* Más padding */
-            background-color: transparent; /* Fondo transparente */
+            padding: 8px 12px;
+            background-color: transparent;
+            color: var(--color-dark);
+        }
+        #offers-search::placeholder {
+            color: #888;
         }
 
         #offers-list {
             max-width: 1200px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+            gap: 25px;
         }
 
         .offer-card {
-            background: var(--card-bg);
-            border-radius: 15px; /* Más redondeado */
+            background: white;
+            border-radius: var(--border-radius);
             box-shadow: var(--shadow);
             overflow: hidden;
             cursor: pointer;
             display: flex;
             flex-direction: column;
-            transition: box-shadow 0.3s ease, transform 0.3s ease; /* Animación al pasar el ratón */
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
             outline: none;
+            border: 1px solid #eee;
         }
 
         .offer-card:hover,
         .offer-card:focus {
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2); /* Sombra más pronunciada */
-            transform: translateY(-8px); /* Efecto de elevación más pronunciado */
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-5px);
         }
 
         .offer-image-container {
             width: 100%;
-            height: 200px; /* Imagen un poco más grande */
+            height: 200px;
             overflow: hidden;
             flex-shrink: 0;
-            border-top-left-radius: 15px; /* Bordes redondeados */
-            border-top-right-radius: 15px;
+            border-bottom: 1px solid #eee;
         }
 
         .offer-image-container img {
@@ -918,182 +1086,228 @@
         }
 
         .offer-card:hover .offer-image-container img {
-            transform: scale(1.05);
+            transform: scale(1.08);
         }
 
         .offer-details {
-            padding: 20px; /* Más padding */
+            padding: 20px;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            gap: 12px; /* Más espacio entre elementos */
-            font-size: 14px;
+            gap: 12px;
+            font-size: 15px;
             color: var(--color-dark);
         }
 
         .offer-title {
             font-weight: 700;
-            font-size: 1.5em; /* Más grande */
-            margin-bottom: 8px;
+            font-size: 20px;
+            margin-bottom: 5px;
             color: var(--color-primary);
+            line-height: 1.3;
         }
 
         .offer-price {
             font-weight: 700;
-            font-size: 1.3em; /* Más grande */
+            font-size: 18px;
             color: var(--color-accent);
+            margin-bottom: 8px;
         }
 
         .offer-category {
-            font-size: 0.95em; /* Ajustado */
+            font-size: 14px;
             color: var(--color-secondary);
             text-transform: capitalize;
-            margin-bottom: 6px;
-            font-weight: 600;
+            background-color: #eef;
+            padding: 4px 10px;
+            border-radius: 20px;
+            align-self: flex-start;
+            font-weight: 500;
         }
 
         .offer-description {
-            font-size: 0.95em; /* Ajustado */
+            font-size: 15px;
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
-            line-height: 1.5;
-            color: var(--color-dark);
+            color: #555;
         }
 
         .seller-info {
-            margin-top: 15px; /* Más espacio */
-            padding-top: 15px; /* Más padding */
-            border-top: 1px solid var(--color-light);
-            font-size: 0.9em; /* Ajustado */
-            color: var(--color-dark);
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            font-size: 14px;
+            color: #666;
         }
 
         .seller-info div {
-            margin-bottom: 4px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .seller-info div:last-child {
+            margin-bottom: 0;
         }
 
         .seller-info span.label {
             font-weight: 600;
             color: var(--color-primary);
-            margin-right: 6px;
+            margin-right: 0;
+        }
+        .seller-info a {
+            color: var(--color-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: text-decoration 0.2s;
+        }
+        .seller-info a:hover {
+            text-decoration: underline;
         }
   
         /* Responsive adjustments for offers */
         @media (max-width: 480px) {
             #offers-list {
                 grid-template-columns: 1fr;
+                gap: 20px;
             }
             #offers-search-container {
                 max-width: 100%;
-                margin-bottom: 20px;
+                margin-bottom: 30px;
+                padding: 8px 15px;
+                border-radius: 25px;
+            }
+            #offers-search {
+                font-size: 16px;
+            }
+            .offer-card {
+                border-radius: 10px;
+            }
+            .offer-image-container {
+                height: 180px;
+            }
+            .offer-details {
+                padding: 15px;
+                gap: 10px;
+            }
+            .offer-title {
+                font-size: 18px;
+            }
+            .offer-price {
+                font-size: 16px;
+            }
+            .offer-description {
+                font-size: 14px;
+            }
+            .seller-info {
+                font-size: 13px;
+                margin-top: 10px;
+                padding-top: 10px;
             }
         }
 
         /* Contact Section Styling */
         #contact-section {
             display: none;
-            padding: 40px 30px; /* Más padding */
-            max-width: 700px;
-            margin: 0 auto 40px auto;
-            background-color: var(--card-bg);
-            border-radius: 15px; /* Más redondeado */
+            padding: 40px 30px;
+            max-width: 800px;
+            margin: 0 auto 50px auto;
+            background-color: white;
+            border-radius: var(--border-radius);
             box-shadow: var(--shadow);
             color: var(--color-dark);
-            font-size: 16px;
-            line-height: 1.6;
+            font-size: 17px;
+            line-height: 1.7;
         }
         #contact-section.active {
             display: block;
         }
         #contact-section h2 {
-            margin-bottom: 25px; /* Más espacio */
+            margin-bottom: 25px;
             color: var(--color-primary);
-            font-size: 2.2em; /* Más grande */
+            font-size: 28px;
             text-align: center;
         }
         #contact-section p {
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
         #contact-section a {
-            color: var(--color-primary); /* Color primario para enlaces */
+            color: var(--color-secondary);
             text-decoration: none;
-            font-weight: 700; /* Más negrita */
+            font-weight: 600;
+            transition: text-decoration 0.2s, color 0.2s;
         }
         #contact-section a:hover,
         #contact-section a:focus {
             text-decoration: underline;
+            color: var(--color-primary);
         }
         #contact-section .contact-info {
-            margin-bottom: 20px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        @media (min-width: 600px) {
+            #contact-section .contact-info {
+                grid-template-columns: 1fr 1fr;
+            }
         }
         #contact-section .contact-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 15px; /* Más espacio */
-            font-size: 1.1em; /* Más grande */
+            gap: 15px;
+            margin-bottom: 0; /* Reset default p margin */
+            background-color: #f9f9f9;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        #contact-section .contact-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         #contact-section .material-icons {
-            font-size: 28px; /* Iconos más grandes */
-            color: var(--color-secondary);
-        }
-
-        /* Login and Register Sections */
-        #login-section .card,
-        #register-section .card {
-            max-width: 500px; /* Ancho fijo para los formularios */
-            margin: 40px auto; /* Centrar y dar espacio */
-            padding: 30px;
-        }
-
-        #login-section h2,
-        #register-section h2 {
-            text-align: center;
-            font-size: 2em;
+            font-size: 28px;
             color: var(--color-primary);
+            flex-shrink: 0;
         }
-
-        #login-form button,
-        #register-form button {
-            width: 100%; /* Botones de ancho completo */
-            margin-top: 20px;
+        #contact-section address, #contact-section .contact-item p {
+            margin-bottom: 0;
+            color: #555;
         }
-
-        #login-message,
-        #register-message {
-            text-align: center;
-            font-weight: 600;
-            font-size: 1.05em;
-        }
-
-        #login-section p,
-        #register-section p {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 0.95em;
-        }
-
-        #login-section a,
-        #register-section a {
-            color: var(--color-secondary);
-            font-weight: 600;
-            text-decoration: none;
-        }
-
-        #login-section a:hover,
-        #register-section a:hover {
-            text-decoration: underline;
+        @media (max-width: 480px) {
+            #contact-section {
+                padding: 30px 20px;
+                font-size: 16px;
+            }
+            #contact-section h2 {
+                font-size: 24px;
+            }
+            #contact-section .contact-info {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            #contact-section .contact-item {
+                padding: 12px 15px;
+                gap: 12px;
+            }
+            #contact-section .material-icons {
+                font-size: 26px;
+            }
         }
     </style>
 
     <!-- Icons Material -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <link rel="manifest" href="manifest.json" />
-    <meta name="theme-color" content="#6A1B9A" /> <!-- Actualizado al color primario -->
+    <meta name="theme-color" content="#9e2142" />
     <link rel="apple-touch-icon" href="icon-192.png" />
 </head>
 <body>
@@ -1109,23 +1323,21 @@
                         Menú <span aria-hidden="true">▼</span>
                     </button>
                     <div class="menu-content" id="menu-dropdown" role="menu" aria-label="Menú principal">
-                        <a href="#" id="menu-dashboard" role="menuitem" tabindex="0"><span class="material-icons">dashboard</span> Panel Principal</a>
-                        <a href="#" id="menu-savings" role="menuitem" tabindex="0"><span class="material-icons">savings</span> Metas de Ahorro</a>
-                        <a href="#" id="menu-debts" role="menuitem" tabindex="0"><span class="material-icons">money_off</span> Control de Deudas</a>
-                        <a href="#" id="menu-reports" role="menuitem" tabindex="0"><span class="material-icons">bar_chart</span> Reportes / Historial</a>
-                        <a href="#" id="menu-budgets" role="menuitem" tabindex="0"><span class="material-icons">account_balance_wallet</span> Presupuestos</a>
-                        <a href="#" id="menu-offers" role="menuitem" tabindex="0"><span class="material-icons">local_offer</span> Ofertas</a>
-                        <a href="#" id="menu-contact" role="menuitem" tabindex="0"><span class="material-icons">contact_support</span> Contacto / Soporte</a>
-                        <a href="#" id="chatbot" role="menuitem" tabindex="0"><span class="material-icons">chat</span> Chatbot</a>
-                        <a href="#" id="menu-login" role="menuitem" tabindex="0"><span class="material-icons">login</span> Iniciar Sesión</a>
-                        <a href="#" id="menu-register" role="menuitem" tabindex="0"><span class="material-icons">person_add</span> Registrarse</a>
+                        <a href="#" id="menu-dashboard" role="menuitem" tabindex="0">Panel Principal</a>
+                        <a href="#" id="menu-savings" role="menuitem" tabindex="0">Metas de Ahorro</a>
+                        <a href="#" id="menu-debts" role="menuitem" tabindex="0">Control de Deudas</a>
+                        <a href="#" id="menu-reports" role="menuitem" tabindex="0">Reportes / Historial</a>
+                        <a href="#" id="menu-budgets" role="menuitem" tabindex="0">Presupuestos</a>
+                        <a href="#" id="menu-offers" role="menuitem" tabindex="0">Ofertas</a>
+                        <a href="#" id="menu-contact" role="menuitem" tabindex="0">Contacto / Soporte</a>
+                        <a href="#" id="chatbot" role="menuitem" tabindex="0">Chatbot</a>
+                        <a href="#" id="menu-login" role="menuitem" tabindex="0">Iniciar Sesión</a>
+                        <a href="#" id="menu-register" role="menuitem" tabindex="0">Registrarse</a>
                     </div>
                 </div>
             </div>
         </div>
     </header>
-
-    <!-- Existing sections for dashboard, savings, debts, reports, budgets -->
 
     <div id="dashboard-section" class="section active">
       <div class="container">
@@ -1185,19 +1397,17 @@
               <h2>Distribución de Gastos</h2>
             </div>
             <div class="chart-container" id="expense-chart">
-              <!-- genera las graficas -->
               <p style="text-align: center; padding-top: 120px;">Añade transacciones para ver el gráfico</p>
             </div>
           </div>
         </div>
 
-        <div class="card" style="margin-top: 20px;">
+        <div class="card" style="margin-top: 25px;">
           <div class="card-header">
             <h2>Últimas Transacciones</h2>
             <button id="clear-transactions" class="btn-danger">Borrar Todo</button>
           </div>
           <div class="transactions" id="transaction-list">
-            <!-- muestra transacciones -->
             <p style="text-align: center; padding: 20px;">No hay transacciones</p>
           </div>
         </div>
@@ -1206,62 +1416,63 @@
 
     <!-- Sección de Metas de Ahorro -->
     <div id="savings-section" class="section">
-      <div class="dashboard">
-        <div class="card">
-          <div class="card-header">
-            <h2>Metas de Ahorro</h2>
+      <div class="container">
+        <div class="dashboard">
+          <div class="card">
+            <div class="card-header">
+              <h2>Metas de Ahorro</h2>
+            </div>
+            <form id="savings-form">
+              <div class="form-group">
+                <label for="goal-name">Nombre de la Meta</label>
+                <input
+                  type="text"
+                  id="goal-name"
+                  placeholder="Ej: Vacaciones, Coche nuevo..."
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="goal-amount">Cantidad Objetivo (Q)</label>
+                <input
+                  type="number"
+                  id="goal-amount"
+                  placeholder="0.00"
+                  step="0.01"
+                  min="1"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="goal-date">Fecha Objetivo</label>
+                <input type="date" id="goal-date" required />
+              </div>
+
+              <div class="form-group">
+                <label for="current-saved">Cantidad Ahorrada Actualmente (Q)</label>
+                <input
+                  type="number"
+                  id="current-saved"
+                  placeholder="0.00"
+                  step="0.01"
+                  min="0"
+                  required
+                />
+              </div>
+
+              <button type="submit">Crear Meta de Ahorro</button>
+            </form>
           </div>
-          <form id="savings-form">
-            <div class="form-group">
-              <label for="goal-name">Nombre de la Meta</label>
-              <input
-                type="text"
-                id="goal-name"
-                placeholder="Ej: Vacaciones, Coche nuevo..."
-                required
-              />
+
+          <div class="card">
+            <div class="card-header">
+              <h2>Mis Metas de Ahorro</h2>
             </div>
-
-            <div class="form-group">
-              <label for="goal-amount">Cantidad Objetivo (Q)</label>
-              <input
-                type="number"
-                id="goal-amount"
-                placeholder="0.00"
-                step="0.01"
-                min="1"
-                required
-              />
+            <div id="savings-list">
+              <p style="text-align: center; padding: 20px;">No hay metas de ahorro</p>
             </div>
-
-            <div class="form-group">
-              <label for="goal-date">Fecha Objetivo</label>
-              <input type="date" id="goal-date" required />
-            </div>
-
-            <div class="form-group">
-              <label for="current-saved">Cantidad Ahorrada Actualmente (Q)</label>
-              <input
-                type="number"
-                id="current-saved"
-                placeholder="0.00"
-                step="0.01"
-                min="0"
-                required
-              />
-            </div>
-
-            <button type="submit">Crear Meta de Ahorro</button>
-          </form>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <h2>Mis Metas de Ahorro</h2>
-          </div>
-          <div id="savings-list">
-            <!-- Las metas se cargarán  aquí -->
-            <p style="text-align: center; padding: 20px;">No hay metas de ahorro</p>
           </div>
         </div>
       </div>
@@ -1269,71 +1480,73 @@
 
     <!-- Sección de Control de Deudas -->
     <div id="debts-section" class="section">
-      <div class="dashboard">
-        <div class="card">
-          <div class="card-header">
-            <h2>Control de Deudas</h2>
+      <div class="container">
+        <div class="dashboard">
+          <div class="card">
+            <div class="card-header">
+              <h2>Control de Deudas</h2>
+            </div>
+            <form id="debt-form">
+              <div class="form-group">
+                <label for="debt-name">Nombre de la Deuda</label>
+                <input
+                  type="text"
+                  id="debt-name"
+                  placeholder="Ej: Préstamo coche, Hipoteca..."
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="debt-amount">Cantidad Total (Q)</label>
+                <input
+                  type="number"
+                  id="debt-amount"
+                  placeholder="0.00"
+                  step="0.01"
+                  min="1"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="debt-paid">Cantidad Pagada (Q)</label>
+                <input
+                  type="number"
+                  id="debt-paid"
+                  placeholder="0.00"
+                  step="0.01"
+                  min="0"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="debt-interest">Tasa de Interés Anual (%)</label>
+                <input
+                  type="number"
+                  id="debt-interest"
+                  placeholder="0.00"
+                  step="0.01"
+                  min="0"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="debt-date">Fecha Límite de Pago</label>
+                <input type="date" id="debt-date" />
+              </div>
+
+              <button type="submit">Añadir Deuda</button>
+            </form>
           </div>
-          <form id="debt-form">
-            <div class="form-group">
-              <label for="debt-name">Nombre de la Deuda</label>
-              <input
-                type="text"
-                id="debt-name"
-                placeholder="Ej: Préstamo coche, Hipoteca..."
-                required
-              />
+
+          <div class="card">
+            <div class="card-header">
+              <h2>Mis Deudas</h2>
             </div>
-
-            <div class="form-group">
-              <label for="debt-amount">Cantidad Total (Q)</label>
-              <input
-                type="number"
-                id="debt-amount"
-                placeholder="0.00"
-                step="0.01"
-                min="1"
-                required
-              />
+            <div id="debts-list">
+              <p style="text-align: center; padding: 20px;">No hay deudas registradas</p>
             </div>
-
-            <div class="form-group">
-              <label for="debt-paid">Cantidad Pagada (Q)</label>
-              <input
-                type="number"
-                id="debt-paid"
-                placeholder="0.00"
-                step="0.01"
-                min="0"
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="debt-interest">Tasa de Interés Anual (%)</label>
-              <input
-                type="number"
-                id="debt-interest"
-                placeholder="0.00"
-                step="0.01"
-                min="0"
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="debt-date">Fecha Límite de Pago</label>
-              <input type="date" id="debt-date" />
-            </div>
-
-            <button type="submit">Añadir Deuda</button>
-          </form>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <h2>Mis Deudas</h2>
-          </div>
-          <div id="debts-list">
-            <p style="text-align: center; padding: 20px;">No hay deudas registradas</p>
           </div>
         </div>
       </div>
@@ -1341,65 +1554,68 @@
 
     <!-- Sección de Reportes / Historial -->
     <div id="reports-section" class="section">
-      <div class="card">
-        <div class="card-header">
-          <h2>Resumen de Transacciones</h2>
+      <div class="container">
+        <div class="card">
+          <div class="card-header">
+            <h2>Resumen de Transacciones</h2>
+          </div>
+          <div style="padding: 10px;">
+            <strong>Ingresos totales:</strong> <span id="report-total-income" class="positive">Q0.00</span
+            ><br />
+            <strong>Gastos totales:</strong> <span id="report-total-expense" class="negative">Q0.00</span
+            ><br />
+            <strong>Balance:</strong> <span id="report-balance">Q0.00</span>
+          </div>
         </div>
-        <div style="padding: 10px;">
-          <strong>Ingresos totales:</strong> <span id="report-total-income" class="positive">Q0.00</span
-          ><br />
-          <strong>Gastos totales:</strong> <span id="report-total-expense" class="negative">Q0.00</span
-          ><br />
-          <strong>Balance:</strong> <span id="report-balance">Q0.00</span>
+
+        <div class="card" style="margin-top: 25px;">
+          <div class="card-header">
+            <h2>Historial de Transacciones</h2>
+          </div>
+          <div style="padding: 10px;">
+            <label for="report-filter">Filtrar por:</label>
+            <select id="report-filter">
+              <option value="all">Todas</option>
+              <option value="income">Ingresos</option>
+              <option value="expense">Gastos</option>
+            </select>
+          </div>
+          <div id="report-list" class="transactions">
+            <p style="text-align: center; padding: 20px;">No hay transacciones</p>
+          </div>
         </div>
       </div>
-
-      <div class="card">
-        <div class="card-header">
-          <h2>Historial de Transacciones</h2>
-        </div>
-        <div style="padding: 10px;">
-          <label for="report-filter">Filtrar por:</label>
-          <select id="report-filter">
-            <option value="all">Todas</option>
-            <option value="income">Ingresos</option>
-            <option value="expense">Gastos</option>
-          </select>
-        </div>
-        <div id="report-list" class="transactions">
-          <p style="text-align: center; padding: 20px;">No hay transacciones</p>
-        </div>
-      </div>
-
     </div>
 
     <!-- Sección de Presupuestos -->
     <div id="budgets-section" class="section">
-      <div class="card">
-        <div class="card-header">
-          <h2>Crear Presupuesto</h2>
+      <div class="container">
+        <div class="card">
+          <div class="card-header">
+            <h2>Crear Presupuesto</h2>
+          </div>
+          <form id="budget-form" style="padding: 10px;">
+            <div class="form-group">
+              <label for="budget-category">Categoría</label>
+              <select id="budget-category" required>
+                <option value="">Selecciona una categoría</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="budget-amount">Monto (Q)</label>
+              <input type="number" id="budget-amount" placeholder="0.00" step="0.01" min="1" required />
+            </div>
+            <button type="submit">Crear Presupuesto</button>
+          </form>
         </div>
-        <form id="budget-form" style="padding: 10px;">
-          <div class="form-group">
-            <label for="budget-category">Categoría</label>
-            <select id="budget-category" required>
-              <option value="">Selecciona una categoría</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="budget-amount">Monto (Q)</label>
-            <input type="number" id="budget-amount" placeholder="0.00" step="0.01" min="1" required />
-          </div>
-          <button type="submit">Crear Presupuesto</button>
-        </form>
-      </div>
 
-      <div class="card">
-        <div class="card-header">
-          <h2>Mis Presupuestos</h2>
-        </div>
-        <div id="budget-list">
-          <p style="text-align: center; padding: 20px;">No hay presupuestos</p>
+        <div class="card" style="margin-top: 25px;">
+          <div class="card-header">
+            <h2>Mis Presupuestos</h2>
+          </div>
+          <div id="budget-list">
+            <p style="text-align: center; padding: 20px;">No hay presupuestos</p>
+          </div>
         </div>
       </div>
     </div>
@@ -1430,81 +1646,78 @@
 
     <!-- New Offers Section -->
     <div id="offers-section" class="section" aria-label="Sección de Ofertas de Venta">
-      <div id="offers-search-container">
-        <span class="material-icons" aria-hidden="true">search</span>
-        <input type="search" id="offers-search" placeholder="Buscar ofertas: motos, teléfonos, ropa, carros..." aria-label="Buscar ofertas" />
-      </div>
-      <div id="offers-list" tabindex="0" aria-live="polite">
-        <!-- Inserts offer cards dynamically -->
-      </div>
-      
-      <!-- Botón para agregar nueva oferta (visible solo para socios) -->
-      <div style="text-align: center; margin-top: 30px;">
-        <button id="new-offer-btn" class="btn-accent" style="display:none;">
-          <span class="material-icons" aria-hidden="true">add_circle_outline</span> Publicar Nueva Oferta
-        </button>
-      </div>
-
-      <!-- Only show this section for partners -->
-      <div id="add-offer-section" class="card" style="display:none; margin-top: 30px;">
-        <div class="card-header">
-          <h2>Agregar Nueva Oferta</h2>
+      <div class="container">
+        <div id="offers-search-container">
+          <span class="material-icons" aria-hidden="true">search</span>
+          <input type="search" id="offers-search" placeholder="Buscar ofertas: motos, teléfonos, ropa, carros..." aria-label="Buscar ofertas" />
         </div>
-        <form id="offer-form">
-          <div class="form-group">
-            <label for="offer-title">Título</label>
-            <input type="text" id="offer-title" placeholder="Nombre del producto/servicio" required>
+        <div id="offers-list" tabindex="0" aria-live="polite">
+          <!-- Inserts offer cards dynamically -->
+        </div>
+        
+        <!-- Only show this section for partners -->
+        <div id="add-offer-section" class="card" style="display:none; margin-top: 30px;">
+          <div class="card-header">
+            <h2>Agregar Nueva Oferta</h2>
           </div>
-          <div class="form-group">
-            <label for="offer-price">Precio (Q)</label>
-            <input type="number" id="offer-price" placeholder="0.00" step="0.01" min="0" required>
-          </div>
-          <div class="form-group">
-            <label for="offer-category">Categoría</label>
-            <select id="offer-category" required>
-              <option value="">Seleccione categoría</option>
-              <option value="motos">Motos</option>
-              <option value="teléfonos">Teléfonos</option>
-              <option value="ropa">Ropa</option>
-              <option value="carros">Carros</option>
-              <option value="otros">Otros</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="offer-description">Descripción</label>
-            <textarea id="offer-description" rows="3" placeholder="Detalles de la oferta" required></textarea>
-          </div>
-          <div class="form-group">
-            <label for="offer-image">URL Imagen</label>
-            <input type="url" id="offer-image" placeholder="https://ejemplo.com/imagen.jpg">
-          </div>
-          <button type="submit">Publicar Oferta</button>
-        </form>
+          <form id="offer-form">
+            <div class="form-group">
+              <label for="offer-title">Título</label>
+              <input type="text" id="offer-title" placeholder="Nombre del producto/servicio" required>
+            </div>
+            <div class="form-group">
+              <label for="offer-price">Precio (Q)</label>
+              <input type="number" id="offer-price" placeholder="0.00" step="0.01" min="0" required>
+            </div>
+            <div class="form-group">
+              <label for="offer-category">Categoría</label>
+              <select id="offer-category" required>
+                <option value="">Seleccione categoría</option>
+                <option value="motos">Motos</option>
+                <option value="teléfonos">Teléfonos</option>
+                <option value="ropa">Ropa</option>
+                <option value="carros">Carros</option>
+                <option value="otros">Otros</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="offer-description">Descripción</label>
+              <textarea id="offer-description" rows="3" placeholder="Detalles de la oferta" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="offer-image">URL Imagen</label>
+              <input type="url" id="offer-image" placeholder="https://ejemplo.com/imagen.jpg">
+            </div>
+            <button type="submit">Publicar Oferta</button>
+          </form>
+        </div>
       </div>
     </div>
 
     <!-- New Contact Section -->
     <div id="contact-section" class="section" aria-label="Información de Contacto y Soporte">
-      <h2>Contacto y Soporte</h2>
-      <div class="contact-info">
-        <div class="contact-item">
-          <span class="material-icons" aria-hidden="true">email</span>
-          <a href="mailto:maylipirir2005@gmail.com">maylipirir2005@gmail.com</a>
-        </div>
-        <div class="contact-item">
-          <span class="material-icons" aria-hidden="true">phone</span>
-          <a href="tel:+50232181393">+502 3218 1393</a>
-        </div>
-        <div class="contact-item">
-          <span class="material-icons" aria-hidden="true">location_on</span>
-          <address>Ciudad de Guatemala, Guatemala</address>
-        </div>
-        <div class="contact-item">
-          <span class="material-icons" aria-hidden="true">access_time</span>
-          <p>Horario de atención: Lunes a Viernes, 9:00 AM - 6:00 PM</p>
+      <div class="container">
+        <h2>Contacto y Soporte</h2>
+        <p>Estamos aquí para ayudarte con cualquier consulta o problema que tengas. No dudes en contactarnos.</p>
+        <div class="contact-info">
+          <div class="contact-item">
+            <span class="material-icons" aria-hidden="true">email</span>
+            <a href="mailto:maylipirir2005@gmail.com">maylipirir2005@gmail.com</a>
+          </div>
+          <div class="contact-item">
+            <span class="material-icons" aria-hidden="true">phone</span>
+            <a href="tel:+50232181393">+502 3218 1393</a>
+          </div>
+          <div class="contact-item">
+            <span class="material-icons" aria-hidden="true">location_on</span>
+            <address>Ciudad de Guatemala, Guatemala</address>
+          </div>
+          <div class="contact-item">
+            <span class="material-icons" aria-hidden="true">access_time</span>
+            <p>Horario de atención: Lunes a Viernes, 9:00 AM - 6:00 PM</p>
+          </div>
         </div>
       </div>
-      <p>Estamos aquí para ayudarte con cualquier consulta o problema que tengas. No dudes en contactarnos.</p>
     </div>
 
     <!-- Sección de Inicio de Sesión -->
@@ -1794,11 +2007,11 @@
 
           html += `
                     <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
-                        <div style="margin-bottom: 5px;">${percentage.toFixed(1)}%</div>
+                        <div style="margin-bottom: 5px; font-weight: 500; color: var(--color-dark);">${percentage.toFixed(1)}%</div>
                         <div style="background-color: ${
                           colors[colorIndex % colors.length]
                         }; width: 80%; height: ${height}px; border-radius: 4px 4px 0 0;"></div>
-                        <div style="margin-top: 5px; font-size: 12px; text-align: center;">${category}</div>
+                        <div style="margin-top: 5px; font-size: 12px; text-align: center; color: #555;">${category}</div>
                     </div>
                 `;
 
@@ -1924,8 +2137,6 @@
       menuBudgets.addEventListener('click', function (e) {
         e.preventDefault();
         showSection(budgetsSection);
-        // budgetSearchInput.value = ''; // Comentado porque budgetSearchInput no está definido
-        // filterAndRenderBudgets(''); // Comentado porque filterAndRenderBudgets no está definido
         budgetList.focus();
       });
 
@@ -1959,12 +2170,11 @@
       menuRegister.addEventListener('click', function (e) {
         e.preventDefault();
         showSection(registerSection);
-        document.getElementById('reg-username').focus(); // Enfocar el campo de usuario al mostrar
+        document.getElementById('reg-username').focus();
       });
 
       // Show only the selected section and hide others
       function showSection(section) {
-        // Ocultar todas las secciones
         dashboardSection.classList.remove('active');
         savingsSection.classList.remove('active');
         debtsSection.classList.remove('active');
@@ -1976,10 +2186,8 @@
         loginSection.classList.remove('active');
         registerSection.classList.remove('active');
 
-        // Mostrar la sección seleccionada
         section.classList.add('active');
 
-        // Cerrar el menú
         menuDropdown.classList.remove('show');
       }
 
@@ -1996,7 +2204,6 @@
         const date = document.getElementById('goal-date').value;
         const saved = parseFloat(document.getElementById('current-saved').value) || 0;
 
-        // Crear objeto de meta
         const goal = {
           id: Date.now(),
           name,
@@ -2005,14 +2212,11 @@
           saved,
         };
 
-        // Añadir a la lista de metas
         savingsGoals.push(goal);
 
-        // Guardar y actualizar UI
         saveSavingsGoals();
         updateSavingsList();
 
-        // Reiniciar formulario
         savingsForm.reset();
         document.getElementById('goal-date').valueAsDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
       });
@@ -2074,7 +2278,6 @@ Ofertas relacionadas:
           savingsList.appendChild(goalEl);
         });
 
-        // Añadir evento a los botones de añadir ahorro
         document.querySelectorAll('.add-savings').forEach((button) => {
           button.addEventListener('click', function () {
             const id = parseInt(this.getAttribute('data-id'));
@@ -2108,7 +2311,6 @@ Ofertas relacionadas:
           });
         });
 
-        // Añadir evento a los botones de eliminar meta
         document.querySelectorAll('.delete-goal').forEach((button) => {
           button.addEventListener('click', function () {
             const id = parseInt(this.getAttribute('data-id'));
@@ -2350,13 +2552,13 @@ Ofertas relacionadas:
 
           budgetEl.innerHTML = `
             <div><strong>${categoryName}</strong></div>
-            <div>Presupuesto: Q${b.amount.toFixed(2)}</div>
+            <div>Presupuesto: ${formatCurrency(b.amount)}</div>
             <div class="progress-bar" aria-label="Porcentaje gastado en presupuesto">
                 <div class="${progressBarClass}" style="width: ${percent}%">
                     <span class="progress-text">${percent}%</span>
                 </div>
             </div>
-            <div>Gastado: Q${b.spent.toFixed(2)} de Q${b.amount.toFixed(2)}</div>
+            <div>Gastado: ${formatCurrency(b.spent)} de ${formatCurrency(b.amount)}</div>
             ${
               percent >= warningThreshold && percent < 100
                 ? `<div class="budget-alert">¡Alerta! Estás utilizando más del 80% de tu presupuesto.</div>`
@@ -2376,7 +2578,6 @@ Ofertas relacionadas:
           budgetList.appendChild(budgetEl);
         });
 
-        // Añadir evento a los botones de añadir abono
         document.querySelectorAll('.add-budget-payment').forEach((button) => {
           button.addEventListener('click', function () {
             const id = parseInt(this.getAttribute('data-id'));
@@ -2387,7 +2588,6 @@ Ofertas relacionadas:
             if (!isNaN(amount) && amount > 0) {
               budget.spent += amount;
 
-              // Registrar transacción tipo gasto para presupuestos (category matches)
               const transaction = {
                 id: Date.now(),
                 description: `Abono a presupuesto: ${budget.category}`,
@@ -2409,7 +2609,6 @@ Ofertas relacionadas:
           });
         });
 
-        // Añadir evento a los botones eliminar presupuesto
         document.querySelectorAll('.delete-budget').forEach((btn) => {
           btn.addEventListener('click', function () {
             const id = parseInt(this.dataset.id);
@@ -2446,13 +2645,12 @@ Ofertas relacionadas:
                     <strong>${t.description}</strong>
                     <div>${formattedDate} | <span class="category">${t.category}</span></div>
                 </div>
-                <div class="${amountClass}">${prefix}Q${t.amount.toFixed(2)}</div>
+                <div class="${amountClass}">${prefix}${formatCurrency(t.amount).slice(1)}</div>
             `;
             reportList.appendChild(item);
           });
         }
 
-        // Calcular resumen
         const income = transactions
           .filter((t) => t.type === 'income')
           .reduce((sum, t) => sum + t.amount, 0);
@@ -2461,14 +2659,13 @@ Ofertas relacionadas:
           .reduce((sum, t) => sum + t.amount, 0);
         const balance = income - expense;
 
-        reportTotalIncome.textContent = 'Q' + income.toFixed(2);
-        reportTotalExpense.textContent = 'Q' + expense.toFixed(2);
-        reportBalance.textContent = 'Q' + balance.toFixed(2);
+        reportTotalIncome.textContent = formatCurrency(income);
+        reportTotalExpense.textContent = formatCurrency(expense);
+        reportBalance.textContent = formatCurrency(balance);
       }
 
       reportFilter.addEventListener('change', updateReport);
 
-      // Actualizar categorías en presupuestos y listas iniciales
       categories.expense.push('ahorro', 'deudas');
 
       populateBudgetCategories();
@@ -2648,16 +2845,13 @@ Ofertas relacionadas:
       // Ofertas - Solo para socios
       const offerForm = document.getElementById('offer-form');
       const addOfferSection = document.getElementById('add-offer-section');
-      const newOfferBtn = document.getElementById('new-offer-btn'); // Asegúrate de que esta línea exista
 
       function checkPartnerAccess() {
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (currentUser && currentUser.role === 'partner') {
           addOfferSection.style.display = 'block';
-          newOfferBtn.style.display = 'block'; // Mostrar el botón
         } else {
           addOfferSection.style.display = 'none';
-          newOfferBtn.style.display = 'none'; // Ocultar el botón
         }
       }
 
@@ -2684,7 +2878,7 @@ Ofertas relacionadas:
           }
         };
 
-        offers.unshift(newOffer); // Add to beginning of array
+        offers.unshift(newOffer);
         renderOffers(offers);
         offerForm.reset();
         alert('Oferta publicada con éxito!');
@@ -2702,8 +2896,6 @@ Ofertas relacionadas:
             });
         });
       }
-
-      // Offers section - Facebook Marketplace style
 
       let offers = [
         {
@@ -2786,7 +2978,7 @@ Ofertas relacionadas:
           </div>
           <div class="offer-details">
             <div class="offer-title">${offer.title}</div>
-            <div class="offer-price">Q${offer.price.toLocaleString('es-GT')}</div>
+            <div class="offer-price">${formatCurrency(offer.price)}</div>
             <div class="offer-category">${offer.category}</div>
             <div class="offer-description">${offer.description}</div>
             <div class="seller-info" aria-label="Información del vendedor">
@@ -2828,10 +3020,8 @@ Ofertas relacionadas:
         filterAndRenderOffers(e.target.value);
       });
 
-      // Render all offers initially at load
       renderOffers(offers);
 
-      // Lógica de Inicio de Sesión y Registro
       const loginForm = document.getElementById('login-form');
       const usernameInput = document.getElementById('username');
       const passwordInput = document.getElementById('password');
@@ -2846,10 +3036,8 @@ Ofertas relacionadas:
       const registerMessage = document.getElementById('register-message');
       const linkToLogin = document.getElementById('link-to-login');
 
-      // Cargar usuarios existentes o inicializar con un array vacío
       let registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || [];
 
-      // Si no hay usuarios registrados, añadir algunos de ejemplo
       if (registeredUsers.length === 0) {
         registeredUsers = [
           { 
@@ -2877,12 +3065,10 @@ Ofertas relacionadas:
         localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
       }
 
-      // Función para guardar usuarios en localStorage
       function saveRegisteredUsers() {
         localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
       }
 
-      // Lógica del formulario de LOGIN
       loginForm.addEventListener('submit', function(e) {
         e.preventDefault();
 
@@ -2897,10 +3083,11 @@ Ofertas relacionadas:
           localStorage.setItem('currentUser', JSON.stringify(foundUser));
           
           setTimeout(() => {
-            showSection(dashboardSection); // Redirigir al dashboard
-            loginForm.reset(); // Limpiar el formulario
-            loginMessage.textContent = ''; // Limpiar el mensaje
-            updateLoginStatus(); // Actualizar el estado de login en el menú
+            showSection(dashboardSection);
+            loginForm.reset();
+            loginMessage.textContent = '';
+            updateLoginStatus();
+            checkPartnerAccess(); // Call this after login status is updated
           }, 1500);
 
         } else {
@@ -2909,7 +3096,6 @@ Ofertas relacionadas:
         }
       });
 
-      // Lógica del formulario de REGISTRO
       registerForm.addEventListener('submit', function(e) {
         e.preventDefault();
 
@@ -2918,7 +3104,7 @@ Ofertas relacionadas:
         const confirmPassword = regConfirmPasswordInput.value;
         const role = regRoleSelect.value;
 
-        registerMessage.style.color = 'var(--color-danger)'; // Color por defecto para errores
+        registerMessage.style.color = 'var(--color-danger)';
 
         if (username === '' || password === '' || confirmPassword === '') {
           registerMessage.textContent = 'Por favor, completa todos los campos.';
@@ -2950,59 +3136,29 @@ Ofertas relacionadas:
         registerMessage.style.color = 'var(--color-accent)';
         registerMessage.textContent = `¡Cuenta creada con éxito para ${username} como ${role}! Ahora puedes iniciar sesión.`;
         
-        // Opcional: Limpiar el formulario y redirigir al login
         setTimeout(() => {
           registerForm.reset();
           registerMessage.textContent = '';
-          showSection(loginSection); // Redirigir a la sección de login
+          showSection(loginSection);
         }, 2000);
       });
 
-      // Enlaces entre login y registro
       linkToRegister.addEventListener('click', function(e) {
         e.preventDefault();
         showSection(registerSection);
         document.getElementById('reg-username').focus();
-        loginForm.reset(); // Limpiar formulario de login
-        loginMessage.textContent = ''; // Limpiar mensaje de login
+        loginForm.reset();
+        loginMessage.textContent = '';
       });
 
       linkToLogin.addEventListener('click', function(e) {
         e.preventDefault();
         showSection(loginSection);
         document.getElementById('username').focus();
-        registerForm.reset(); // Limpiar formulario de registro
-        registerMessage.textContent = ''; // Limpiar mensaje de registro
+        registerForm.reset();
+        registerMessage.textContent = '';
       });
 
-      // Función para actualizar el estado de login en el menú (opcional)
-      function updateLoginStatus() {
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        if (currentUser) {
-          menuLogin.textContent = `Cerrar Sesión (${currentUser.username})`;
-          menuLogin.removeEventListener('click', handleLoginClick); // Remover el listener anterior
-          menuLogin.addEventListener('click', handleLogoutClick); // Añadir listener para cerrar sesión
-          menuRegister.style.display = 'none'; // Ocultar enlace de registro si ya está logueado
-          
-          // Show partner sections if applicable
-          if (currentUser.role === 'partner') {
-            addOfferSection.style.display = 'block';
-            newOfferBtn.style.display = 'block';
-          } else {
-            addOfferSection.style.display = 'none';
-            newOfferBtn.style.display = 'none';
-          }
-        } else {
-          menuLogin.textContent = 'Iniciar Sesión';
-          menuLogin.removeEventListener('click', handleLogoutClick); // Remover el listener anterior
-          menuLogin.addEventListener('click', handleLoginClick); // Añadir listener para iniciar sesión
-          menuRegister.style.display = 'block'; // Mostrar enlace de registro
-          addOfferSection.style.display = 'none';
-          newOfferBtn.style.display = 'none';
-        }
-      }
-
-      // Manejadores de eventos para el botón de login/logout
       function handleLoginClick(e) {
         e.preventDefault();
         showSection(loginSection);
@@ -3015,12 +3171,35 @@ Ofertas relacionadas:
           localStorage.removeItem('currentUser');
           alert('Sesión cerrada.');
           updateLoginStatus();
-          showSection(dashboardSection); // Redirigir al dashboard
+          checkPartnerAccess(); // Update partner sections visibility
+          showSection(dashboardSection);
         }
       }
 
-      // Llamar a updateLoginStatus al cargar la página para reflejar el estado actual
+      function updateLoginStatus() {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (currentUser) {
+          menuLogin.textContent = `Cerrar Sesión (${currentUser.username})`;
+          menuLogin.removeEventListener('click', handleLoginClick);
+          menuLogin.addEventListener('click', handleLogoutClick);
+          menuRegister.style.display = 'none';
+          
+          if (currentUser.role === 'partner') {
+            addOfferSection.style.display = 'block';
+          } else {
+            addOfferSection.style.display = 'none';
+          }
+        } else {
+          menuLogin.textContent = 'Iniciar Sesión';
+          menuLogin.removeEventListener('click', handleLogoutClick);
+          menuLogin.addEventListener('click', handleLoginClick);
+          menuRegister.style.display = 'block';
+          addOfferSection.style.display = 'none'; // Hide add offer section if not logged in or not partner
+        }
+      }
+
       updateLoginStatus();
+      checkPartnerAccess(); // Initial check for partner access on page load
     </script>
 </body>
 </html>
