@@ -8,19 +8,23 @@
     <title>Money minder</title>
     <style>
         :root {
-            --color-primary: #9e2142;
-            --color-secondary: #3498db;
-            --color-accent: #27ae60;
-            --color-danger: #e74c3c;
-            --color-warning: #f39c12;
-            --color-light: #f5f5f5;
-            --color-dark: #333;
-            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            --chatbot-bg: #ffffff;
-            --chatbot-bubble-bg-user: #3498db;
-            --chatbot-bubble-bg-bot: #f0f0f0;
+            --color-primary: #6A1B9A; /* Púrpura oscuro, elegante */
+            --color-secondary: #00BCD4; /* Cian brillante, moderno */
+            --color-accent: #8BC34A; /* Verde lima, vibrante */
+            --color-danger: #FF5252; /* Rojo vivo */
+            --color-warning: #FFC107; /* Amarillo ámbar */
+            --color-light: #ECEFF1; /* Gris muy claro */
+            --color-dark: #263238; /* Gris azulado oscuro */
+            --shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada pero suave */
+            --card-bg: #FFFFFF; /* Fondo de tarjeta blanco */
+            --body-bg: linear-gradient(135deg, #E0F2F7 0%, #B2EBF2 100%); /* Degradado suave para el fondo */
+
+            /* Chatbot specific colors */
+            --chatbot-bg: var(--card-bg);
+            --chatbot-bubble-bg-user: var(--color-secondary);
+            --chatbot-bubble-bg-bot: var(--color-light);
             --chatbot-text-user: #fff;
-            --chatbot-text-bot: #333;
+            --chatbot-text-bot: var(--color-dark);
         }
 
         /* Global resets and fonts */
@@ -32,25 +36,42 @@
         }
 
         body {
-            background-color: #f9f9f9;
+            background: var(--body-bg); /* Aplicar el degradado */
             color: var(--color-dark);
+            min-height: 100vh; /* Asegura que el degradado cubra toda la altura */
+            display: flex;
+            flex-direction: column;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            flex-grow: 1; /* Permite que el contenido crezca y empuje el footer hacia abajo */
         }
 
         header {
             background-color: var(--color-primary);
             color: white;
-            padding: 20px 0;
-            margin-bottom: 30px;
+            padding: 25px 0; /* Más padding */
+            margin-bottom: 40px; /* Más espacio */
             box-shadow: var(--shadow);
+            position: sticky; /* Sticky header */
+            top: 0;
+            z-index: 100;
         }
 
-        h1,
+        h1 {
+            font-size: 2.8em; /* Más grande */
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
         h2,
         h3 {
             margin-bottom: 15px;
@@ -75,24 +96,37 @@
         }
 
         .card {
-            background-color: white;
-            border-radius: 8px;
-            padding: 20px;
+            background-color: var(--card-bg);
+            border-radius: 15px; /* Bordes más redondeados */
+            padding: 25px; /* Más padding */
             box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animación al pasar el ratón */
+        }
+
+        .card:hover {
+            transform: translateY(-5px); /* Efecto de elevación */
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
         }
 
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
+            margin-bottom: 20px; /* Más espacio */
+            border-bottom: 2px solid var(--color-light); /* Borde más grueso y claro */
+            padding-bottom: 15px;
+        }
+
+        .card-header h2 {
+            color: var(--color-primary); /* Título de tarjeta con color primario */
+            font-size: 1.8em;
         }
 
         .balance {
-            font-size: 24px;
+            font-size: 3em; /* Más grande */
             font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--color-dark); /* Color por defecto */
         }
 
         .positive {
@@ -101,6 +135,11 @@
 
         .negative {
             color: var(--color-danger);
+        }
+
+        .summary div {
+            font-size: 1.1em;
+            margin-bottom: 5px;
         }
 
         .form-group {
@@ -114,28 +153,43 @@
         }
 
         input,
-        select {
+        select,
+        textarea {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
+            padding: 12px; /* Más padding */
+            border: 1px solid var(--color-light); /* Borde más suave */
+            border-radius: 8px; /* Bordes redondeados */
+            font-size: 1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background-color: #F8F8F8; /* Fondo ligeramente gris */
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--color-secondary);
+            box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.2); /* Sombra de enfoque */
+            outline: none;
         }
 
         button {
             background-color: var(--color-secondary);
             color: white;
             border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
+            padding: 12px 25px; /* Más padding */
+            border-radius: 8px; /* Bordes redondeados */
             cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-            min-height: 44px;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            min-height: 48px; /* Mayor altura para accesibilidad */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         button:hover {
-            background-color: #2980b9;
+            background-color: #00ACC1; /* Tono más oscuro al pasar el ratón */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
         }
 
         .btn-danger {
@@ -143,7 +197,7 @@
         }
 
         .btn-danger:hover {
-            background-color: #c0392b;
+            background-color: #D32F2F;
         }
 
         .btn-accent {
@@ -151,43 +205,83 @@
         }
 
         .btn-accent:hover {
-            background-color: #219653;
+            background-color: #689F38;
+        }
+
+        .btn-small {
+            padding: 8px 15px;
+            font-size: 0.9em;
+            border-radius: 6px;
+            min-height: 38px;
         }
 
         .transactions {
-            max-height: 300px;
+            max-height: 350px; /* Un poco más de altura */
             overflow-y: auto;
+            padding-right: 10px; /* Espacio para la barra de desplazamiento */
         }
 
         .transaction-item {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
+            padding: 15px; /* Más padding */
+            border-bottom: 1px solid var(--color-light);
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            background-color: var(--card-bg); /* Fondo blanco para cada item */
+            border-radius: 8px;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+            transition: background-color 0.2s ease;
+        }
+
+        .transaction-item:hover {
+            background-color: #F5F5F5; /* Ligero cambio de color al pasar el ratón */
         }
 
         .transaction-item:last-child {
             border-bottom: none;
         }
 
+        .transaction-item strong {
+            color: var(--color-primary);
+            font-size: 1.1em;
+        }
+
         .transaction-item .category {
-            background-color: #eee;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 14px;
+            background-color: var(--color-secondary); /* Color de categoría más llamativo */
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px; /* Más redondeado */
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-left: 10px;
         }
 
         .chart-container {
-            height: 300px;
+            height: 320px; /* Ajustar altura */
             position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--color-light); /* Fondo claro para el área del gráfico */
+            border-radius: 10px;
+        }
+
+        /* Estilos para las barras del gráfico */
+        .chart-container > div {
+            background-color: var(--card-bg); /* Fondo de las barras */
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            padding: 15px;
         }
 
         footer {
-            margin-top: 40px;
+            margin-top: 50px; /* Más espacio */
             text-align: center;
-            padding: 20px;
+            padding: 25px;
             background-color: var(--color-primary);
             color: white;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
         }
 
         /* Estilos para el menú */
@@ -206,41 +300,57 @@
             background-color: var(--color-secondary);
             color: white;
             border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
+            padding: 12px 20px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 1.1em;
             display: flex;
             align-items: center;
-            gap: 5px;
-            min-height: 44px;
+            gap: 8px;
+            min-height: 48px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .menu-button:hover {
+            background-color: #00ACC1;
+            transform: translateY(-2px);
         }
 
         .menu-content {
             display: none;
             position: absolute;
             right: 0;
-            background-color: white;
-            min-width: 220px;
+            background-color: var(--card-bg);
+            min-width: 250px; /* Más ancho */
             box-shadow: var(--shadow);
             z-index: 10;
-            border-radius: 4px;
+            border-radius: 10px; /* Bordes más redondeados */
             overflow: hidden;
+            padding: 10px 0; /* Padding interno */
         }
 
         .menu-content a {
             color: var(--color-dark);
-            padding: 12px 16px;
+            padding: 15px 20px; /* Más padding */
             text-decoration: none;
-            display: block;
-            border-bottom: 1px solid #eee;
-            min-height: 44px;
-            line-height: 20px;
+            display: flex; /* Para alinear iconos si se añaden */
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--color-light);
+            min-height: 50px; /* Mayor altura */
+            font-size: 1.05em;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .menu-content a:last-child {
+            border-bottom: none;
         }
 
         .menu-content a:hover,
         .menu-content a:focus {
-            background-color: #f1f1f1;
+            background-color: var(--color-light);
+            color: var(--color-primary);
             outline: none;
         }
 
@@ -260,18 +370,25 @@
         /* Estilos para metas de ahorro */
         .progress-bar {
             width: 100%;
-            background-color: #e0e0e0;
-            border-radius: 4px;
-            margin: 10px 0;
+            background-color: var(--color-light);
+            border-radius: 10px; /* Más redondeado */
+            margin: 12px 0;
+            height: 25px; /* Más alto */
+            overflow: hidden;
             position: relative;
         }
 
         .progress {
-            height: 20px;
+            height: 100%;
             background-color: var(--color-accent);
-            border-radius: 4px;
-            transition: width 0.3s ease;
+            border-radius: 10px;
+            transition: width 0.5s ease-out; /* Transición más suave */
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
         }
 
         .progress-text {
@@ -279,24 +396,35 @@
             right: 10px;
             color: #fff;
             font-weight: bold;
-            top: 0;
-            height: 100%;
-            display: flex;
-            align-items: center;
+            font-size: 0.9em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
         }
 
         .progress.warning {
             background-color: var(--color-warning);
         }
 
+        .progress.negative { /* Para presupuestos superados */
+            background-color: var(--color-danger);
+        }
+
         .goal-item,
         .debt-item,
         .budget-item {
-            background-color: #f9f9f9;
-            border-radius: 4px;
-            padding: 15px;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
             margin-bottom: 15px;
-            border-left: 4px solid var(--color-secondary);
+            border-left: 6px solid var(--color-secondary); /* Borde más grueso */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .goal-item:hover,
+        .debt-item:hover,
+        .budget-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
         }
 
         .goal-actions,
@@ -308,25 +436,24 @@
         }
 
         .debt-item.paid {
-            border-left: 4px solid var(--color-accent);
-        }
-
-        .btn-small {
-            padding: 5px 10px;
-            font-size: 14px;
+            border-left: 6px solid var(--color-accent);
         }
 
         /* Budget alert style */
         .budget-alert {
             color: var(--color-danger);
             font-weight: 700;
-            margin-top: 8px;
+            margin-top: 10px;
+            padding: 8px 12px;
+            background-color: #FFEBEE; /* Fondo suave para la alerta */
+            border-radius: 6px;
+            border: 1px solid var(--color-danger);
         }
 
         /* Aumentar tamaño de botones para accesibilidad */
         button,
         .menu-content a {
-            min-height: 44px;
+            min-height: 48px; /* Ajustado a 48px */
         }
 
         /* Prevenir zoom al enfocar inputs en iOS */
@@ -338,34 +465,103 @@
 
         /* Modo oscuro automático */
         @media (prefers-color-scheme: dark) {
-            body {
-                background-color: #121212;
-                color: #f1f1f1;
+            body {  
+                background: linear-gradient(135deg, #1A237E 0%, #0D47A1 100%); /* Degradado oscuro */
+                color: #E0E0E0;
             }
             header,
             footer {
-                background-color: #6a1231;
+                background-color: #4A148C; /* Púrpura oscuro para header/footer */
                 color: #fff;
             }
             .card {
-                background-color: #1e1e1e;
-                color: #f1f1f1;
+                background-color: #2C2C2C; /* Fondo de tarjeta oscuro */
+                color: #E0E0E0;
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            }
+            .card:hover {
+                box-shadow: 0 12px 25px rgba(0, 0, 0, 0.6);
             }
             .menu-content {
-                background-color: #333;
-                color: #fff;
+                background-color: #3A3A3A;
+                color: #E0E0E0;
             }
             .menu-content a {
-                color: #fff;
+                color: #E0E0E0;
                 border-bottom: 1px solid #555;
             }
             .menu-content a:hover {
-                background-color: #444;
+                background-color: #4A4A4A;
             }
             .goal-item, .debt-item, .budget-item {
-                background-color: #292929;
-                color: #f1f1f1;
+                background-color: #3A3A3A;
+                color: #E0E0E0;
                 border-left-color: var(--color-secondary);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            }
+            .goal-item:hover, .debt-item:hover, .budget-item:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+            }
+            input, select, textarea {
+                background-color: #3A3A3A;
+                border-color: #555;
+                color: #E0E0E0;
+            }
+            input:focus, select:focus, textarea:focus {
+                box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.4);
+            }
+            .transaction-item {
+                background-color: #3A3A3A;
+                border-bottom-color: #555;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            }
+            .transaction-item:hover {
+                background-color: #4A4A4A;
+            }
+            .transaction-item strong {
+                color: var(--color-secondary);
+            }
+            .transaction-item .category {
+                background-color: var(--color-primary);
+            }
+            .chatbot-messages {
+                background: #2C2C2C;
+            }
+            .chat-message.bot {
+                background-color: #4A4A4A;
+                color: #E0E0E0;
+            }
+            .chatbot-input {
+                background: #3A3A3A;
+                border-top-color: #555;
+            }
+            .chatbot-input input[type="text"] {
+                background-color: #4A4A4A;
+                border-color: #555;
+                color: #E0E0E0;
+            }
+            #offers-search-container {
+                background-color: #3A3A3A;
+                border-color: #555;
+            }
+            #offers-search {
+                background-color: transparent;
+                color: #E0E0E0;
+            }
+            .offer-card {
+                background-color: #3A3A3A;
+                box-shadow: var(--shadow);
+            }
+            .offer-details {
+                color: #E0E0E0;
+            }
+            .seller-info {
+                border-top-color: #555;
+                color: #E0E0E0;
+            }
+            .seller-info span.label {
+                color: var(--color-secondary);
             }
         }
 
@@ -468,7 +664,7 @@
             height: 600px;
             background: var(--chatbot-bg);
             box-shadow: var(--shadow);
-            border-radius: 12px;
+            border-radius: 20px; /* Más redondeado */
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -478,13 +674,15 @@
         .chatbot-header {
             background-color: var(--color-primary);
             color: white;
-            padding: 12px 16px;
+            padding: 15px 20px; /* Más padding */
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-weight: 600;
-            font-size: 18px;
+            font-size: 1.2em; /* Más grande */
             user-select: none;
+            border-top-left-radius: 20px; /* Coincidir con el contenedor */
+            border-top-right-radius: 20px;
         }
 
         .chatbot-header .material-icons {
@@ -494,9 +692,9 @@
 
         .chatbot-messages {
             flex: 1;
-            padding: 12px 16px;
+            padding: 15px 20px; /* Más padding */
             overflow-y: auto;
-            background: #fafafa;
+            background: #FDFDFD; /* Fondo más claro */
             display: flex;
             flex-direction: column;
         }
@@ -504,12 +702,12 @@
         .chat-message {
             max-width: 75%;
             margin-bottom: 12px;
-            padding: 10px 15px;
-            border-radius: 20px;
+            padding: 12px 18px; /* Más padding */
+            border-radius: 25px; /* Más redondeado */
             line-height: 1.4;
             word-wrap: break-word;
             user-select: text;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08); /* Sombra más suave */
             animation: fadeIn 0.3s ease forwards;
         }
 
@@ -517,31 +715,34 @@
             background-color: var(--chatbot-bubble-bg-bot);
             color: var(--chatbot-text-bot);
             align-self: flex-start;
-            border-bottom-left-radius: 2px;
+            border-bottom-left-radius: 8px; /* Esquina inferior izquierda menos redondeada */
         }
 
         .chat-message.user {
             background-color: var(--chatbot-bubble-bg-user);
             color: var(--chatbot-text-user);
             align-self: flex-end;
-            border-bottom-right-radius: 2px;
+            border-bottom-right-radius: 8px; /* Esquina inferior derecha menos redondeada */
         }
 
         .chatbot-input {
             display: flex;
-            border-top: 1px solid #ddd;
-            padding: 10px;
-            background: #fff;
+            border-top: 1px solid var(--color-light);
+            padding: 15px; /* Más padding */
+            background: var(--chatbot-bg);
+            border-bottom-left-radius: 20px; /* Coincidir con el contenedor */
+            border-bottom-right-radius: 20px;
         }
 
         .chatbot-input input[type="text"] {
             flex: 1;
-            padding: 10px 14px;
-            font-size: 14px;
-            border: 1px solid #ddd;
-            border-radius: 24px;
+            padding: 12px 18px; /* Más padding */
+            font-size: 1em;
+            border: 1px solid var(--color-light);
+            border-radius: 28px; /* Más redondeado */
             outline: none;
             transition: border-color 0.3s;
+            background-color: #F0F4F5; /* Fondo suave */
         }
 
         .chatbot-input input[type="text"]:focus {
@@ -554,7 +755,7 @@
             cursor: pointer;
             margin-left: 10px;
             color: var(--color-secondary);
-            font-size: 28px;
+            font-size: 32px; /* Icono más grande */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -653,16 +854,17 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            border: 1px solid #ddd;
-            border-radius: 24px;
-            padding: 8px 16px;
-            background-color: white;
+            border: 1px solid var(--color-light); /* Borde más suave */
+            border-radius: 30px; /* Más redondeado */
+            padding: 10px 20px; /* Más padding */
+            background-color: var(--card-bg);
             box-shadow: var(--shadow);
+            margin-bottom: 40px; /* Más espacio */
         }
 
         #offers-search-container .material-icons {
-            font-size: 24px;
-            color: var(--color-secondary);
+            font-size: 28px; /* Icono más grande */
+            color: var(--color-primary);
             user-select: none;
         }
 
@@ -670,9 +872,10 @@
             flex: 1;
             border: none;
             outline: none;
-            font-size: 16px;
+            font-size: 1.1em; /* Más grande */
             border-radius: 24px;
-            padding: 8px 12px;
+            padding: 10px 15px; /* Más padding */
+            background-color: transparent; /* Fondo transparente */
         }
 
         #offers-list {
@@ -684,27 +887,30 @@
         }
 
         .offer-card {
-            background: white;
-            border-radius: 12px;
+            background: var(--card-bg);
+            border-radius: 15px; /* Más redondeado */
             box-shadow: var(--shadow);
             overflow: hidden;
             cursor: pointer;
             display: flex;
             flex-direction: column;
-            transition: box-shadow 0.3s ease;
+            transition: box-shadow 0.3s ease, transform 0.3s ease; /* Animación al pasar el ratón */
             outline: none;
         }
 
         .offer-card:hover,
         .offer-card:focus {
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2); /* Sombra más pronunciada */
+            transform: translateY(-8px); /* Efecto de elevación más pronunciado */
         }
 
         .offer-image-container {
             width: 100%;
-            height: 180px;
+            height: 200px; /* Imagen un poco más grande */
             overflow: hidden;
             flex-shrink: 0;
+            border-top-left-radius: 15px; /* Bordes redondeados */
+            border-top-right-radius: 15px;
         }
 
         .offer-image-container img {
@@ -720,50 +926,53 @@
         }
 
         .offer-details {
-            padding: 15px 20px;
+            padding: 20px; /* Más padding */
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            gap: 10px;
+            gap: 12px; /* Más espacio entre elementos */
             font-size: 14px;
             color: var(--color-dark);
         }
 
         .offer-title {
             font-weight: 700;
-            font-size: 18px;
-            margin-bottom: 6px;
+            font-size: 1.5em; /* Más grande */
+            margin-bottom: 8px;
             color: var(--color-primary);
         }
 
         .offer-price {
             font-weight: 700;
-            font-size: 16px;
+            font-size: 1.3em; /* Más grande */
             color: var(--color-accent);
         }
 
         .offer-category {
-            font-size: 14px;
+            font-size: 0.95em; /* Ajustado */
             color: var(--color-secondary);
             text-transform: capitalize;
             margin-bottom: 6px;
+            font-weight: 600;
         }
 
         .offer-description {
-            font-size: 14px;
+            font-size: 0.95em; /* Ajustado */
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
+            line-height: 1.5;
+            color: var(--color-dark);
         }
 
         .seller-info {
-            margin-top: 8px;
-            padding-top: 10px;
-            border-top: 1px solid #ddd;
-            font-size: 13px;
+            margin-top: 15px; /* Más espacio */
+            padding-top: 15px; /* Más padding */
+            border-top: 1px solid var(--color-light);
+            font-size: 0.9em; /* Ajustado */
             color: var(--color-dark);
         }
 
@@ -791,11 +1000,11 @@
         /* Contact Section Styling */
         #contact-section {
             display: none;
-            padding: 30px 20px;
+            padding: 40px 30px; /* Más padding */
             max-width: 700px;
             margin: 0 auto 40px auto;
-            background-color: white;
-            border-radius: 12px;
+            background-color: var(--card-bg);
+            border-radius: 15px; /* Más redondeado */
             box-shadow: var(--shadow);
             color: var(--color-dark);
             font-size: 16px;
@@ -805,16 +1014,18 @@
             display: block;
         }
         #contact-section h2 {
-            margin-bottom: 20px;
+            margin-bottom: 25px; /* Más espacio */
             color: var(--color-primary);
+            font-size: 2.2em; /* Más grande */
+            text-align: center;
         }
         #contact-section p {
             margin-bottom: 12px;
         }
         #contact-section a {
-            color: var(--color-secondary);
+            color: var(--color-primary); /* Color primario para enlaces */
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 700; /* Más negrita */
         }
         #contact-section a:hover,
         #contact-section a:focus {
@@ -827,18 +1038,66 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 12px;
+            margin-bottom: 15px; /* Más espacio */
+            font-size: 1.1em; /* Más grande */
         }
         #contact-section .material-icons {
-            font-size: 24px;
+            font-size: 28px; /* Iconos más grandes */
+            color: var(--color-secondary);
+        }
+
+        /* Login and Register Sections */
+        #login-section .card,
+        #register-section .card {
+            max-width: 500px; /* Ancho fijo para los formularios */
+            margin: 40px auto; /* Centrar y dar espacio */
+            padding: 30px;
+        }
+
+        #login-section h2,
+        #register-section h2 {
+            text-align: center;
+            font-size: 2em;
             color: var(--color-primary);
+        }
+
+        #login-form button,
+        #register-form button {
+            width: 100%; /* Botones de ancho completo */
+            margin-top: 20px;
+        }
+
+        #login-message,
+        #register-message {
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        #login-section p,
+        #register-section p {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.95em;
+        }
+
+        #login-section a,
+        #register-section a {
+            color: var(--color-secondary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        #login-section a:hover,
+        #register-section a:hover {
+            text-decoration: underline;
         }
     </style>
 
     <!-- Icons Material -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <link rel="manifest" href="manifest.json" />
-    <meta name="theme-color" content="#9e2142" />
+    <meta name="theme-color" content="#6A1B9A" /> <!-- Actualizado al color primario -->
     <link rel="apple-touch-icon" href="icon-192.png" />
 </head>
 <body>
@@ -854,16 +1113,16 @@
                         Menú <span aria-hidden="true">▼</span>
                     </button>
                     <div class="menu-content" id="menu-dropdown" role="menu" aria-label="Menú principal">
-                        <a href="#" id="menu-dashboard" role="menuitem" tabindex="0">Panel Principal</a>
-                        <a href="#" id="menu-savings" role="menuitem" tabindex="0">Metas de Ahorro</a>
-                        <a href="#" id="menu-debts" role="menuitem" tabindex="0">Control de Deudas</a>
-                        <a href="#" id="menu-reports" role="menuitem" tabindex="0">Reportes / Historial</a>
-                        <a href="#" id="menu-budgets" role="menuitem" tabindex="0">Presupuestos</a>
-                        <a href="#" id="menu-offers" role="menuitem" tabindex="0">Ofertas</a>
-                        <a href="#" id="menu-contact" role="menuitem" tabindex="0">Contacto / Soporte</a>
-                        <a href="#" id="chatbot" role="menuitem" tabindex="0">Chatbot</a>
-                        <a href="#" id="menu-login" role="menuitem" tabindex="0">Iniciar Sesión</a>
-                        <a href="#" id="menu-register" role="menuitem" tabindex="0">Registrarse</a> <!-- Nuevo enlace de registro -->
+                        <a href="#" id="menu-dashboard" role="menuitem" tabindex="0"><span class="material-icons">dashboard</span> Panel Principal</a>
+                        <a href="#" id="menu-savings" role="menuitem" tabindex="0"><span class="material-icons">savings</span> Metas de Ahorro</a>
+                        <a href="#" id="menu-debts" role="menuitem" tabindex="0"><span class="material-icons">money_off</span> Control de Deudas</a>
+                        <a href="#" id="menu-reports" role="menuitem" tabindex="0"><span class="material-icons">bar_chart</span> Reportes / Historial</a>
+                        <a href="#" id="menu-budgets" role="menuitem" tabindex="0"><span class="material-icons">account_balance_wallet</span> Presupuestos</a>
+                        <a href="#" id="menu-offers" role="menuitem" tabindex="0"><span class="material-icons">local_offer</span> Ofertas</a>
+                        <a href="#" id="menu-contact" role="menuitem" tabindex="0"><span class="material-icons">contact_support</span> Contacto / Soporte</a>
+                        <a href="#" id="chatbot" role="menuitem" tabindex="0"><span class="material-icons">chat</span> Chatbot</a>
+                        <a href="#" id="menu-login" role="menuitem" tabindex="0"><span class="material-icons">login</span> Iniciar Sesión</a>
+                        <a href="#" id="menu-register" role="menuitem" tabindex="0"><span class="material-icons">person_add</span> Registrarse</a>
                     </div>
                 </div>
             </div>
@@ -1183,6 +1442,13 @@
         <!-- Inserts offer cards dynamically -->
       </div>
       
+      <!-- Botón para agregar nueva oferta (visible solo para socios) -->
+      <div style="text-align: center; margin-top: 30px;">
+        <button id="new-offer-btn" class="btn-accent" style="display:none;">
+          <span class="material-icons" aria-hidden="true">add_circle_outline</span> Publicar Nueva Oferta
+        </button>
+      </div>
+
       <!-- Only show this section for partners -->
       <div id="add-offer-section" class="card" style="display:none; margin-top: 30px;">
         <div class="card-header">
@@ -1580,13 +1846,13 @@
       const menuOffers = document.getElementById('menu-offers');
       const menuContact = document.getElementById('menu-contact');
       const menuLogin = document.getElementById('menu-login');
-      const menuRegister = document.getElementById('menu-register'); // Nuevo
+      const menuRegister = document.getElementById('menu-register');
       const reportsSection = document.getElementById('reports-section');
       const budgetsSection = document.getElementById('budgets-section');
       const offersSection = document.getElementById('offers-section');
       const contactSection = document.getElementById('contact-section');
       const loginSection = document.getElementById('login-section');
-      const registerSection = document.getElementById('register-section'); // Nuevo
+      const registerSection = document.getElementById('register-section');
 
       // Secciones
       const dashboardSection = document.getElementById('dashboard-section');
@@ -1694,7 +1960,7 @@
       menuLogin.addEventListener('click', handleLoginClick);
 
       // Register menu link
-      menuRegister.addEventListener('click', function (e) { // Nuevo
+      menuRegister.addEventListener('click', function (e) {
         e.preventDefault();
         showSection(registerSection);
         document.getElementById('reg-username').focus(); // Enfocar el campo de usuario al mostrar
@@ -1712,7 +1978,7 @@
         offersSection.classList.remove('active');
         contactSection.classList.remove('active');
         loginSection.classList.remove('active');
-        registerSection.classList.remove('active'); // Nuevo
+        registerSection.classList.remove('active');
 
         // Mostrar la sección seleccionada
         section.classList.add('active');
@@ -2386,13 +2652,16 @@ Ofertas relacionadas:
       // Ofertas - Solo para socios
       const offerForm = document.getElementById('offer-form');
       const addOfferSection = document.getElementById('add-offer-section');
+      const newOfferBtn = document.getElementById('new-offer-btn'); // Asegúrate de que esta línea exista
 
       function checkPartnerAccess() {
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (currentUser && currentUser.role === 'partner') {
           addOfferSection.style.display = 'block';
+          newOfferBtn.style.display = 'block'; // Mostrar el botón
         } else {
           addOfferSection.style.display = 'none';
+          newOfferBtn.style.display = 'none'; // Ocultar el botón
         }
       }
 
@@ -2424,24 +2693,6 @@ Ofertas relacionadas:
         offerForm.reset();
         alert('Oferta publicada con éxito!');
       });
-
-      // Show/hide partner sections when user logs in/out
-      function updateLoginStatus() {
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        if (currentUser) {
-          menuLogin.textContent = `Cerrar Sesión (${currentUser.username})`;
-          menuLogin.removeEventListener('click', handleLoginClick);
-          menuLogin.addEventListener('click', handleLogoutClick);
-          menuRegister.style.display = 'none';
-          
-          // Show partner sections if applicable
-          if (currentUser.role === 'partner') {
-            addOfferSection.style.display = 'block';
-          }
-        } else {
-          // Rest of existing function...
-        }
-      }
 
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function () {
@@ -2589,15 +2840,15 @@ Ofertas relacionadas:
       const usernameInput = document.getElementById('username');
       const passwordInput = document.getElementById('password');
       const loginMessage = document.getElementById('login-message');
-      const linkToRegister = document.getElementById('link-to-register'); // Nuevo enlace en login
+      const linkToRegister = document.getElementById('link-to-register');
 
-      const registerForm = document.getElementById('register-form'); // Nuevo formulario de registro
+      const registerForm = document.getElementById('register-form');
       const regUsernameInput = document.getElementById('reg-username');
       const regPasswordInput = document.getElementById('reg-password');
       const regConfirmPasswordInput = document.getElementById('reg-confirm-password');
       const regRoleSelect = document.getElementById('reg-role');
       const registerMessage = document.getElementById('register-message');
-      const linkToLogin = document.getElementById('link-to-login'); // Nuevo enlace en registro
+      const linkToLogin = document.getElementById('link-to-login');
 
       // Cargar usuarios existentes o inicializar con un array vacío
       let registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || [];
@@ -2736,11 +2987,22 @@ Ofertas relacionadas:
           menuLogin.removeEventListener('click', handleLoginClick); // Remover el listener anterior
           menuLogin.addEventListener('click', handleLogoutClick); // Añadir listener para cerrar sesión
           menuRegister.style.display = 'none'; // Ocultar enlace de registro si ya está logueado
+          
+          // Show partner sections if applicable
+          if (currentUser.role === 'partner') {
+            addOfferSection.style.display = 'block';
+            newOfferBtn.style.display = 'block';
+          } else {
+            addOfferSection.style.display = 'none';
+            newOfferBtn.style.display = 'none';
+          }
         } else {
           menuLogin.textContent = 'Iniciar Sesión';
           menuLogin.removeEventListener('click', handleLogoutClick); // Remover el listener anterior
           menuLogin.addEventListener('click', handleLoginClick); // Añadir listener para iniciar sesión
           menuRegister.style.display = 'block'; // Mostrar enlace de registro
+          addOfferSection.style.display = 'none';
+          newOfferBtn.style.display = 'none';
         }
       }
 
@@ -2763,38 +3025,6 @@ Ofertas relacionadas:
 
       // Llamar a updateLoginStatus al cargar la página para reflejar el estado actual
       updateLoginStatus();
-
-      // Nueva oferta button functionality
-      const newOfferBtn = document.getElementById('new-offer-btn');
-      newOfferBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        document.getElementById('offer-title').focus();
-      });
-
-      // Update login status to show/hide new offer button
-      function updateLoginStatus() {
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        if (currentUser) {
-          menuLogin.textContent = `Cerrar Sesión (${currentUser.username})`;
-          menuLogin.removeEventListener('click', handleLoginClick);
-          menuLogin.addEventListener('click', handleLogoutClick);
-          menuRegister.style.display = 'none';
-          
-          // Show partner sections if applicable
-          if (currentUser.role === 'partner') {
-            addOfferSection.style.display = 'block';
-            newOfferBtn.style.display = 'block';
-          } else {
-            newOfferBtn.style.display = 'none';
-          }
-        } else {
-          menuLogin.textContent = 'Iniciar Sesión';
-          menuLogin.removeEventListener('click', handleLogoutClick);
-          menuLogin.addEventListener('click', handleLoginClick);
-          menuRegister.style.display = 'block';
-          newOfferBtn.style.display = 'none';
-        }
-      }
     </script>
 </body>
 </html>
